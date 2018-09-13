@@ -1,13 +1,13 @@
-// Ineractive_scene
-// Cody Flynn
-// sept 13th
+// Project Title
+// Your Name
+// Date
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
-    background(255);
+    createCanvas(400, 400);
+    background(0);
 }
 
 function draw(){
