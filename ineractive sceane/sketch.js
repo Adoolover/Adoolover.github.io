@@ -1,9 +1,12 @@
 // Ineractive_scene
 // Cody Flynn
 // sept 13th
-//
+// Falling Blocks game.
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
+
+let squareX = 
+let squareY
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -11,7 +14,7 @@ function setup() {
 }
 
 function draw(){
-
+rect(width/2, 0, 50, 50);
 
 }
 function mousePressed(){
