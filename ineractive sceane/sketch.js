@@ -7,6 +7,7 @@
 // 1548 is the end of the screen on the right
 // 742 aprox end of screen
 
+let hit = false;
 // square varibals
 let squareX = 0;
 let squareY = 0;
@@ -18,18 +19,18 @@ let squareWidth = 50;
 let squareHeight = 50;
 // circle varibals
 let circlewidth = 50;
-let ballX
-let ballY
+let ballX;
+let ballY;
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
-ballX = width/2
-ballY = height/2
+  createCanvas(windowWidth, windowHeight);
+  ballX = width/2;
+  ballY = height/2;
 }
 
 function draw(){
-  background(random(255));
-  fill(random(255), random(255), random(255))
+  background(0);
+  fill(255, 0, 255);
   // creating the squares and player ball
   // group one
   rect(squareX, squareY, squareWidth, squareHeight);
@@ -81,40 +82,52 @@ function draw(){
   rect(squareX + 1600, squareYG5, squareWidth, squareHeight);
   // player ball
   ellipse(ballX, ballY, circlewidth);
+  if (hit === false){
   // square movement
-  squareY++;
-  squareYG2++;
-  squareYG3++;
-  squareYG4++;
-  squareYG5++;
-  // reseting the squares
-  if (squareY >= windowHeight){
-    squareY = 0;
-  }
-  if (squareYG2 >= windowHeight){
-    squareYG2 = 0;
-  }
-  if (squareYG3 >= windowHeight){
-    squareYG3 = 0;
-  }
-  if (squareYG4 >= windowHeight){
-    squareYG4 = 0;
-  }
-  if (squareYG5 >= windowHeight){
-    squareYG5 = 0;
-  }
-  // movement of the player ball
-  if (keyIsDown(87)){
-    ballY = ballY-2;
-  }
-  if (keyIsDown(83)){
-    ballY = ballY+2;
-  }
-  if (keyIsDown(65)){
-    ballX = ballX-2;
-  }
-  if (keyIsDown(68)){
-    ballX = ballX+2;
-  }
+    squareY++;
+    squareYG2++;
+    squareYG3++;
+    squareYG4++;
+    squareYG5++;
+    // reseting the squares
+    if (squareY >= windowHeight){
+      squareY = 0;
+    }
+    if (squareYG2 >= windowHeight){
+      squareYG2 = 0;
+    }
+    if (squareYG3 >= windowHeight){
+      squareYG3 = 0;
+    }
+    if (squareYG4 >= windowHeight){
+      squareYG4 = 0;
+    }
+    if (squareYG5 >= windowHeight){
+      squareYG5 = 0;
+    }
+    // colision detection
+    if (ballX === squareX && ballY === squareY){
+      hit = true;
+    }
+    // movement of the player ball
+    if (ballX <= 0){
+      ballX = 1;
+    }
+    if (ballX >= windowWidth){
+      ballX = windowWidth - 1;
+    }
+    if (keyIsDown(87)){
+      ballY = ballY-2;
+    }
+    if (keyIsDown(83)){
+      ballY = ballY+2;
+    }
+    if (keyIsDown(65)){
+      ballX = ballX-2;
+    }
+    if (keyIsDown(68)){
+      ballX = ballX+2;
+    }
 
+  }
 }
