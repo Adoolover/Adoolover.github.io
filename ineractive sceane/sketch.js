@@ -7,7 +7,7 @@
 // 1548 is the end of the screen on the right
 // 742 aprox end of screen
 
-let hit = false;
+let hit = true;
 // square varibals
 let squareX = 0;
 let squareY = 0;
@@ -26,6 +26,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   ballX = width/2;
   ballY = height/2;
+
 }
 
 function draw(){
@@ -82,6 +83,9 @@ function draw(){
   rect(squareX + 1600, squareYG5, squareWidth, squareHeight);
   // player ball
   ellipse(ballX, ballY, circlewidth);
+  if (mouseIsPressed){
+    hit = false;
+  }
   if (hit === false){
   // square movement
     squareY++;
@@ -109,24 +113,37 @@ function draw(){
     if (ballX === squareX && ballY === squareY){
       hit = true;
     }
+    // in window
+    if (ballX - circlewidth/2 <= 0){
+      ballX += circlewidth/2;
+    }
+    if (ballX + circlewidth/2 >= width){
+      ballX -= circlewidth/2;
+    }
+    if (ballY + circlewidth/2 <= 0){
+      ballY += circlewidth/2;
+    }
+    if (ballY - circlewidth/2 >= height){
+      ballY -= circlewidth/2;
+    }
     // movement of the player ball
-    if (ballX <= 0){
-      ballX = 1;
-    }
-    if (ballX >= windowWidth){
-      ballX = windowWidth - 1;
-    }
-    if (keyIsDown(87)){
+    if (keyIsDown(87)|| keyIsDown(38)){
       ballY = ballY-2;
     }
-    if (keyIsDown(83)){
+    if (keyIsDown(83)|| keyIsDown(40)){
       ballY = ballY+2;
     }
-    if (keyIsDown(65)){
+    if (keyIsDown(65)|| keyIsDown(37)){
       ballX = ballX-2;
     }
-    if (keyIsDown(68)){
+    if (keyIsDown(68)|| keyIsDown(39)){
       ballX = ballX+2;
+    }
+    // detect collision
+    if (ballX - circlewidth*0.5 <= squareX + squareWidth && ballX - circlewidth*0.5 >= squareX || ){
+      if (ballY - circlewidth*0.5 <= squareY + squareHeight && ballY + circlewidth*0.5 >= squareY){
+        hit = true;
+      }
     }
 
   }
