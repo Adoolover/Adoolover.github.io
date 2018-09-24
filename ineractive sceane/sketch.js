@@ -140,7 +140,7 @@ function draw(){
       ballX = ballX+2;
     }
     // detect collision
-    if (ballX - circlewidth*0.5 <= squareX + squareWidth && ballX - circlewidth*0.5 >= squareX || ){
+    if (ballX - circlewidth*0.5 <= squareX + squareWidth && ballX - circlewidth*0.5 >= squareX){
       if (ballY - circlewidth*0.5 <= squareY + squareHeight && ballY + circlewidth*0.5 >= squareY){
         hit = true;
       }
