@@ -9,9 +9,9 @@
 let state;
 let lastTimeSwitchColour;
 
-const redLightDaration = 3000;
-const greenLightDaration = 4000;
-const yellowLightDaration = 5000;
+const RED_LIGHT_DARATION = 3000;
+const GREEN_LIGHT_DARATION = 4000;
+const YELLOW_LIGHT_DARATION = 5000;
 
 
 function setup() {
@@ -30,15 +30,15 @@ function draw() {
 function checkForStateChange(){
   let elapasedTime = millis() - lastTimeSwitchColour;
 
-  if (state === 1 && elapasedTime >= redLightDaration) {
+  if (state === 1 && elapasedTime >= RED_LIGHT_DARATION) {
     state = 2;
     lastTimeSwitchColour = millis();
   }
-  else if (state === 2 && elapasedTime >= greenLightDaration) {
+  else if (state === 2 && elapasedTime >= GREEN_LIGHT_DARATION) {
     state = 3;
     lastTimeSwitchColour = millis();
   }
-  else if (state === 3 && elapasedTime >= yellowLightDaration) {
+  else if (state === 3 && elapasedTime >= YELLOW_LIGHT_DARATION) {
     state = 1;
     lastTimeSwitchColour = millis();
   }
