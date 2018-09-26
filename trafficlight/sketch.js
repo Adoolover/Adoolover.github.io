@@ -6,16 +6,18 @@
 // changing according to time. You may want to investigate the millis()
 // function at https://p5js.org/reference/
 
-let state = 1;
-let lastTimeSwitchColour = 0;
+let state;
+let lastTimeSwitchColour;
 
-let redLightDaration = 3000;
-let greenLightDaration = 4000;
-let yellowLightDaration = 5000;
+const redLightDaration = 3000;
+const greenLightDaration = 4000;
+const yellowLightDaration = 5000;
 
 
 function setup() {
   createCanvas(600, 600);
+  state = 1;
+  lastTimeSwitchColour = 0;
 }
 
 function draw() {
