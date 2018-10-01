@@ -24,7 +24,7 @@ function setup() {
 }
 
 function draw() {
-  strokeWeight(1);
+  strokeWeight(2);
 
   drawBoard();
   drawCircle();
@@ -33,6 +33,7 @@ function draw() {
 function mousePressed(){
   findGrid();
 }
+// finding Square
 function findGrid(){
 
   if (mouseX < width*0.33 && mouseY < height*0.33){
@@ -53,13 +54,13 @@ function findGrid(){
   else if (mouseX > width*0.66 && mouseY > height*0.33 && mouseY < height*0.66){
     girdPeace = 6;
   }
-  else if (mouseX < width*0.33 && mouseY < height*0.33){
+  else if (mouseX < width*0.33 && mouseY > height*0.66){
     girdPeace = 7;
   }
-  else if (mouseX < width*0.33 && mouseY < height*0.33){
+  else if (mouseX > width*0.33 && mouseX< width*0.66 && mouseY > height*0.66){
     girdPeace = 8;
   }
-  else if (mouseX < width*0.33 && mouseY < height*0.33){
+  else if (mouseX > width*0.66 && mouseY > height*0.66){
     girdPeace = 9;
   }
 }
@@ -74,17 +75,68 @@ function drawBoard(){
 
 
 function drawX(){
-  if (girdPeace === 6){
+  if (girdPeace === 1){
     strokeWeight(10);
     for(let i = 0; i < 2; i++){
       line(lineX1,lineY1,lineX2,lineY2);
       lineX1 += 200;
       lineX2 -= 200;
     }
+    lineX1 = 140;
+    lineX2 = 340;
   }
-  lineX1 = 100;
-  lineX2 = 300;
-
+  if (girdPeace === 2){
+    strokeWeight(10);
+    lineX1 += width*0.33;
+    lineX2 += width*0.33;
+    for(let i = 0; i < 2; i++){
+      line(lineX1,lineY1,lineX2,lineY2);
+      lineX1 += 200;
+      lineX2 -= 200;
+    }
+    lineX1 = 140;
+    lineX2 = 340;
+  }
+  if (girdPeace === 3){
+    strokeWeight(10);
+    lineX1 += width*0.66;
+    lineX2 += width*0.66;
+    for(let i = 0; i < 2; i++){
+      line(lineX1,lineY1,lineX2,lineY2);
+      lineX1 += 200;
+      lineX2 -= 200;
+    }
+    lineX1 = 140;
+    lineX2 = 340;
+  }
+  if (girdPeace === 4){
+    strokeWeight(10);
+    lineY1 += height*0.33;
+    lineY2 += height*0.33;
+    for(let i = 0; i < 2; i++){
+      line(lineX1,lineY1,lineX2,lineY2);
+      lineX1 += 200;
+      lineX2 -= 200;
+    }
+    lineX1 = 140;
+    lineX2 = 340;
+    lineY1 = 30;
+    lineY2 = 230;
+  }
+  if (girdPeace === 5){
+    strokeWeight(10);
+    lineX1 += width*0.33;
+    lineX2 += width*0.33;
+    lineY1 += height*0.33;
+    lineY2 += height*0.33;
+    for(let i = 0; i < 2; i++){
+      line(lineX1,lineY1,lineX2,lineY2);
+      lineX1 += 200;
+      lineX2 -= 200;
+    }
+    lineX1 = 140;
+    lineX2 = 340;
+  }
 }
 
 function drawCircle(){
