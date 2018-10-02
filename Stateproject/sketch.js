@@ -21,6 +21,7 @@ function setup() {
   circX = width/2;
   circleWidth = 200;
   girdPeace = 0;
+  state = 1;
 }
 
 function draw() {
@@ -28,7 +29,14 @@ function draw() {
 
   drawBoard();
   drawCircle();
-  drawX();
+  if (state === 1){
+    drawX();
+    state = 2;
+  }
+  else if (state === 2){
+    drawCircle();
+    state = 1;
+  }
 }
 function mousePressed(){
   findGrid();
@@ -73,6 +81,13 @@ function drawBoard(){
 }
 
 
+
+
+
+function drawCircle(){
+  fill(0);
+  ellipse(circX,circY,circleWidth);
+}
 
 function drawX(){
   if (girdPeace === 1){
@@ -136,10 +151,69 @@ function drawX(){
     }
     lineX1 = 140;
     lineX2 = 340;
+    lineY1 = 30;
+    lineY2 = 230;
   }
-}
-
-function drawCircle(){
-  fill(0);
-  ellipse(circX,circY,circleWidth);
+  if (girdPeace === 6){
+    strokeWeight(10);
+    lineX1 += width*0.66;
+    lineX2 += width*0.66;
+    lineY1 += height*0.33;
+    lineY2 += height*0.33;
+    for(let i = 0; i < 2; i++){
+      line(lineX1,lineY1,lineX2,lineY2);
+      lineX1 += 200;
+      lineX2 -= 200;
+    }
+    lineX1 = 140;
+    lineX2 = 340;
+    lineY1 = 30;
+    lineY2 = 230;
+  }
+  if (girdPeace === 7){
+    strokeWeight(10);
+    lineY1 += height*0.66;
+    lineY2 += height*0.66;
+    for(let i = 0; i < 2; i++){
+      line(lineX1,lineY1,lineX2,lineY2);
+      lineX1 += 200;
+      lineX2 -= 200;
+    }
+    lineX1 = 140;
+    lineX2 = 340;
+    lineY1 = 30;
+    lineY2 = 230;
+  }
+  if (girdPeace === 8){
+    strokeWeight(10);
+    lineX1 += width*0.33;
+    lineX2 += width*0.33;
+    lineY1 += height*0.66;
+    lineY2 += height*0.66;
+    for(let i = 0; i < 2; i++){
+      line(lineX1,lineY1,lineX2,lineY2);
+      lineX1 += 200;
+      lineX2 -= 200;
+    }
+    lineX1 = 140;
+    lineX2 = 340;
+    lineY1 = 30;
+    lineY2 = 230;
+  }
+  if (girdPeace === 9){
+    strokeWeight(10);
+    lineX1 += width*0.66;
+    lineX2 += width*0.66;
+    lineY1 += height*0.66;
+    lineY2 += height*0.66;
+    for(let i = 0; i < 2; i++){
+      line(lineX1,lineY1,lineX2,lineY2);
+      lineX1 += 200;
+      lineX2 -= 200;
+    }
+    lineX1 = 140;
+    lineX2 = 340;
+    lineY1 = 30;
+    lineY2 = 230;
+  }
 }
