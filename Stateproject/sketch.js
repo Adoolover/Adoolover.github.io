@@ -5,6 +5,7 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
+let spaceCover = [];
 let state;
 let lineX1, lineX2;
 let lineY1, lineY2;
@@ -13,33 +14,33 @@ let circY, circX;
 let girdPeace;
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  background(255,0,150);
   lineX1 = 140;
   lineX2 = 340;
   lineY1 = 30;
   lineY2 = 230;
-  circY = height/2;
-  circX = width/2;
   circleWidth = 200;
+  circY = height*0.16;
+  circX = width*0.16;
   girdPeace = 0;
   state = 1;
 }
 
 function draw() {
   strokeWeight(2);
-
   drawBoard();
-  drawCircle();
+}
+function mousePressed(){
+  findGrid();
   if (state === 1){
     drawX();
     state = 2;
   }
+
   else if (state === 2){
     drawCircle();
     state = 1;
   }
-}
-function mousePressed(){
-  findGrid();
 }
 // finding Square
 function findGrid(){
@@ -86,7 +87,33 @@ function drawBoard(){
 
 function drawCircle(){
   fill(0);
-  ellipse(circX,circY,circleWidth);
+  if (girdPeace === 1  ){
+    ellipse(circX,circY,circleWidth);
+  }
+  if (girdPeace === 2 ){
+    ellipse(circX*3,circY,circleWidth);
+  }
+  if (girdPeace === 3 ){
+    ellipse(circX*5.1,circY,circleWidth);
+  }
+  if (girdPeace === 4 ){
+    ellipse(circX,circY*3,circleWidth);
+  }
+  if (girdPeace === 5 ){
+    ellipse(circX*3,circY*3,circleWidth);
+  }
+  if (girdPeace === 6 ){
+    ellipse(circX* 5.1,circY*3,circleWidth);
+  }
+  if (girdPeace === 7 ){
+    ellipse(circX,circY*5.1,circleWidth);
+  }
+  if (girdPeace === 8 ){
+    ellipse(circX*3,circY*5.1,circleWidth);
+  }
+  if (girdPeace === 9 ){
+    ellipse(circX*5.1,circY*5.1,circleWidth);
+  }
 }
 
 function drawX(){
