@@ -4,7 +4,10 @@
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
-
+let gridPeaceTaken =
+["a", "b", "c",
+  "d", "e", "f",
+  "g", "h", "i"];
 let gridPeaceTaken1 = false;
 let gridPeaceTaken2 = false;
 let gridPeaceTaken3 = false;
@@ -20,6 +23,7 @@ let lineY1, lineY2;
 let circleWidth;
 let circY, circX;
 let girdPeace;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   background(255,0,150);
@@ -37,7 +41,72 @@ function setup() {
 function draw() {
   strokeWeight(2);
   drawBoard();
+  winXAxis();
+  winYAxis();
+  winDiaganol();
+
 }
+//------------------------------------------------------------------------------
+// Determining The Winner
+function winDiaganol(){
+  if (gridPeaceTaken[0] === gridPeaceTaken[4] && gridPeaceTaken[0] === gridPeaceTaken[8]) {
+    if (gridPeaceTaken[0] === "x"){
+      fill(255);
+      textSize(25);
+      text("You Win X Good Job",width/2,height/2);
+    }
+    if (gridPeaceTaken[0] === "o"){
+      fill(255);
+      textSize(25);
+      text("You Win O Good Job",width/2,height/2);
+    }
+  }
+  else if (gridPeaceTaken[2] === gridPeaceTaken[4] && gridPeaceTaken[2] === gridPeaceTaken[6]) {
+    if (gridPeaceTaken[2] === "x"){
+      fill(255);
+      textSize(25);
+      text("You Win X Good Job",width/2,height/2);
+    }
+    if (gridPeaceTaken[2] === "o"){
+      fill(255);
+      textSize(25);
+      text("You Win O Good Job",width/2,height/2);
+    }
+  }
+}
+function winXAxis(){
+  for (let i = 0; i < gridPeaceTaken.length - 1; i += 3){
+    if (gridPeaceTaken[i] === gridPeaceTaken[i+1] && gridPeaceTaken[i] === gridPeaceTaken[i+2]) {
+      if (gridPeaceTaken[i] === "x"){
+        fill(255);
+        textSize(25);
+        text("You Win X Good Job",width/2,height/2);
+      }
+      if (gridPeaceTaken[i] === "o"){
+        fill(255);
+        textSize(25);
+        text("You Win O Good Job",width/2,height/2);
+      }
+    }
+  }
+}
+function winYAxis(){
+  for (let i = 0; i <= 3; i++){
+    if (gridPeaceTaken[i] === gridPeaceTaken[i+3] && gridPeaceTaken[i] === gridPeaceTaken[i+6]) {
+      if (gridPeaceTaken[i] === "x"){
+        fill(255);
+        textSize(25);
+        text("You Win X Good Job",width/2,height/2);
+      }
+      if (gridPeaceTaken[i] === "o"){
+        fill(255);
+        textSize(25);
+        text("You Win O Good Job",width/2,height/2);
+      }
+    }
+  }
+}
+//------------------------------------------------------------------------------
 // finding grid peace and  drawing shape
 function mousePressed(){
   findGrid();
@@ -92,45 +161,54 @@ function drawCircle(){
   fill(0);
   if (girdPeace === 1 && gridPeaceTaken1 === false ){
     ellipse(circX,circY,circleWidth);
+    gridPeaceTaken[girdPeace - 1] = "o";
     gridPeaceTaken1 = true;
     state = 1;
   }
   if (girdPeace === 2 && gridPeaceTaken2 === false){
+    gridPeaceTaken[girdPeace - 1] = "o";
     ellipse(circX*3,circY,circleWidth);
     gridPeaceTaken2 = true;
     state = 1;
   }
   if (girdPeace === 3 && gridPeaceTaken3 === false){
+    gridPeaceTaken[girdPeace - 1] = "o";
     ellipse(circX*5.1,circY,circleWidth);
     gridPeaceTaken3 = true;
     state = 1;
   }
   if (girdPeace === 4 && gridPeaceTaken4 === false){
+    gridPeaceTaken[girdPeace - 1] = "o";
     ellipse(circX,circY*3,circleWidth);
     gridPeaceTaken4 = true;
     state = 1;
   }
   if (girdPeace === 5 && gridPeaceTaken5 === false){
+    gridPeaceTaken[girdPeace - 1] = "o";
     ellipse(circX*3,circY*3,circleWidth);
     gridPeaceTaken5 = true;
     state = 1;
   }
   if (girdPeace === 6 && gridPeaceTaken6 === false){
+    gridPeaceTaken[girdPeace - 1] = "o";
     ellipse(circX* 5.1,circY*3,circleWidth);
     gridPeaceTaken6 = true;
     state = 1;
   }
   if (girdPeace === 7 && gridPeaceTaken7 === false){
+    gridPeaceTaken[girdPeace - 1] = "o";
     ellipse(circX,circY*5.1,circleWidth);
     gridPeaceTaken7 = true;
     state = 1;
   }
   if (girdPeace === 8 && gridPeaceTaken8 === false){
+    gridPeaceTaken[girdPeace - 1] = "o";
     ellipse(circX*3,circY*5.1,circleWidth);
     gridPeaceTaken8 = true;
     state = 1;
   }
   if (girdPeace === 9 && gridPeaceTaken9 === false){
+    gridPeaceTaken[girdPeace - 1] = "o";
     ellipse(circX*5.1,circY*5.1,circleWidth);
     gridPeaceTaken9 = true;
     state = 1;
@@ -140,140 +218,66 @@ function drawCircle(){
 function drawX(X1mod, X2mod, Y1mod, Y2mod){
   strokeWeight(10);
   for(let i = 0; i < 2; i++){
-    line(lineX1*X1mod,lineY1*Y1mod,lineX2*X2mod,lineY2*Y2mod);
+    line(lineX1+X1mod, lineY1+Y1mod, lineX2+X2mod, lineY2+Y2mod);
     lineX1 += 200;
     lineX2 -= 200;
   }
   lineX1 = 140;
   lineX2 = 340;
 }
-
+// placing X in the correct Grid
 function placeX(){
   if (girdPeace === 1 && gridPeaceTaken1 === false){
     drawX(1,1,1,1);
+    gridPeaceTaken[girdPeace - 1] = "x";
     gridPeaceTaken1 = true;
     state = 2;
   }
   if (girdPeace === 2 && gridPeaceTaken2 === false){
     drawX(width*0.33,width*0.33,1,1);
+    gridPeaceTaken[girdPeace - 1] = "x";
     gridPeaceTaken2 = true;
     state = 2;
   }
   if (girdPeace === 3 && gridPeaceTaken3 === false){
-    strokeWeight(10);
-    lineX1 += width*0.66;
-    lineX2 += width*0.66;
-    for(let i = 0; i < 2; i++){
-      line(lineX1,lineY1,lineX2,lineY2);
-      lineX1 += 200;
-      lineX2 -= 200;
-    }
-    lineX1 = 140;
-    lineX2 = 340;
+    drawX(width*0.66,width*0.66,1,1);
+    gridPeaceTaken[girdPeace - 1] = "x";
     gridPeaceTaken3 = true;
     state = 2;
   }
   if (girdPeace === 4 && gridPeaceTaken4 === false){
-    strokeWeight(10);
-    lineY1 += height*0.33;
-    lineY2 += height*0.33;
-    for(let i = 0; i < 2; i++){
-      line(lineX1,lineY1,lineX2,lineY2);
-      lineX1 += 200;
-      lineX2 -= 200;
-    }
-    lineX1 = 140;
-    lineX2 = 340;
-    lineY1 = 30;
-    lineY2 = 230;
+    drawX(1, 1, height*0.33, height*0.33);
+    gridPeaceTaken[girdPeace - 1] = "x";
     gridPeaceTaken4 = true;
     state = 2;
   }
   if (girdPeace === 5 && gridPeaceTaken5 === false){
-    strokeWeight(10);
-    lineX1 += width*0.33;
-    lineX2 += width*0.33;
-    lineY1 += height*0.33;
-    lineY2 += height*0.33;
-    for(let i = 0; i < 2; i++){
-      line(lineX1,lineY1,lineX2,lineY2);
-      lineX1 += 200;
-      lineX2 -= 200;
-    }
-    lineX1 = 140;
-    lineX2 = 340;
-    lineY1 = 30;
-    lineY2 = 230;
+    drawX(width*0.33, width*0.33, height*0.33, height*0.33);
+    gridPeaceTaken[girdPeace - 1] = "x";
     gridPeaceTaken5 = true;
     state = 2;
   }
   if (girdPeace === 6 && gridPeaceTaken6 === false){
-    strokeWeight(10);
-    lineX1 += width*0.66;
-    lineX2 += width*0.66;
-    lineY1 += height*0.33;
-    lineY2 += height*0.33;
-    for(let i = 0; i < 2; i++){
-      line(lineX1,lineY1,lineX2,lineY2);
-      lineX1 += 200;
-      lineX2 -= 200;
-    }
-    lineX1 = 140;
-    lineX2 = 340;
-    lineY1 = 30;
-    lineY2 = 230;
+    drawX(width*0.66, width*0.66, height*0.33, height*0.33);
+    gridPeaceTaken[girdPeace - 1] = "x";
     gridPeaceTaken6 = true;
     state = 2;
   }
   if (girdPeace === 7 && gridPeaceTaken7 === false){
-    strokeWeight(10);
-    lineY1 += height*0.66;
-    lineY2 += height*0.66;
-    for(let i = 0; i < 2; i++){
-      line(lineX1,lineY1,lineX2,lineY2);
-      lineX1 += 200;
-      lineX2 -= 200;
-    }
-    lineX1 = 140;
-    lineX2 = 340;
-    lineY1 = 30;
-    lineY2 = 230;
+    drawX(1, 1, height*0.66, height*0.66);
+    gridPeaceTaken[girdPeace - 1] = "x";
     gridPeaceTaken7 = true;
     state = 2;
   }
   if (girdPeace === 8 && gridPeaceTaken8 === false){
-    strokeWeight(10);
-    lineX1 += width*0.33;
-    lineX2 += width*0.33;
-    lineY1 += height*0.66;
-    lineY2 += height*0.66;
-    for(let i = 0; i < 2; i++){
-      line(lineX1,lineY1,lineX2,lineY2);
-      lineX1 += 200;
-      lineX2 -= 200;
-    }
-    lineX1 = 140;
-    lineX2 = 340;
-    lineY1 = 30;
-    lineY2 = 230;
+    drawX(width*0.33, width*0.33, height*0.66, height*0.66);
+    gridPeaceTaken[girdPeace - 1] = "x";
     gridPeaceTaken8 = true;
     state = 2;
   }
   if (girdPeace === 9 && gridPeaceTaken9 === false){
-    strokeWeight(10);
-    lineX1 += width*0.66;
-    lineX2 += width*0.66;
-    lineY1 += height*0.66;
-    lineY2 += height*0.66;
-    for(let i = 0; i < 2; i++){
-      line(lineX1,lineY1,lineX2,lineY2);
-      lineX1 += 200;
-      lineX2 -= 200;
-    }
-    lineX1 = 140;
-    lineX2 = 340;
-    lineY1 = 30;
-    lineY2 = 230;
+    drawX(width*0.66, width*0.66, height*0.66, height*0.66);
+    gridPeaceTaken[girdPeace - 1] = "x";
     gridPeaceTaken9 = true;
     state = 2;
   }
