@@ -4,6 +4,7 @@
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
+let win = false;
 let gridPeaceTaken =
 ["a", "b", "c",
   "d", "e", "f",
@@ -23,6 +24,8 @@ let lineY1, lineY2;
 let circleWidth;
 let circY, circX;
 let girdPeace;
+let xwins = 0;
+let owins = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -44,36 +47,50 @@ function draw() {
   winXAxis();
   winYAxis();
   winDiaganol();
-
+  catgame();
+  scoreboard();
 }
 //------------------------------------------------------------------------------
 // Determining The Winner
+
+// diaganol win
 function winDiaganol(){
   if (gridPeaceTaken[0] === gridPeaceTaken[4] && gridPeaceTaken[0] === gridPeaceTaken[8]) {
     if (gridPeaceTaken[0] === "x"){
       fill(255);
       textSize(25);
       text("You Win X Good Job",width/2,height/2);
+      win = true;
+      xwins++;
     }
     if (gridPeaceTaken[0] === "o"){
       fill(255);
       textSize(25);
       text("You Win O Good Job",width/2,height/2);
+      win = true;
+      owins++;
     }
+    state = 3;
   }
   else if (gridPeaceTaken[2] === gridPeaceTaken[4] && gridPeaceTaken[2] === gridPeaceTaken[6]) {
     if (gridPeaceTaken[2] === "x"){
       fill(255);
       textSize(25);
       text("You Win X Good Job",width/2,height/2);
+      win = true;
+      xwins++;
     }
     if (gridPeaceTaken[2] === "o"){
       fill(255);
       textSize(25);
       text("You Win O Good Job",width/2,height/2);
+      win = true;
+      owins++;
     }
+    state = 3;
   }
 }
+// X axis win
 function winXAxis(){
   for (let i = 0; i < gridPeaceTaken.length - 1; i += 3){
     if (gridPeaceTaken[i] === gridPeaceTaken[i+1] && gridPeaceTaken[i] === gridPeaceTaken[i+2]) {
@@ -81,15 +98,21 @@ function winXAxis(){
         fill(255);
         textSize(25);
         text("You Win X Good Job",width/2,height/2);
+        win = true;
+        xwins++;
       }
       if (gridPeaceTaken[i] === "o"){
         fill(255);
         textSize(25);
         text("You Win O Good Job",width/2,height/2);
+        win = true;
+        owins++;
       }
+      state = 3;
     }
   }
 }
+// y axis win
 function winYAxis(){
   for (let i = 0; i <= 3; i++){
     if (gridPeaceTaken[i] === gridPeaceTaken[i+3] && gridPeaceTaken[i] === gridPeaceTaken[i+6]) {
@@ -97,13 +120,31 @@ function winYAxis(){
         fill(255);
         textSize(25);
         text("You Win X Good Job",width/2,height/2);
+        win = true;
+        xwins++;
       }
       if (gridPeaceTaken[i] === "o"){
         fill(255);
         textSize(25);
         text("You Win O Good Job",width/2,height/2);
+        win = true;
+        owins++;
       }
+      state = 3;
     }
+  }
+}
+// tie game
+function catgame(){
+  if (gridPeaceTaken1 === true && gridPeaceTaken2 === true && gridPeaceTaken3 === true
+    && gridPeaceTaken4 === true && gridPeaceTaken5 === true && gridPeaceTaken6 === true
+    && gridPeaceTaken7 === true && gridPeaceTaken8 === true && gridPeaceTaken9 === true){
+    if (win === false){
+      fill(255);
+      textSize(25);
+      text("Cat Game No Winners :(",width/2,height/2);
+    }
+    state = 3;
   }
 }
 //------------------------------------------------------------------------------
@@ -281,4 +322,32 @@ function placeX(){
     gridPeaceTaken9 = true;
     state = 2;
   }
+}
+// reseting the board
+function keyPressed(){
+  if (keyIsDown(82)){
+    background(255,0,150);
+    drawBoard();
+    gridPeaceTaken1 = false;
+    gridPeaceTaken2 = false;
+    gridPeaceTaken3 = false;
+    gridPeaceTaken4 = false;
+    gridPeaceTaken5 = false;
+    gridPeaceTaken6 = false;
+    gridPeaceTaken7 = false;
+    gridPeaceTaken8 = false;
+    gridPeaceTaken9 = false;
+    gridPeaceTaken =
+   ["a", "b", "c",
+     "d", "e", "f",
+     "g", "h", "i"];
+  }
+  state = 1;
+}
+
+function scoreboard(){
+  fill(0);
+  textSize(15);
+  text("X-wins "+xwins,50,15);
+  text("O-wins "+owins,width-100,15);
 }
