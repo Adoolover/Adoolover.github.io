@@ -4,6 +4,7 @@
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
+
 let win = false;
 let gridPeaceTaken =
 ["a", "b", "c",
@@ -52,10 +53,9 @@ function draw() {
 }
 //------------------------------------------------------------------------------
 // Determining The Winner
-
 // diaganol win
 function winDiaganol(){
-  if (gridPeaceTaken[0] === gridPeaceTaken[4] && gridPeaceTaken[0] === gridPeaceTaken[8]) {
+  if (gridPeaceTaken[0] === gridPeaceTaken[4] && gridPeaceTaken[0] === gridPeaceTaken[8] && state !== 3) {
     if (gridPeaceTaken[0] === "x"){
       fill(255);
       textSize(25);
@@ -72,7 +72,7 @@ function winDiaganol(){
     }
     state = 3;
   }
-  else if (gridPeaceTaken[2] === gridPeaceTaken[4] && gridPeaceTaken[2] === gridPeaceTaken[6]) {
+  else if (gridPeaceTaken[2] === gridPeaceTaken[4] && gridPeaceTaken[2] === gridPeaceTaken[6] && state !== 3) {
     if (gridPeaceTaken[2] === "x"){
       fill(255);
       textSize(25);
@@ -93,7 +93,7 @@ function winDiaganol(){
 // X axis win
 function winXAxis(){
   for (let i = 0; i < gridPeaceTaken.length - 1; i += 3){
-    if (gridPeaceTaken[i] === gridPeaceTaken[i+1] && gridPeaceTaken[i] === gridPeaceTaken[i+2]) {
+    if (gridPeaceTaken[i] === gridPeaceTaken[i+1] && gridPeaceTaken[i] === gridPeaceTaken[i+2] && state !== 3) {
       if (gridPeaceTaken[i] === "x"){
         fill(255);
         textSize(25);
@@ -115,7 +115,7 @@ function winXAxis(){
 // y axis win
 function winYAxis(){
   for (let i = 0; i <= 3; i++){
-    if (gridPeaceTaken[i] === gridPeaceTaken[i+3] && gridPeaceTaken[i] === gridPeaceTaken[i+6]) {
+    if (gridPeaceTaken[i] === gridPeaceTaken[i+3] && gridPeaceTaken[i] === gridPeaceTaken[i+6] && state !== 3) {
       if (gridPeaceTaken[i] === "x"){
         fill(255);
         textSize(25);
@@ -325,7 +325,7 @@ function placeX(){
 }
 // reseting the board
 function keyPressed(){
-  if (keyIsDown(82)){
+  if (keyIsDown(78)){
     background(255,0,150);
     drawBoard();
     gridPeaceTaken1 = false;
@@ -344,7 +344,7 @@ function keyPressed(){
   }
   state = 1;
 }
-
+// drawing the scoreboard
 function scoreboard(){
   fill(0);
   textSize(15);
