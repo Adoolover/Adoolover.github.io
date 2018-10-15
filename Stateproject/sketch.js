@@ -40,6 +40,7 @@ function setup() {
   circX = width*0.16;
   girdPeace = 0;
   state = 1;
+  textAlign(CENTER,CENTER);
 }
 
 function draw() {
@@ -138,11 +139,11 @@ function winYAxis(){
 function catgame(){
   if (gridPeaceTaken1 === true && gridPeaceTaken2 === true && gridPeaceTaken3 === true
     && gridPeaceTaken4 === true && gridPeaceTaken5 === true && gridPeaceTaken6 === true
-    && gridPeaceTaken7 === true && gridPeaceTaken8 === true && gridPeaceTaken9 === true){
+    && gridPeaceTaken7 === true && gridPeaceTaken8 === true && gridPeaceTaken9 === true && state !== 3){
     if (win === false){
       fill(255);
       textSize(25);
-      text("Cat Game No Winners :(",width/2,height/2);
+      text("Cat Game No Winners :(",width/2 ,height/2);
     }
     state = 3;
   }
@@ -325,7 +326,7 @@ function placeX(){
 }
 // reseting the board
 function keyPressed(){
-  if (keyIsDown(78)){
+  if (keyIsDown(82)){
     background(255,0,150);
     drawBoard();
     gridPeaceTaken1 = false;
@@ -341,6 +342,7 @@ function keyPressed(){
    ["a", "b", "c",
      "d", "e", "f",
      "g", "h", "i"];
+    win = false;
   }
   state = 1;
 }
@@ -349,5 +351,5 @@ function scoreboard(){
   fill(0);
   textSize(15);
   text("X-wins "+xwins,50,15);
-  text("O-wins "+owins,width-100,15);
+  text("O-wins "+owins,width-50,15);
 }
