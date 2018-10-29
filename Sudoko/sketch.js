@@ -78,8 +78,13 @@ function create2dArray(){
   for(let y = 0; y < rows; y++ ) {
     arr.push([]);
     for(let x = 0; x < cols; x++){
-      arr[y].push([0]);
+      if (random(100) < 50) {
+        arr[y].push(0);
+      }
+      else {
+        arr[y].push(1);
+      }
     }
+    return arr;
   }
-  return arr;
 }
