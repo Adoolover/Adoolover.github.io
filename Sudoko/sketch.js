@@ -22,6 +22,18 @@ function draw() {
   grid = create2dArray();
   displayGrid();
   drawlines();
+
+}
+function mousePressed(){
+  let x = floor(mouseX / cellSize);
+  let y = floor(mouseY/ cellSize);
+
+  if (grid[y][x] === 1){
+    grid[y][x] = 0;
+  }
+  else if (grid[y][x] === 0){
+    grid[y][x] = 1;
+  }
 }
 function drawlines(){
   for (let y = 0; y < rows; y++) {
@@ -36,6 +48,9 @@ function drawlines(){
         line(x*cellSize, y*cellSize, cols*cellSize ,y*cellSize);
         strokeWeight(1);
       }
+      strokeWeight(5);
+      line(9*cellSize, 0, 9*cellSize ,height);
+      strokeWeight(1);
     }
   }
 }
@@ -44,9 +59,17 @@ function displayGrid() {
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
       fill(255);
-
       rect(x*cellSize, y*cellSize, cellSize, cellSize);
-
+      if (grid[y] === 0){
+        fill("orange");
+        text("hi",x*cellSize, y*cellSize);
+        fill("black");
+      }
+      else  if (grid[y] === 1){
+        fill("pink");
+        text("hi",x*cellSize, y*cellSize);
+        fill("black");
+      }
     }
   }
 }
@@ -55,7 +78,7 @@ function create2dArray(){
   for(let y = 0; y < rows; y++ ) {
     arr.push([]);
     for(let x = 0; x < cols; x++){
-      arr[y].push([x+1]);
+      arr[y].push([0]);
     }
   }
   return arr;
