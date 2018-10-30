@@ -14,24 +14,24 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   background(255);
   cellSize = height/cols;
-
+  textAlign(CENTER,CENTER);
+  grid = create2dArray();
 }
 
 function draw() {
   translate(width*0.25,0);
-  grid = create2dArray();
   displayGrid();
   drawlines();
 
 }
 function mousePressed(){
   let x = floor(mouseX / cellSize);
-  let y = floor(mouseY/ cellSize);
+  let y = floor(mouseY / cellSize);
 
   if (grid[y][x] === 1){
     grid[y][x] = 0;
   }
-  else if (grid[y][x] === 0){
+  else {
     grid[y][x] = 1;
   }
 }
@@ -60,14 +60,15 @@ function displayGrid() {
     for (let x = 0; x < cols; x++) {
       fill(255);
       rect(x*cellSize, y*cellSize, cellSize, cellSize);
-      if (grid[y] === 0){
+
+      if (grid[y][x] === 0){
         fill("orange");
-        text("hi",x*cellSize, y*cellSize);
+        text("hi",x*cellSize + cellSize/2, y*cellSize + cellSize/2);
         fill("black");
       }
-      else  if (grid[y] === 1){
+      else  if (grid[y][x] === 1){
         fill("pink");
-        text("hi",x*cellSize, y*cellSize);
+        text("hi",x*cellSize +  cellSize/2, y*cellSize + cellSize/2);
         fill("black");
       }
     }
@@ -85,6 +86,6 @@ function create2dArray(){
         arr[y].push(1);
       }
     }
-    return arr;
   }
+  return arr;
 }
