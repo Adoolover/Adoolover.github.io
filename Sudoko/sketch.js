@@ -4,7 +4,7 @@
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
-
+let interactingGrid;
 let grid;
 let rows = 9;
 let cols = 9;
@@ -16,6 +16,7 @@ function setup() {
   cellSize = height/cols;
   textAlign(CENTER,CENTER);
   grid = create2dArray();
+  interactingGrid = createEmptyArray();
 }
 
 function draw() {
@@ -24,16 +25,30 @@ function draw() {
   drawlines();
 
 }
+
+function keyPressed(){
+  for (let y = 0; y < rows;y++){
+    for (let x = 0; x < cols; x++){
+      if (interactingGrid[y][x] === 1){
+        grid[y][x] = key;
+      }
+    }
+  }
+  // if (key === 50){
+  //   return 2;
+  // }
+}
 function mousePressed(){
-  let x = floor(mouseX / cellSize);
+  let x = floor((mouseX-width*0.25) / cellSize);
   let y = floor(mouseY / cellSize);
 
-  if (grid[y][x] === 1){
-    grid[y][x] = 0;
+  if (interactingGrid[y][x] === 0){
+    interactingGrid[y][x] = 1;
   }
-  else {
-    grid[y][x] = 1;
+  else if (interactingGrid[y][x] === 1){
+    interactingGrid[y][x] = 0;
   }
+
 }
 function drawlines(){
   for (let y = 0; y < rows; y++) {
@@ -71,6 +86,11 @@ function displayGrid() {
         text("hi",x*cellSize +  cellSize/2, y*cellSize + cellSize/2);
         fill("black");
       }
+      else  if (grid[y][x] === "2"){
+        fill("black");
+        text("2",x*cellSize +  cellSize/2, y*cellSize + cellSize/2);
+        fill("black");
+      }
     }
   }
 }
@@ -85,6 +105,16 @@ function create2dArray(){
       else {
         arr[y].push(1);
       }
+    }
+  }
+  return arr;
+}
+function createEmptyArray(){
+  let arr = [];
+  for(let y = 0; y < rows; y++ ) {
+    arr.push([]);
+    for(let x = 0; x < cols; x++){
+      arr[y].push(0);
     }
   }
   return arr;
