@@ -6,12 +6,14 @@
 // - describe what you did to take this project "above and beyond"
 let interactingGrid;
 let grid;
+let gridSolved;
 let rows = 9;
 let cols = 9;
 let cellSize;
 
 function preload(){
   grid = loadStrings("assets/sudoku1.txt");
+  gridSolved = loadStrings("assets/sudoku1Solved.txt");
 }
 
 function setup() {
@@ -21,19 +23,37 @@ function setup() {
   textAlign(CENTER,CENTER);
   textSize(25);
   interactingGrid = createEmptyArray();
-  cleanUpTheGrid();
+  cleanUpTheGrid(grid);
+  cleanUpTheGrid(gridSolved);
 }
 
 function draw() {
   translate(width*0.25,0);
   displayGrid();
   drawlines();
-
+  checkWin();
 }
 
-function cleanUpTheGrid(){
+function displayWin(){
+  text("you win", width*0.50/2, height/2);
+}
+
+function checkWin(){
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      if (grid !== gridSolved){
+        break;
+      }
+      else if (grid === gridSolved) {
+        displayWin();
+      }
+    }
+  }
+}
+
+function cleanUpTheGrid(someGrid){
   for (let i = 0; i < grid.length; i++){
-    grid[i] = grid[i].split("");
+    someGrid[i] = someGrid[i].split("");
   }
 }
 
@@ -46,9 +66,6 @@ function keyPressed(){
       interactingGrid[y][x] = 0;
     }
   }
-  // if (key === 50){
-  //   return 2;
-  // }
 }
 
 function mousePressed(){
@@ -88,8 +105,14 @@ function drawlines(){
 function displayGrid() {
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      fill(255);
-      rect(x*cellSize, y*cellSize, cellSize, cellSize);
+      if (interactingGrid[y][x] === 1){
+        fill(125);
+        rect(x*cellSize, y*cellSize, cellSize, cellSize);
+      }
+      else {
+        fill(255);
+        rect(x*cellSize, y*cellSize, cellSize, cellSize);
+      }
       for (let i = 0; i < rows+1; i++){
         let string = str(i);
         if (grid[y][x] === "0"){
