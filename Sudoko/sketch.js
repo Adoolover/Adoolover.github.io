@@ -13,7 +13,7 @@ let cellSize;
 // loading sudoku files
 function preload() {
   grid = loadStrings("assets/sudoku2.txt");
-  gridSolved = loadStrings("assets/sudoku1Solved.txt");
+  gridSolved = loadStrings("assets/sudoku2Solved.txt");
 }
 
 function setup() {
@@ -39,16 +39,21 @@ function displayWin() {
 }
 // checking for win
 function checkWin() {
+  let numberOfcorrect = 0;
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      if (grid !== gridSolved) {
+      if (grid[y][x] !== gridSolved[y][x]) {
         break;
       }
-      else if (grid === gridSolved) {
-        displayWin();
+      else if (grid[y][x] === gridSolved[y][x]) {
+        numberOfcorrect++;
       }
     }
   }
+  if (numberOfcorrect === cols*rows){
+    displayWin();
+  }
+
 }
 // putting the grid in order
 function cleanUpTheGrid(someGrid) {
