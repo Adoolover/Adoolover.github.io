@@ -12,8 +12,8 @@ let cols = 9;
 let cellSize;
 // loading sudoku files
 function preload() {
-  grid = loadStrings("assets/sudoku2.txt");
-  gridSolved = loadStrings("assets/sudoku2Solved.txt");
+  grid = loadStrings("assets/sudoku1.txt");
+  gridSolved = loadStrings("assets/sudoku1Solved.txt");
 }
 
 function setup() {
