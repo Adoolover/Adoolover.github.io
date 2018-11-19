@@ -5,26 +5,44 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
+// Creating the player and some of its propertiys
 class Player {
   constructor(image) {
     this.x = width/2;
-    this.y =  height/2; //height*0.95;
+    this.y = height*0.93;
     this.img = image;
-    this.size = 100;
+    this.size = 75;
+    this.dx = 7;
+    this.lifes = 3;
   }
 
   display() {
     image(this.img, this.x, this.y, this.size, this.size);
+    if (this.lifes === 3) {
+      fill(255);
+      text("Lives",width - 20, 30);
+      image(this.img, width- 20, 50, this.size*0.25, this.size*0.25);
+      image(this.img, width- 20 - this.size*0.25, 50, this.size*0.25, this.size*0.25);
+    }
+    else if (this.lifes === 2) {
+      fill(255);
+      text("Lives",width - 20, 30);
+      image(this.img, width- 20, 50, this.size*0.25, this.size*0.25);
+    }
+    else{
+      fill(255);
+      text("Lives",width - 20, 30);
+    }
   }
 
   movement() {
     if (keyIsDown(65)) {
-      this.x -= 5;
+      this.x -= this.dx;
     }
     if (keyIsDown(68)) {
-      this.x += 5;
+      this.x += this.dx;
     }
-    this.x = constrain(this.x,0 + 25,width - 25);
+    this.x = constrain(this.x,0 + this.size/2,width - this.size/2);
   }
 }
 
@@ -38,6 +56,7 @@ function preload () {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   imageMode(CENTER);
+  textAlign(CENTER);
   playerOne = new Player(img.playerOneSprite);
 }
 
