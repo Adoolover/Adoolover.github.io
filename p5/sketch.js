@@ -14,10 +14,33 @@ class Player {
     this.size = 75;
     this.dx = 7;
     this.lifes = 3;
+    this.health = 5;
+    this.deathOccured = false;
   }
 
   display() {
-    image(this.img, this.x, this.y, this.size, this.size);
+    // displaying the player
+    if (this.health === 0){
+      tint(255,0);
+      image(this.img, this.x, this.y, this.size, this.size);
+      this.deathOccured = true;
+    }
+    else{
+      tint(255, 255);
+      image(this.img, this.x, this.y, this.size, this.size);
+    }
+
+    if (this.deathOccured){
+      fill(255);
+      text("Press Space to continue", width/2, height/2);
+      if (keyIsDown(32)){
+        this.lifes -= 1;
+        this.health = 5;
+      }
+    }
+
+
+    // displaying the amount of lifes left
     if (this.lifes === 3) {
       fill(255);
       text("Lives",width - 20, 30);
