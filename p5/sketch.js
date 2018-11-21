@@ -19,7 +19,7 @@ class Player {
   }
 
   display() {
-    // displaying the player
+    // displaying the player and checking the health
     if (this.health === 0){
       tint(255,0);
       image(this.img, this.x, this.y, this.size, this.size);
@@ -30,6 +30,7 @@ class Player {
       image(this.img, this.x, this.y, this.size, this.size);
     }
 
+    // displaying text after death of player
     if (this.deathOccured){
       fill(255);
       text("Press Space to continue", width/2, height/2);
@@ -66,6 +67,12 @@ class Player {
       this.x += this.dx;
     }
     this.x = constrain(this.x,0 + this.size/2,width - this.size/2);
+  }
+
+  keyIsPressed(){
+    if (key === 87){
+      let playerProjectile = new Projectile;
+    }
   }
 }
 
