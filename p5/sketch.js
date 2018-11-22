@@ -5,13 +5,13 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-// Creating the player and some of its propertiys
+// Creating the player and some of its propertys
 class Player {
   constructor(image) {
     this.x = width/2;
     this.y = height*0.93;
     this.img = image;
-    this.size = 75;
+    this.size = 100;
     this.dx = 7;
     this.lifes = 3;
     this.health = 5;
@@ -34,7 +34,7 @@ class Player {
     if (this.deathOccured){
       fill(255);
       text("Press Space to continue", width/2, height/2);
-      if (keyIsDown(32)){
+      if (keyIsPressed(32)){
         this.lifes -= 1;
         this.health = 5;
       }
@@ -80,7 +80,7 @@ let playerOne;
 let img = {};
 
 function preload () {
-  img.playerOneSprite = loadImage("assets/Player.png");
+  img.playerOneSprite = loadImage("assets/PlayerBig.png");
 }
 
 function setup() {
