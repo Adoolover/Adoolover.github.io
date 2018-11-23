@@ -40,7 +40,6 @@ class Player {
       }
     }
 
-
     // displaying the amount of lifes left
     if (this.lifes === 3) {
       fill(255);
@@ -59,6 +58,7 @@ class Player {
     }
   }
 
+  // moving the player
   movement() {
     if (keyIsDown(65)) {
       this.x -= this.dx;
@@ -69,6 +69,7 @@ class Player {
     this.x = constrain(this.x,0 + this.size/2,width - this.size/2);
   }
 
+  // creating new projectiles
   keyIsPressed(){
     if (key === 87){
       let playerProjectile = new Projectile;
@@ -76,8 +77,42 @@ class Player {
   }
 }
 
+class Button  {
+  constructor(){
+    // assigning varribiles
+    this.x = width/2;
+    this.y = height/2;
+    this.length = 500;
+    this.w = 200;
+    this.hit;
+  }
+  drawButton() {
+    rect(this.x - this.length/2, this.y - this.w/2, this.length, this.w);
+    if (this.hit === true){
+      textSize(50);
+      fill("red");
+      text("Press to start", this.x, this.y);
+      textSize(10);
+    }
+    else{
+      textSize(50);
+      text("Press to start", this.x, this.y);
+      textSize(10);
+    }
+  }
+
+  checkClick() {
+    this.hit = collidePointRect(mouseX,mouseY,this.x - this.length/2,this.y - this.w/2,this.length,this.w);
+    if (this.hit === true && mouseIsPressed){
+      state = 1;
+    }
+  }
+}
+
 let playerOne;
 let img = {};
+let state = 0;
+let startButton1;
 
 function preload () {
   img.playerOneSprite = loadImage("assets/PlayerBig.png");
@@ -92,6 +127,17 @@ function setup() {
 
 function draw() {
   background(0);
-  playerOne.display();
-  playerOne.movement();
+  if (state === 0){
+    startScreen();
+  }
+  else{
+    playerOne.display();
+    playerOne.movement();
+  }
+}
+
+function startScreen() {
+  startButton1 = new Button();
+  startButton1.drawButton();
+  startButton1.checkClick();
 }
