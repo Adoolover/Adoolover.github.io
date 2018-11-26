@@ -48,7 +48,7 @@ function setup() {
   playerOne = new Player(img.playerOneSprite);
   spriteSize.width = width*0.025;
   spriteSize.height = height*0.03;
-  numOfEnemys = 15;
+  numOfEnemys = 5;
 
   stroke("white");
   noFill();
@@ -82,11 +82,13 @@ function startScreen() {
 }
 
 function mousePressed() {
-  if (keyIsDown(16)) {
-    bullets.push(new Bullet(mouseX, mouseY, spriteSize.width, spriteSize.height, "good"));
+  if (state === 1) {
+    if (keyIsDown(16)) {
+      bullets.push(new Bullet(mouseX, mouseY, spriteSize.width, spriteSize.height, "good"));
+    }
+    else {
+      enemyBoxs.push(new EnemyBox(mouseX, mouseY, CommonEnemy, numOfEnemys, spriteSize.width, spriteSize.height, 1));
+    }
+    enemyBoxs[enemyBoxs.length-1].spawnEnemys();
   }
-  else {
-    enemyBoxs.push(new EnemyBox(mouseX, mouseY, CommonEnemy, numOfEnemys, spriteSize.width, spriteSize.height, 1));
-  }
-  enemyBoxs[enemyBoxs.length-1].spawnEnemys();
 }
