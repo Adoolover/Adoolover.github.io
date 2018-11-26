@@ -34,7 +34,7 @@ class Player {
     if (this.deathOccured){
       fill(255);
       text("Press Space to continue", width/2, height/2);
-      if (keyIsPressed(32)){
+      if (keyIsDown(32)){
         this.lifes -= 1;
         this.health = 5;
       }
