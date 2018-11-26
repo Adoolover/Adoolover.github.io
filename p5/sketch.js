@@ -8,12 +8,12 @@
 // Creating the player and some of its propertys
 
 let playerOne;
-let img = {};
+let platerImg = {};
 let state = 0;
 let startButton1;
 
 function preload () {
-  img.playerOneSprite = loadImage("assets/PlayerBig.png");
+  img.playerOneSprite = loadImage("assets/Img/PlayerBig.png");
 }
 
 function setup() {
@@ -37,5 +37,5 @@ function draw() {
 function startScreen() {
   startButton1 = new Button();
   startButton1.drawButton();
-  startButton1.checkClick(state);
+  state = startButton1.checkClick();
 }

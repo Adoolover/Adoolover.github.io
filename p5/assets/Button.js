@@ -22,10 +22,11 @@ class Button  {
     }
   }
 
-  checkClick(varable) {
+  checkClick() {
     this.hit = collidePointRect(mouseX,mouseY,this.x - this.length/2,this.y - this.w/2,this.length,this.w);
     if (this.hit === true && mouseIsPressed){
-      varable = 1;
+       return 1;
     }
+    return 0;
   }
 }

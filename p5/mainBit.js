@@ -27,18 +27,25 @@ let img = {};
 let spriteSize = {};
 let enemyBoxs = [];
 let numOfEnemys;
+let playerOne;
+let state = 0;
+let startButton1;
+
 
 let bullets = [];
 
 function preload() {
   img.commonSprite = loadImage("assets/Img/Commons.png");
   img.bullet = loadImage("assets/Img/Bullets.png");
+  img.playerOneSprite = loadImage("assets/Img/PlayerBig.png");
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   imageMode(CENTER);
   rectMode(CENTER);
+  textAlign(CENTER);
+  playerOne = new Player(img.playerOneSprite);
   spriteSize.width = width*0.025;
   spriteSize.height = height*0.03;
   numOfEnemys = 15;
@@ -51,9 +58,14 @@ function draw() {
   background(0);
   enemyFoos();
 
-  for (let i = bullets.length-1; i >= 0; i--) {
-    bullets[i].hitEdge() ? bullets.splice(i,1) : bullets[i].move();
+  if (state === 0){
+    startScreen();
   }
+  else{
+    playerOne.display();
+    playerOne.movement();
+  }
+
 }
 
 function enemyFoos() {
@@ -61,6 +73,12 @@ function enemyFoos() {
     let y = enemyBoxs[i].y + enemyBoxs[i].enysAcrsY/2*enemyBoxs[i].sprtH;
     y >= height ? enemyBoxs.splice(i,1) : enemyBoxs[i].checkTurn();
   }
+}
+
+function startScreen() {
+  startButton1 = new Button();
+  startButton1.drawButton();
+  state = startButton1.checkClick();
 }
 
 function mousePressed() {
