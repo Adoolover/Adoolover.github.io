@@ -63,7 +63,7 @@ class Player {
     this.x = constrain(this.x, 0 + this.size/2, width - this.size/2);
 
     if (keyCode === 87) { // W
-      this.projectiles.push(new Bullet(this.x, this.y, this.size/2, "good"));
+      this.projectiles.push(new Bullet(this.x, this.y, this.size/2, img.playerBullet, "good"));
     }
   }
 }
