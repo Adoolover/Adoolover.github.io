@@ -105,9 +105,10 @@ function startScreen() {
 }
 
 function keyPressed() {
-  // if (keyCode === 87) { // W
-  //   playerProjectiles.push(new Bullet(playerOne.x, playerOne.y, spriteSize.player/2, "good"));
-  // }
+  if (keyCode === 87) { // W
+    playerOne.projectiles.push(new Bullet(playerOne.x - spriteSize.player/2, playerOne.y, spriteSize.player/2, img.playerBullet, "good"));
+    playerOne.projectiles.push(new Bullet(playerOne.x + spriteSize.player/2, playerOne.y, spriteSize.player/2, img.playerBullet, "good"));
+  }
 }
 
 

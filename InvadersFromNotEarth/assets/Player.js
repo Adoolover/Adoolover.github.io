@@ -48,6 +48,13 @@ class Player {
       let x = this.size*0.25*i;
       image(this.img, width*0.99 - x, height*0.05, this.size*0.25, this.size*0.25);
     }
+
+    for (let i = this.projectiles.length-1; i >= 0; i--) {
+      this.projectiles[i].move();
+      if (this.projectiles[i].hitEdge()) {
+        this.projectiles.splice(i, 1);
+      }
+    }
   }
 
   // moving/attacking
@@ -61,9 +68,5 @@ class Player {
     }
 
     this.x = constrain(this.x, 0 + this.size/2, width - this.size/2);
-
-    if (keyCode === 87) { // W
-      this.projectiles.push(new Bullet(this.x, this.y, this.size/2, img.playerBullet, "good"));
-    }
   }
 }
