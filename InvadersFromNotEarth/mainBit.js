@@ -40,7 +40,8 @@ let startButton1;
 
 function preload() {
   img.commonEnemySprite = loadImage("assets/Img/Commons.png");
-  img.bullet = loadImage("assets/Img/Bullets.png");
+  img.enemyBullet = loadImage("assets/Img/enemyBullets.png");
+  img.playerBullet = loadImage("assets/Img/playerBullets.png");
   img.playerOneSprite = loadImage("assets/Img/PlayerBig.png");
 }
 

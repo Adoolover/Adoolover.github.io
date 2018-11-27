@@ -37,7 +37,7 @@ class CommonEnemy {
     let shot = random(1000);
 
     if (shot < 10) {
-      this.shots.push(new this.shot(this.x, this.y, this.sprtSize, "bad"));
+      this.shots.push(new this.shot(this.x, this.y, this.sprtSize, img.enemyBullet, "bad"));
     }
   }
 

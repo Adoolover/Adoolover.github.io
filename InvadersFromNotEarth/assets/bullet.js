@@ -2,7 +2,7 @@
 // Nov. 16, 2018
 
 class Bullet {
-  constructor(x, y, sprtSize, goodBad) {
+  constructor(x, y, sprtSize, img, goodBad) {
     // position
     this.x = x;
     this.y = y;
@@ -13,7 +13,7 @@ class Bullet {
     this.dy *= this.alingment === "good" ? -1: 1;
 
     // sprite
-    this.img = img.bullet;
+    this.img = img;
     this.sprtSize = sprtSize;
   }
 
