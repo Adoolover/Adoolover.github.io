@@ -2,7 +2,7 @@
 // Nov. 16, 2018
 
 class Bullet {
-  constructor(x, y, sprtW, sprtH, goodBad) {
+  constructor(x, y, sprtSize, goodBad) {
     // position
     this.x = x;
     this.y = y;
@@ -14,15 +14,14 @@ class Bullet {
 
     // sprite
     this.img = img.bullet;
-    this.sprtW = sprtW;
-    this.sprtH = sprtH;
+    this.sprtSize = sprtSize;
   }
 
   move() {
     this.x += this.dx;
     this.y += this.dy;
 
-    image(this.img, this.x, this.y, this.sprtW, this.sprtH);
+    image(this.img, this.x, this.y, this.sprtSize, this.sprtSize);
   }
 
   hitEdge() {

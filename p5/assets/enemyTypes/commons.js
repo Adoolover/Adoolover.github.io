@@ -2,15 +2,14 @@
 // Nov. 16, 2018
 
 class CommonEnemy {
-  constructor(x, y, sprtW, sprtH, bullet) {
+  constructor(x, y, sprtSize, bullet) {
     // position
     this.x = x;
     this.y = y;
 
     // sprite
-    this.img = img.commonSprite;
-    this.sprtW = sprtW;
-    this.sprtH = sprtH;
+    this.img = img.commonEnemySprite;
+    this.sprtSize = sprtSize;
 
     // bullets
     this.shot = bullet;
@@ -27,24 +26,24 @@ class CommonEnemy {
   }
 
   display() {
-    image(this.img, this.x, this.y, this.sprtW, this.sprtH);
+    image(this.img, this.x, this.y, this.sprtSize, this.sprtSize);
   }
 
   move(dir, changedDir) {
-    changedDir ? (this.y += this.sprtH) : (this.x += (dir === "right" ? this.sprtW : -this.sprtW));
+    changedDir ? (this.y += this.sprtSize) : (this.x += (dir === "right" ? this.sprtSize : -this.sprtSize));
   }
 
   shoot() {
     let shot = random(1000);
 
     if (shot < 10) {
-      this.shots.push(new this.shot(this.x, this.y, this.sprtW, this.sprtH, "bad"));
+      this.shots.push(new this.shot(this.x, this.y, this.sprtSize, "bad"));
     }
   }
 
   moveShots() {
-    this.shots.map(shot => shot.move());
     for (let i = this.shots.length-1; i >= 0; i--) {
+      this.shots[i].move();
       if (this.shots[i].hitEdge()) {
         this.shots.splice(i,1);
       }

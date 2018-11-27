@@ -25,17 +25,21 @@
 
 let img = {};
 let spriteSize = {};
+let textSizes;
+
 let enemyBoxs = [];
 let numOfEnemys;
-let playerOne;
+
+let playerOne = {};
+let playerProjectiles = [];
+
+let startState = 0;
 let state = 0;
+
 let startButton1;
 
-
-let bullets = [];
-
 function preload() {
-  img.commonSprite = loadImage("assets/Img/Commons.png");
+  img.commonEnemySprite = loadImage("assets/Img/Commons.png");
   img.bullet = loadImage("assets/Img/Bullets.png");
   img.playerOneSprite = loadImage("assets/Img/PlayerBig.png");
 }
@@ -45,50 +49,70 @@ function setup() {
   imageMode(CENTER);
   rectMode(CENTER);
   textAlign(CENTER);
-  playerOne = new Player(img.playerOneSprite);
-  spriteSize.width = width*0.025;
-  spriteSize.height = height*0.03;
-  numOfEnemys = 5;
 
-  stroke("white");
-  noFill();
+  textSizes = (width*0.025 + height*0.025)/2;
+  textSize(textSizes);
+  noStroke();
+
+  numOfEnemys = 5;
+  spriteSize.enemy = (width*0.03 + height*0.03)/2;
+
+  spriteSize.player = (width*0.08 + height*0.08)/2;
+  playerOne = new Player(img.playerOneSprite, 1, spriteSize.player);
+
+  startButton1 = new Button(width/2, height/2, spriteSize.player);
 }
 
 function draw() {
   background(0);
-  enemyFoos();
 
-  if (state === 0){
+  if (startState === 0) {
     startScreen();
   }
-  else{
-    playerOne.display();
-    playerOne.movement();
-  }
 
+  else {
+    enemyFoos();
+    playersFoo();
+  }
+}
+
+function playersFoo() {
+  playerOne.display();
+  playerOne.movement();
+  bulletFoo();
+}
+
+function bulletFoo() {
+  for (let i = playerProjectiles.length-1; i >= 0; i--) {
+    playerProjectiles[i].move();
+    if (playerProjectiles[i].hitEdge()) {
+      playerProjectiles.splice(i, 1);
+    }
+  }
 }
 
 function enemyFoos() {
   for (let i = enemyBoxs.length-1; i >= 0; i--) {
-    let y = enemyBoxs[i].y + enemyBoxs[i].enysAcrsY/2*enemyBoxs[i].sprtH;
+    let y = enemyBoxs[i].y + enemyBoxs[i].enemysAcrsY/2*enemyBoxs[i].sprtSize;
     y >= height ? enemyBoxs.splice(i,1) : enemyBoxs[i].checkTurn();
   }
 }
 
 function startScreen() {
-  startButton1 = new Button();
   startButton1.drawButton();
-  state = startButton1.checkClick();
+  startState = startButton1.checkClick();
 }
 
+function keyPressed() {
+  if (keyIsDown(87)) { // W
+    playerProjectiles.push(new Bullet(playerOne.x, playerOne.y, spriteSize.player/2, "good"));
+  }
+}
+
+
 function mousePressed() {
-  if (state === 1) {
-    if (keyIsDown(16)) {
-      bullets.push(new Bullet(mouseX, mouseY, spriteSize.width, spriteSize.height, "good"));
-    }
-    else {
-      enemyBoxs.push(new EnemyBox(mouseX, mouseY, CommonEnemy, numOfEnemys, spriteSize.width, spriteSize.height, 1));
-    }
+  if (startState === 1) {
+    enemyBoxs.push(new EnemyBox(mouseX, mouseY, CommonEnemy, numOfEnemys, spriteSize.enemy, 1));
     enemyBoxs[enemyBoxs.length-1].spawnEnemys();
   }
 }
