@@ -10,7 +10,7 @@ class EnemyBox {
 
     // enemys
     this.enemysAcrsX = int(numOfEnemys);
-    this.enemysAcrsY = int(this.enemysAcrsX*0.70);
+    this.enemysAcrsY = int(this.enemysAcrsX*0.50);
     this.enemyType = enemyType;
     this.sprtSize = sprtSize;
     this.enemys = [];

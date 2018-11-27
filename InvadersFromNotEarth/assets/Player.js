@@ -13,6 +13,8 @@ class Player {
     this.lives = 3;
     this.health = 5;
     this.deathOccured = false;
+
+    this.projectiles = [];
   }
 
   display() {
@@ -48,14 +50,20 @@ class Player {
     }
   }
 
-  // moving
+  // moving/attacking
   movement() {
     if (keyIsDown(65)) { // A
       this.x -= this.dx;
     }
+
     if (keyIsDown(68)) { // D
       this.x += this.dx;
     }
+
     this.x = constrain(this.x, 0 + this.size/2, width - this.size/2);
+
+    if (keyCode === 87) { // W
+      this.projectiles.push(new Bullet(this.x, this.y, this.size/2, "good"));
+    }
   }
 }

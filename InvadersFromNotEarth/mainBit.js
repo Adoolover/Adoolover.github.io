@@ -54,7 +54,7 @@ function setup() {
   textSize(textSizes);
   noStroke();
 
-  numOfEnemys = 5;
+  numOfEnemys = 15;
   spriteSize.enemy = (width*0.03 + height*0.03)/2;
 
   spriteSize.player = (width*0.08 + height*0.08)/2;
@@ -104,9 +104,9 @@ function startScreen() {
 }
 
 function keyPressed() {
-  if (keyIsDown(87)) { // W
-    playerProjectiles.push(new Bullet(playerOne.x, playerOne.y, spriteSize.player/2, "good"));
-  }
+  // if (keyCode === 87) { // W
+  //   playerProjectiles.push(new Bullet(playerOne.x, playerOne.y, spriteSize.player/2, "good"));
+  // }
 }
 
 
