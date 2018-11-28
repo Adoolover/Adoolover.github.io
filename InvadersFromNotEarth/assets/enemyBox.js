@@ -61,7 +61,7 @@ class EnemyBox {
   move() {
     // take turn
     this.timer = millis();
-    
+
     // change directions?
     let changedDir = this.dir;
     this.dir === "right" ?
@@ -105,5 +105,13 @@ class EnemyBox {
     return (dir === "right" ?
     this.x + this.sprtSize * this.enemysAcrsX/2 + this.sprtSize:
     this.x - this.sprtSize * this.enemysAcrsX/2 - this.sprtSize);
+  }
+
+  rightEdge() {
+    return this.x + this.sprtSize * this.enemysAcrsX/2 + this.sprtSize;
+  }
+
+  leftEdge() {
+    return this.x - this.sprtSize * this.enemysAcrsX/2 - this.sprtSize
   }
 }

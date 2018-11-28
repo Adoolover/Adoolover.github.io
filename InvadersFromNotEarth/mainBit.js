@@ -90,25 +90,29 @@ function draw() {
 function playersFoo() {
   playerOne.display();
   playerOne.movement();
-  if (playerOne.checkHealth()) {
+
+  if (playerOne.checkLives()) {
     gameOver();
   }
-  if (playerOne.health <= 0) {
-    playerOne.health = MAX_HEALTH;
-    playerOne.lives--;
+
+  if (playerOne.checkHealth()) {
     enemyBoxs = [];
-    if (playerOne.lives < 0) {
-      gameOver();
-    }
   }
 }
 
 function enemyFoos() {
   for (let i = enemyBoxs.length-1; i >= 0; i--) {
+    for (let j = playerOne.projectiles.length-1; j >= 0; j--) {
+      if (playerOne.projectiles[j].x > ) {
+
+      }
+    }
+
     if (enemyBoxs[i].enemyHitBottom() || enemyBoxs[i].moveAllShots(playerOne.x, playerOne.y)) {
       playerOne.health--;
       break;
     }
+
     else {
       enemyBoxs[i].empty() ? enemyBoxs.splice(i,1) : enemyBoxs[i].checkTurn();
     }
