@@ -1,3 +1,6 @@
+// Cody Flynn
+// Nov. _ _ , 2018
+
 class Button  {
   constructor(x, y) {
     // assigning varribiles
@@ -23,7 +26,7 @@ class Button  {
 
   checkClick() {
     this.hit = this.buttonHover(this.x, this.y, this.width, this.height);
-    
+
     if (this.hit && mouseIsPressed) {
        return 1;
     }

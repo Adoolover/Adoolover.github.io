@@ -24,6 +24,10 @@ class Bullet {
     image(this.img, this.x, this.y, this.sprtSize, this.sprtSize);
   }
 
+  hitPlayer(playerX, playerY) {
+    return dist(this.x, this.y, playerX, playerY) <= this.sprtSize;
+  }
+
   hitEdge() {
     return (this.alingment === "good" ? this.y < 0 : this.y > height) || this.x > width || this.x < 0;
   }

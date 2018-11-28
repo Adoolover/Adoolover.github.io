@@ -1,6 +1,9 @@
+// Cody Flynn
+// Nov. _ _ , 2018
+
 // Creating the player and some of its propertys
 class Player {
-  constructor(image, oneTwo, size) {
+  constructor(image, oneTwo, size, maxHealth) {
     this.x = width/2;
     this.y = height*0.93;
 
@@ -11,8 +14,8 @@ class Player {
     this.playerNum = oneTwo;
 
     this.lives = 3;
-    this.health = 5;
-    this.deathOccured = false;
+    this.health = maxHealth;
+    // this.deathOccured = false;
 
     this.projectiles = [];
   }
@@ -57,7 +60,7 @@ class Player {
     }
   }
 
-  // moving/attacking
+  // moving
   movement() {
     if (keyIsDown(65)) { // A
       this.x -= this.dx;

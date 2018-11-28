@@ -33,43 +33,76 @@ class EnemyBox {
     }
   }
 
+  moveAllShots(playerX, playerY) {
+    // move shots
+    for (let i = this.enemys.length-1; i >= 0; i--) {
+      if (this.enemys[i].moveShots(playerX, playerY)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   checkTurn() {
+    // temperary white box
     push();
     noFill();
     stroke("white");
     rect(this.x, this.y, this.sprtSize*this.enemysAcrsX, this.sprtSize*this.enemysAcrsY);
     pop();
 
-    this.enemys.map(shot => shot.moveShots());
+
+    // take turn
     let elapsedTime = millis() - this.timer;
     elapsedTime > this.timeDelay ? this.move() : this.enemys.map(enemys => enemys.display());
   }
 
   move() {
-    // enemy turn
+    // take turn
     this.timer = millis();
-
+    
     // change directions?
     let changedDir = this.dir;
     this.dir === "right" ?
       (this.dir = (this.boxEdge("right") < width ? "right" : "left")):
       (this.dir = (this.boxEdge("left") < 0 ? "right" : "left"));
-
-      // yes, changed direction
     changedDir = (changedDir !== this.dir);
 
+    // enemy movement
     for (let i = 0; i < this.enemys.length; i++) {
-      this.numOfShots += this.enemys[i].shots.length;
+      // enemy shots
+      if (this.numOfShots < 3) {
+        if (this.enemys[i].shoot()) {
+          this.numOfShots++;
+        }
+      }
+      this.enemys[i].takeTurn(this.dir, changedDir);
     }
-
-    this.enemys.map(enemys => enemys.takeTurn(this.dir, changedDir, this.numOfShots));
-
-    changedDir ? (this.y += this.sprtSize) : (this.x += (this.dir === "right" ? this.sprtSize : -this.sprtSize));
     this.numOfShots = 0;
+
+    // move
+    changedDir ? (this.y += this.sprtSize) : (this.x += (this.dir === "right" ? this.sprtSize : -this.sprtSize));
   }
 
-  boxEdge(side) {
-    return (side === "right" ?
+  empty() {
+    // empty box
+    return this.enemys.length <= 0;
+  }
+
+  enemyHitBottom() {
+    for (let i = 0; i < this.enemys.length; i++) {
+      if (this.enemys[i].hitBottom()) {
+        // enemy hits the bottom of the screen
+        return true;
+      }
+    }
+    return false;
+  }
+
+  boxEdge(dir) {
+    // hitting edge of screen
+    return (dir === "right" ?
     this.x + this.sprtSize * this.enemysAcrsX/2 + this.sprtSize:
     this.x - this.sprtSize * this.enemysAcrsX/2 - this.sprtSize);
   }
