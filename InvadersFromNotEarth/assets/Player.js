@@ -14,6 +14,7 @@ class Player {
     this.playerNum = oneTwo;
 
     this.lives = 3;
+    this.maxHealth = maxHeath;
     this.health = maxHealth;
     // this.deathOccured = false;
 
@@ -71,5 +72,18 @@ class Player {
     }
 
     this.x = constrain(this.x, 0 + this.size/2, width - this.size/2);
+  }
+
+  // checkcing lives
+  checkHealth() {
+    if (this.lives <= 0) {
+      return true;
+    }
+
+    if (this.health <= 0) {
+      this.lives--;
+      this.health = this.maxHealth;
+      return true;
+    }
   }
 }

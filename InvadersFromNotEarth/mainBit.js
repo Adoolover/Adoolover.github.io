@@ -90,6 +90,9 @@ function draw() {
 function playersFoo() {
   playerOne.display();
   playerOne.movement();
+  if (playerOne.checkHealth()) {
+    gameOver();
+  }
   if (playerOne.health <= 0) {
     playerOne.health = MAX_HEALTH;
     playerOne.lives--;
