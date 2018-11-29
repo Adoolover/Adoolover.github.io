@@ -67,6 +67,8 @@ function setup() {
   spriteSize.player = (width*0.08 + height*0.08)/2;
   players.push(new Player(img.playerOneSprite, 1, spriteSize.player, MAX_HEALTH));
   players.push(new Player(img.playerTwoSprite, 2, spriteSize.player, MAX_HEALTH));
+  // players.push(new Player(img.playerOneSprite, 3, spriteSize.player, MAX_HEALTH));
+  players.push(new Player(img.playerTwoSprite, 4, spriteSize.player, MAX_HEALTH));
 
 
   // buttons
@@ -121,7 +123,7 @@ function enemyFoos() {
             if (enemyBoxs[i].hitByBullet(w, players[playerNum].projectiles[j].x, players[playerNum].projectiles[j].y)) {
               enemyBoxs[i].enemys.splice(w, 1);
               players[playerNum].projectiles.splice(j, 1);
-              score += 10;
+              score += 5;
               break;
             }
           }
@@ -167,5 +169,5 @@ function mousePressed() {
 
 function displayScore() {
   fill(255);
-  text("Score: " + score, width*0.05, height*0.03)
+  text("Score: " + score, width*0.05, height*0.03);
 }

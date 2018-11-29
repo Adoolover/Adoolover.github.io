@@ -24,7 +24,7 @@ class Player {
   }
 
   display(y) {
-    let livesPos = height*0.075 * (y+1);
+    let livesPos = height*0.075*(y+1);
     image(this.img, this.x, this.y, this.size, this.size);
 
     // displaying lives
@@ -78,13 +78,14 @@ class Player {
         this.attacking = false;
       }
 
-      else if (keyIsDown(38) && this.playerNum === 2) {
+      else if (keyIsDown(38) && this.playerNum === 2) { // UP_ARROW
         this.projectiles.push(new Bullet(this.x - spriteSize.player*0.35, this.y, spriteSize.player/2, img.playerBullet, "good"));
         this.projectiles.push(new Bullet(this.x + spriteSize.player*0.35, this.y, spriteSize.player/2, img.playerBullet, "good"));
         this.timer = millis();
         this.attacking = false;
       }
     }
+    
     else {
       let elapsedTime = millis() - this.timer;
       if (elapsedTime > this.timeDelay) {
