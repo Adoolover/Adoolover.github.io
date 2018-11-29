@@ -92,9 +92,10 @@ function draw() {
 function playersFoo() {
   if (players.length > 0) {
     for (let playerNum = players.length-1; playerNum >= 0; playerNum--) {
-      players[playerNum].display();
+      players[playerNum].display(playerNum);
       players[playerNum].movement();
       players[playerNum].attack();
+      players[playerNum].healthBar();
 
       if (players[playerNum].checkHealth()) {
         players.splice(playerNum, 1);
@@ -118,6 +119,7 @@ function enemyFoos() {
             if (enemyBoxs[i].hitByBullet(w, players[playerNum].projectiles[j].x, players[playerNum].projectiles[j].y)) {
               enemyBoxs[i].enemys.splice(w, 1);
               players[playerNum].projectiles.splice(j, 1);
+              score += 10;
               break;
             }
           }

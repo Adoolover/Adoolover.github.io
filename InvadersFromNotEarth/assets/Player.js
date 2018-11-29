@@ -14,8 +14,8 @@ class Player {
     this.playerNum = oneTwo;
 
     this.lives = 3;
-    this.maxHealth = maxHealth;
-    this.health = maxHealth;
+    this.maxHealth = maxHealth*2;
+    this.health = this.maxHealth;
 
     this.timeDelay = 500;
     this.timer = millis();
@@ -23,16 +23,17 @@ class Player {
     this.projectiles = [];
   }
 
-  display() {
+  display(y) {
+    let livesPos = height*0.075 * (y+1);
     image(this.img, this.x, this.y, this.size, this.size);
 
     // displaying lives
     fill("white");
-    text("Lives", width*0.97, height*0.03);
+    text("Lives", width*0.97, livesPos - this.size*0.25);
 
     for (let i = 0; i < this.lives-1; i++) {
       let x = this.size*0.25*i;
-      image(this.img, width*0.99 - x, height*0.05, this.size*0.25, this.size*0.25);
+      image(this.img, width*0.99 - x, livesPos, this.size*0.25, this.size*0.25);
     }
 
     for (let i = this.projectiles.length-1; i >= 0; i--) {
@@ -107,8 +108,11 @@ class Player {
   // }
 
   healthBar() {
-    rect(width/2,height/2, this.size, this.size/4)
+    let backBar = this.size;
+    let frontBar = backBar - (this.maxHealth-this.health)*backBar/this.maxHealth;
+    fill(0,0,255);
+    rect(this.x, this.y + this.size*0.50, backBar, this.size/8);
     fill(255,0,0);
-    rect(width/2,height/2, this.size, this.size/4)
+    rect(this.x, this.y + this.size*0.50, frontBar, this.size/8);
   }
 }
