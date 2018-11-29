@@ -12,8 +12,8 @@ class CommonEnemy {
     this.sprtSize = sprtSize;
 
     // bullets
-    this.shot = bullet;
-    this.shots = [];
+    // this.shot = bullet;
+    // this.shots = [];
   }
 
   display() {
@@ -30,29 +30,11 @@ class CommonEnemy {
     changedDir ? (this.y += this.sprtSize) : (this.x += (dir === "right" ? this.sprtSize : -this.sprtSize));
   }
 
-  shoot() {
-    let shot = random(1000);
+  shoot(numOfEnemysleft) {
+    let shot = random(10*numOfEnemysleft);
 
-    if (shot < 20) {
-      this.shots.push(new this.shot(this.x, this.y, this.sprtSize, img.enemyBullet, "bad"));
+    if (shot < numOfEnemysleft/2) {
       return true;
-    }
-
-    return false;
-  }
-
-  moveShots(playerX, playerY) {
-    for (let i = this.shots.length-1; i >= 0; i--) {
-      this.shots[i].move();
-
-      if (this.shots[i].hitPlayer(playerX, playerY)) {
-        this.shots.splice(i, 1);
-        return true;
-      }
-
-      else if (this.shots[i].hitEdge()) {
-        this.shots.splice(i,1);
-      }
     }
 
     return false;

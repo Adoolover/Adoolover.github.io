@@ -103,18 +103,34 @@ function playersFoo() {
 function enemyFoos() {
   for (let i = enemyBoxs.length-1; i >= 0; i--) {
     for (let j = playerOne.projectiles.length-1; j >= 0; j--) {
-      if (playerOne.projectiles[j].x > ) {
-
+      // bullet in the box
+      if (playerOne.projectiles[j].x > enemyBoxs[i].leftEdge() && playerOne.projectiles[j].x < enemyBoxs[i].rightEdge()
+      && playerOne.projectiles[j].y > enemyBoxs[i].topEdge() && playerOne.projectiles[j].y < enemyBoxs[i].bottomEdge()) {
+        // checking if bullet hits enemmy
+        for (let q = enemyBoxs[i].enemys.length-1; q >= 0; q--) {
+          if (enemyBoxs[i].hitByBullet(q, playerOne.projectiles[j].x, playerOne.projectiles[j].y)) {
+            enemyBoxs[i].enemys.splice(q, 1);
+            playerOne.projectiles.splice(j, 1);
+            break;
+          }
+        }
       }
     }
 
-    if (enemyBoxs[i].enemyHitBottom() || enemyBoxs[i].moveAllShots(playerOne.x, playerOne.y)) {
+    // bullet hits player or enemys hit bottom
+    if (enemyBoxs[i].moveAllShots(playerOne.x, playerOne.y)) {
       playerOne.health--;
+    }
+
+    else if (enemyBoxs[i].enemyHitBottom()) {
+      enemyBoxs = [];
+      playerOne.lives--;
       break;
     }
 
+    // no more enemys
     else {
-      enemyBoxs[i].empty() ? enemyBoxs.splice(i,1) : enemyBoxs[i].checkTurn();
+      enemyBoxs[i].empty() ? enemyBoxs.splice(i, 1) : enemyBoxs[i].checkTurn();
     }
   }
 }
@@ -139,7 +155,7 @@ function gameOver() {
 
 function mousePressed() {
   if (startState === 1) {
-    enemyBoxs.push(new EnemyBox(mouseX, mouseY, CommonEnemy, numOfEnemys, spriteSize.enemy, 1));
+    enemyBoxs.push(new EnemyBox(mouseX, mouseY, CommonEnemy, numOfEnemys, spriteSize.enemy, Bullet, img.enemyBullet, 1));
     enemyBoxs[enemyBoxs.length-1].spawnEnemys();
   }
 }

@@ -2,7 +2,7 @@
 // Nov. 16, 2018
 
 class EnemyBox {
-  constructor(x, y, enemyType, numOfEnemys, sprtSize, timer) {
+  constructor(x, y, enemyType, numOfEnemys, sprtSize, shot, shotImg, timer) {
     // position
     this.x = x;
     this.y = y;
@@ -14,6 +14,11 @@ class EnemyBox {
     this.enemyType = enemyType;
     this.sprtSize = sprtSize;
     this.enemys = [];
+    this.enemyShots = [];
+
+    // bullets
+    this.shotType = shot;
+    this.shotImg = shotImg;
     this.numOfShots = 0;
 
     // time between actions
@@ -34,10 +39,16 @@ class EnemyBox {
   }
 
   moveAllShots(playerX, playerY) {
-    // move shots
-    for (let i = this.enemys.length-1; i >= 0; i--) {
-      if (this.enemys[i].moveShots(playerX, playerY)) {
+    for (let i = this.enemyShots.length-1; i >= 0; i--) {
+      this.enemyShots[i].move();
+
+      if (this.enemyShots[i].hitPlayer(playerX, playerY)) {
+        this.enemyShots.splice(i, 1);
         return true;
+      }
+
+      else if (this.enemyShots[i].hitEdge()) {
+        this.enemyShots.splice(i,1);
       }
     }
 
@@ -46,11 +57,11 @@ class EnemyBox {
 
   checkTurn() {
     // temperary white box
-    push();
-    noFill();
-    stroke("white");
-    rect(this.x, this.y, this.sprtSize*this.enemysAcrsX, this.sprtSize*this.enemysAcrsY);
-    pop();
+    // push();
+    // noFill();
+    // stroke("white");
+    // rect(this.x, this.y, this.sprtSize*this.enemysAcrsX, this.sprtSize*this.enemysAcrsY);
+    // pop();
 
 
     // take turn
@@ -73,7 +84,8 @@ class EnemyBox {
     for (let i = 0; i < this.enemys.length; i++) {
       // enemy shots
       if (this.numOfShots < 3) {
-        if (this.enemys[i].shoot()) {
+        if (this.enemys[i].shoot(this.enemys.length)) {
+          this.enemyShots.push(new this.shotType(this.enemys[i].x, this.enemys[i].y, this.sprtSize, this.shotImg, "bad"));
           this.numOfShots++;
         }
       }
@@ -83,6 +95,10 @@ class EnemyBox {
 
     // move
     changedDir ? (this.y += this.sprtSize) : (this.x += (this.dir === "right" ? this.sprtSize : -this.sprtSize));
+  }
+
+  hitByBullet(enemyPos, bulletX, bulletY) {
+    return dist(bulletX, bulletY, this.enemys[enemyPos].x, this.enemys[enemyPos].y) < this.sprtSize/2;
   }
 
   empty() {
@@ -108,10 +124,18 @@ class EnemyBox {
   }
 
   rightEdge() {
-    return this.x + this.sprtSize * this.enemysAcrsX/2 + this.sprtSize;
+    return this.x + this.sprtSize*this.enemysAcrsX/2 + this.sprtSize;
   }
 
   leftEdge() {
-    return this.x - this.sprtSize * this.enemysAcrsX/2 - this.sprtSize
+    return this.x - this.sprtSize*this.enemysAcrsX/2 - this.sprtSize
+  }
+
+  bottomEdge() {
+    return this.y + this.sprtSize*this.enemysAcrsY/2 + this.sprtSize;
+  }
+
+  topEdge() {
+    return this.y - this.sprtSize*this.enemysAcrsY/2 - this.sprtSize;
   }
 }

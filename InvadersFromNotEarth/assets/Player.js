@@ -14,7 +14,7 @@ class Player {
     this.playerNum = oneTwo;
 
     this.lives = 3;
-    this.maxHealth = maxHeath;
+    this.maxHealth = maxHealth;
     this.health = maxHealth;
     // this.deathOccured = false;
 
@@ -22,8 +22,6 @@ class Player {
   }
 
   display() {
-
-
     image(this.img, this.x, this.y, this.size, this.size);
 
     // displaying lives
@@ -34,6 +32,7 @@ class Player {
       let x = this.size*0.25*i;
       image(this.img, width*0.99 - x, height*0.05, this.size*0.25, this.size*0.25);
     }
+
     for (let i = this.projectiles.length-1; i >= 0; i--) {
       this.projectiles[i].move();
       if (this.projectiles[i].hitEdge()) {
@@ -63,15 +62,16 @@ class Player {
       return true;
     }
   }
+
   checkLives() {
     if (this.lives <= 0) {
       return true;
     }
   }
-}
 
   healthBar() {
     rect(width/2,height/2, this.size, this.size/4)
     fill(255,0,0);
     rect(width/2,height/2, this.size, this.size/4)
   }
+}
