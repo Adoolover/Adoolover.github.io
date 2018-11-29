@@ -14,7 +14,7 @@ class Player {
     this.playerNum = oneTwo;
 
     this.lives = 3;
-    this.maxHealth = maxHealth*2;
+    this.maxHealth = maxHealth;
     this.health = this.maxHealth;
 
     this.timeDelay = 500;

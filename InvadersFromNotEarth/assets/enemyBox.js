@@ -38,10 +38,14 @@ class EnemyBox {
     }
   }
 
-  moveAllShots(playerX, playerY) {
+  moveAllShots() {
     for (let i = this.enemyShots.length-1; i >= 0; i--) {
       this.enemyShots[i].move();
+    }
+  }
 
+  collisionShots(playerX, playerY) {
+    for (let i = this.enemyShots.length-1; i >= 0; i--) {
       if (this.enemyShots[i].hitPlayer(playerX, playerY)) {
         this.enemyShots.splice(i, 1);
         return true;
