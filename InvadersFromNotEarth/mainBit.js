@@ -164,3 +164,8 @@ function mousePressed() {
     enemyBoxs[enemyBoxs.length-1].spawnEnemys();
   }
 }
+
+function displayScore() {
+  fill(255);
+  text("Score: " + score, width*0.05, height*0.03)
+}
