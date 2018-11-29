@@ -26,6 +26,7 @@
 let img = {};
 let spriteSize = {};
 let textSizes;
+let score = 0;
 
 let enemyBoxs = [];
 let numOfEnemys;
@@ -82,6 +83,7 @@ function draw() {
   else if (startState === 1){
     enemyFoos();
     playersFoo();
+    displayScore();
   }
 
   else {
@@ -128,8 +130,9 @@ function enemyFoos() {
     }
 
     // bullet hits player or enemys hit bottom
+    enemyBoxs[i].moveAllShots();
     for (let playerNum = players.length-1; playerNum >= 0; playerNum--) {
-      if (enemyBoxs[i].moveAllShots(players[playerNum].x, players[playerNum].y)) {
+      if (enemyBoxs[i].collisionShots(players[playerNum].x, players[playerNum].y)) {
         players[playerNum].health--;
       }
       else if (enemyBoxs[i].enemyHitBottom()) {
