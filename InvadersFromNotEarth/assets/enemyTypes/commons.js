@@ -10,10 +10,6 @@ class CommonEnemy {
     // sprite
     this.img = img.commonEnemySprite;
     this.sprtSize = sprtSize;
-
-    // bullets
-    // this.shot = bullet;
-    // this.shots = [];
   }
 
   display() {
@@ -31,6 +27,8 @@ class CommonEnemy {
   }
 
   shoot(numOfEnemysleft) {
+    // chance to fire a bullet
+    // chance based on number of live enemys in this platoon
     let shot = random(10*numOfEnemysleft);
 
     if (shot < numOfEnemysleft/2) {

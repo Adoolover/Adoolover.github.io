@@ -56,14 +56,6 @@ class EnemyBox {
   }
 
   checkTurn() {
-    // temperary white box
-    // push();
-    // noFill();
-    // stroke("white");
-    // rect(this.x, this.y, this.sprtSize*this.enemysAcrsX, this.sprtSize*this.enemysAcrsY);
-    // pop();
-
-
     // take turn
     let elapsedTime = millis() - this.timer;
     elapsedTime > this.timeDelay ? this.move() : this.enemys.map(enemys => enemys.display());

@@ -16,8 +16,10 @@ class Player {
     this.lives = 3;
     this.maxHealth = maxHealth;
     this.health = maxHealth;
-    // this.deathOccured = false;
 
+    this.timeDelay = 500;
+    this.timer = millis();
+    this.attacking = false;
     this.projectiles = [];
   }
 
@@ -43,15 +45,52 @@ class Player {
 
   // moving
   movement() {
-    if (keyIsDown(65)) { // A
-      this.x -= this.dx;
+    if (this.playerNum === 1) {
+      if (keyIsDown(65)) { // A
+        this.x -= this.dx;
+      }
+
+      if (keyIsDown(68)) { // D
+        this.x += this.dx;
+      }
     }
 
-    if (keyIsDown(68)) { // D
-      this.x += this.dx;
+    else if (this.playerNum === 2) {
+      if (keyIsDown(37)) { // LEFT_ARROW
+        this.x -= this.dx;
+      }
+
+      if (keyIsDown(39)) { // RIGHT_ARROW
+        this.x += this.dx;
+      }
     }
 
     this.x = constrain(this.x, 0 + this.size/2, width - this.size/2);
+  }
+
+  attack() {
+    if (this.attacking) {
+      if (keyIsDown(87) && this.playerNum === 1) { // W
+        this.projectiles.push(new Bullet(this.x - spriteSize.player*0.35, this.y, spriteSize.player/2, img.playerBullet, "good"));
+        this.projectiles.push(new Bullet(this.x + spriteSize.player*0.35, this.y, spriteSize.player/2, img.playerBullet, "good"));
+        this.timer = millis();
+        this.attacking = false;
+      }
+
+      else if (keyIsDown(38) && this.playerNum === 2) {
+        this.projectiles.push(new Bullet(this.x - spriteSize.player*0.35, this.y, spriteSize.player/2, img.playerBullet, "good"));
+        this.projectiles.push(new Bullet(this.x + spriteSize.player*0.35, this.y, spriteSize.player/2, img.playerBullet, "good"));
+        this.timer = millis();
+        this.attacking = false;
+      }
+    }
+    else {
+      let elapsedTime = millis() - this.timer;
+      if (elapsedTime > this.timeDelay) {
+        this.timer = millis();
+        this.attacking = true;
+      }
+    }
   }
 
   // checkcing lives
@@ -59,15 +98,13 @@ class Player {
     if (this.health <= 0) {
       this.lives--;
       this.health = this.maxHealth;
-      return true;
     }
+    return this.lives <= 0;
   }
 
-  checkLives() {
-    if (this.lives <= 0) {
-      return true;
-    }
-  }
+  // checkLives() {
+  //   return this.lives <= 0;
+  // }
 
   healthBar() {
     rect(width/2,height/2, this.size, this.size/4)
