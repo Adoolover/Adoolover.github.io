@@ -50,14 +50,17 @@ let button = {};
 
 function preload() {
   // sprites
-  img.commonEnemySprite = loadImage("assets/Img/Commons.png");
-  img.enemyBullet = loadImage("assets/Img/enemyBullets.png");
-  img.playerBullet = loadImage("assets/Img/playerBullets.png");
-  img.playerOneSprite = loadImage("assets/Img/PlayerOne.png");
-  img.playerTwoSprite = loadImage("assets/Img/PlayerTwo.png");
+  img.commonEnemySprite = loadImage("assets/img/commons.png");
+  img.enemyBullet = loadImage("assets/img/enemyBullets.png");
+  img.playerBullet = loadImage("assets/img/playerBullets.png");
+  img.playerOneSprite = loadImage("assets/img/playerOne.png");
+  img.playerTwoSprite = loadImage("assets/img/playerTwo.png");
 
   // power ups
-  img.extraLife = loadImage("assets/Img")
+  img.extraLife = loadImage("assets/img/playerOne.png");
+  img.fastAttack = loadImage("assets/img/fastAttack.png");
+  img.maxHealth = loadImage("assets/img/maxHealth.png");
+  img.moreMaxHealth = loadImage("assets/img/moreMaxHealth.png");
 }
 
 function setup() {
@@ -215,7 +218,7 @@ function spawnPowerUp(x, y) {
   // chance to drop a power up
   let dropChance = random(100);
 
-  if (dropChance <= 50) {
+  if (dropChance <= 101) {
     powerUps.push(new PowerUp(x, y, random(allPowerUps), spriteSize.player));
   }
 }

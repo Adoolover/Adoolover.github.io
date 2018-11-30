@@ -3,6 +3,11 @@
 
 class MaxHealth {
   constructor() {
+    this.img = img.maxHealth;
+  }
 
+  pickUp(playerObj) {
+    playerObj.health = playerObj.maxHealth;
+    return playerObj;
   }
 }
