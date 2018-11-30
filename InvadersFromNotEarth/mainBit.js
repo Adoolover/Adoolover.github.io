@@ -28,18 +28,22 @@ let spriteSize = {};
 let textSizes;
 
 let enemyBoxs = [];
+let enemyTypes = [];
 const MAX_ENEMY_BOXS = 10;
 
 let players = [];
 let playerImgs = [];
 const MAX_HEALTH = 5;
 
+let allPowerUps = [];
+let powerUps = [];
+
 let startState;
 let state;
 let score;
 let runningMillis;
 
-const TIME_DELAY = 10000;
+const TIME_DELAY = 20000;
 let timer;
 
 let button = {};
@@ -52,6 +56,8 @@ function preload() {
   img.playerOneSprite = loadImage("assets/Img/PlayerOne.png");
   img.playerTwoSprite = loadImage("assets/Img/PlayerTwo.png");
 
+  // power ups
+  img.extraLife = loadImage("assets/Img")
 }
 
 function setup() {
@@ -72,6 +78,7 @@ function setup() {
   textSize(textSizes);
 
   // enemy vars
+  enemyTypes = [CommonEnemy, CommonEnemy, CommonEnemy];
   enemyBoxs = [];
   spriteSize.enemy = (width*0.03 + height*0.03)/2;
   enemyBoxs.push(new EnemyBox(CommonEnemy, spriteSize.enemy, Bullet, img.enemyBullet, 1));
@@ -81,6 +88,10 @@ function setup() {
   spriteSize.player = (width*0.08 + height*0.08)/2;
   playerImgs = [img.playerOneSprite, img.playerTwoSprite];
   players = [];
+
+  // power ups
+  allPowerUps = [ExtraLife, FastAttack, MaxHealth, MoreMaxHealth];
+  powerUps = [];
 
   // timer
   timer = runningMillis;
@@ -95,6 +106,7 @@ function draw() {
 
   if (startState === 0) {
     startScreen();
+    displayControls();
     timer = runningMillis;
     for (let i = 0; i < startState; i++) {
       players.push(new Player(playerImgs[i], i+1, spriteSize.player, MAX_HEALTH));
@@ -106,6 +118,7 @@ function draw() {
     enemyFoos();
     playersFoo();
     displayScore();
+    powerUpFoo();
   }
 
   else {
@@ -126,9 +139,19 @@ function startScreen() {
   }
 }
 
+function displayControls() {
+  fill("white");
+
+  // player 1
+  text("PLAYER 1:\n'W' - SHOOT\n'A' - LEFT\n'D' - RIGHT", width*0.10, height*0.40);
+
+  // player 2
+  text("PLAYER 2:\nUP - SHOOT\nLEFT - LEFT\nRIGHT - RIGHT\nSPACE - REVIVE\ndoes not work", width*0.90, height*0.40);
+}
+
 function spawnEnemyBoxes() {
   if (startState !== 0 && enemyBoxs.length <= MAX_ENEMY_BOXS && state === 1) {
-    enemyBoxs.push(new EnemyBox(CommonEnemy, spriteSize.enemy, Bullet, img.enemyBullet, 1));
+    enemyBoxs.push(new EnemyBox(random(enemyTypes), spriteSize.enemy, Bullet, img.enemyBullet, 1));
     enemyBoxs[enemyBoxs.length-1].spawnEnemys();
     state = 0;
   }
@@ -178,7 +201,36 @@ function enemyFoos() {
     }
 
     // no more enemys
-    enemyBoxs[i].empty() ? enemyBoxs.splice(i, 1) : enemyBoxs[i].checkTurn();
+    if (enemyBoxs[i].empty()) {
+      enemyBoxs.splice(i, 1);
+      spawnPowerUp(enemyBoxs[i].x, enemyBoxs[i].y);
+    }
+    else {
+      enemyBoxs[i].checkTurn();
+    }
+  }
+}
+
+function spawnPowerUp(x, y) {
+  // chance to drop a power up
+  let dropChance = random(100);
+
+  if (dropChance <= 50) {
+    powerUps.push(new PowerUp(x, y, random(allPowerUps), spriteSize.player));
+  }
+}
+
+function powerUpFoo() {
+  // power ups
+  for (let i = powerUps.length-1; i >= 0; i--) {
+    powerUps[i].display();
+    powerUps[i].move();
+    for (let playerNum = players.length-1; playerNum >= 0; playerNum--) {
+      if (players[playerNum].collision(powerUps[i].x, powerUps[i].y)) {
+        players[playerNum] = powerUps[i].pickUpPower(player[playerNum]);
+        powerUps.splice(i, 1);
+      }
+    }
   }
 }
 

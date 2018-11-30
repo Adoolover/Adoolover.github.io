@@ -83,7 +83,7 @@ class EnemyBox {
     // enemy movement
     for (let i = 0; i < this.enemys.length; i++) {
       // enemy shots
-      if (this.numOfShots < 3) {
+      if (this.numOfShots < 5) {
         if (this.enemys[i].shoot(this.enemys.length)) {
           this.enemyShots.push(new this.shotType(this.enemys[i].x, this.enemys[i].y, this.sprtSize, this.shotImg, "bad"));
           this.numOfShots++;

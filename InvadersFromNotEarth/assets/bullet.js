@@ -7,7 +7,7 @@ class Bullet {
     this.x = x;
     this.y = y;
     this.dx = random(-width*0.0005, width*0.0005);
-    this.dy = random(height*0.005, height*0.01);
+    this.dy = random(height*0.005, height*0.010);
     this.alingment = goodBad;
 
     this.dy *= this.alingment === "good" ? -1: 1;

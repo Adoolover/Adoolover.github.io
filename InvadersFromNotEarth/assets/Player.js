@@ -103,13 +103,21 @@ class Player {
     }
     return this.lives <= 0;
   }
-  
+
   healthBar() {
     let backBar = this.size;
     let frontBar = backBar - (this.maxHealth-this.health)*backBar/this.maxHealth;
+
+    // back bar
     fill(0,0,255);
     rect(this.x, this.y + this.size*0.50, backBar, this.size/8);
+
+    // health bar
     fill(255,0,0);
     rect(this.x, this.y + this.size*0.50, frontBar, this.size/8);
+  }
+
+  collision(x, y) {
+    return dist(this.x, this.y, x, y) < this.sprtSize;
   }
 }
