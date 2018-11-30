@@ -26,18 +26,23 @@
 let img = {};
 let spriteSize = {};
 let textSizes;
-let score = 0;
 
 let enemyBoxs = [];
-let numOfEnemys;
+const MAX_ENEMY_BOXS = 10;
 
 let players = [];
+let playerImgs = [];
 const MAX_HEALTH = 5;
 
-let startState = 0;
-let state = 0;
+let startState;
+let state;
+let score;
+let runningMillis;
 
-let startButton1;
+const TIME_DELAY = 10000;
+let timer;
+
+let button = {};
 
 function preload() {
   // sprites
@@ -46,6 +51,7 @@ function preload() {
   img.playerBullet = loadImage("assets/Img/playerBullets.png");
   img.playerOneSprite = loadImage("assets/Img/PlayerOne.png");
   img.playerTwoSprite = loadImage("assets/Img/PlayerTwo.png");
+
 }
 
 function setup() {
@@ -55,24 +61,33 @@ function setup() {
   textAlign(CENTER);
   noStroke();
 
+  // start
+  startState = 0;
+  state = 0;
+  score = 0;
+  runningMillis = millis();
+
   // text
   textSizes = (width*0.025 + height*0.025)/2;
   textSize(textSizes);
 
   // enemy vars
-  numOfEnemys = 15;
+  enemyBoxs = [];
   spriteSize.enemy = (width*0.03 + height*0.03)/2;
+  enemyBoxs.push(new EnemyBox(CommonEnemy, spriteSize.enemy, Bullet, img.enemyBullet, 1));
+  enemyBoxs[enemyBoxs.length-1].spawnEnemys();
 
   // player vars
   spriteSize.player = (width*0.08 + height*0.08)/2;
-  players.push(new Player(img.playerOneSprite, 1, spriteSize.player, MAX_HEALTH));
-  players.push(new Player(img.playerTwoSprite, 2, spriteSize.player, MAX_HEALTH));
-  // players.push(new Player(img.playerOneSprite, 3, spriteSize.player, MAX_HEALTH));
-  players.push(new Player(img.playerTwoSprite, 4, spriteSize.player, MAX_HEALTH));
+  playerImgs = [img.playerOneSprite, img.playerTwoSprite];
+  players = [];
 
+  // timer
+  timer = runningMillis;
 
   // buttons
-  startButton1 = new Button(width/2, height/2, spriteSize.player);
+  button.single = new Button(width/2, height*0.30, "SINGLE PLAYER");
+  button.coop = new Button(width/2, height*0.70, "CO-OP");
 }
 
 function draw() {
@@ -80,9 +95,14 @@ function draw() {
 
   if (startState === 0) {
     startScreen();
+    timer = runningMillis;
+    for (let i = 0; i < startState; i++) {
+      players.push(new Player(playerImgs[i], i+1, spriteSize.player, MAX_HEALTH));
+    }
   }
 
-  else if (startState === 1){
+  else if (startState === 1 || startState === 2){
+    spawnEnemyBoxes();
     enemyFoos();
     playersFoo();
     displayScore();
@@ -93,21 +113,34 @@ function draw() {
   }
 }
 
-function playersFoo() {
-  if (players.length > 0) {
-    for (let playerNum = players.length-1; playerNum >= 0; playerNum--) {
-      players[playerNum].display(playerNum);
-      players[playerNum].movement();
-      players[playerNum].attack();
-      players[playerNum].healthBar();
+function startScreen() {
+  button.single.drawButton();
+  button.coop.drawButton();
 
-      if (players[playerNum].checkHealth()) {
-        players.splice(playerNum, 1);
-      }
-    }
+  if (button.single.checkClick()) {
+    startState = 1;
   }
+
+  else if (button.coop.checkClick()) {
+    startState = 2;
+  }
+}
+
+function spawnEnemyBoxes() {
+  if (startState !== 0 && enemyBoxs.length <= MAX_ENEMY_BOXS && state === 1) {
+    enemyBoxs.push(new EnemyBox(CommonEnemy, spriteSize.enemy, Bullet, img.enemyBullet, 1));
+    enemyBoxs[enemyBoxs.length-1].spawnEnemys();
+    state = 0;
+  }
+
   else {
-    gameOver();
+    let elapsedTime = millis() - timer;
+    let compareTime = TIME_DELAY-millis()/100;
+    compareTime = constrain(compareTime, 100, Infinity);
+    if (elapsedTime > compareTime) {
+      timer = millis();
+      state = 1;
+    }
   }
 }
 
@@ -149,25 +182,31 @@ function enemyFoos() {
   }
 }
 
-function startScreen() {
-  startButton1.drawButton();
-  startState = startButton1.checkClick();
-}
+function playersFoo() {
+  if (players.length > 0) {
+    for (let playerNum = players.length-1; playerNum >= 0; playerNum--) {
+      players[playerNum].display(playerNum);
+      players[playerNum].movement();
+      players[playerNum].attack();
+      players[playerNum].healthBar();
 
-function gameOver() {
-  startState = -1;
-  text("YOU LOSE", width/2, height/2);
-}
-
-
-function mousePressed() {
-  if (startState === 1) {
-    enemyBoxs.push(new EnemyBox(mouseX, mouseY, CommonEnemy, numOfEnemys, spriteSize.enemy, Bullet, img.enemyBullet, 1));
-    enemyBoxs[enemyBoxs.length-1].spawnEnemys();
+      if (players[playerNum].checkHealth()) {
+        players.splice(playerNum, 1);
+      }
+    }
+  }
+  else {
+    gameOver();
   }
 }
 
 function displayScore() {
   fill(255);
   text("Score: " + score, width*0.05, height*0.03);
+}
+
+function gameOver() {
+  startState = -1;
+  fill("white");
+  text("YOU LOSE\nSCORE: " + score, width/2, height/2);
 }

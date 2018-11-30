@@ -2,14 +2,9 @@
 // Nov. 16, 2018
 
 class EnemyBox {
-  constructor(x, y, enemyType, numOfEnemys, sprtSize, shot, shotImg, timer) {
-    // position
-    this.x = x;
-    this.y = y;
-    this.dir = random(["right", "left"]);
-
+  constructor(enemyType, sprtSize, shot, shotImg, timer) {
     // enemys
-    this.enemysAcrsX = int(numOfEnemys);
+    this.enemysAcrsX = int(random(5, 15));
     this.enemysAcrsY = int(this.enemysAcrsX*0.50);
     this.enemyType = enemyType;
     this.sprtSize = sprtSize;
@@ -20,6 +15,15 @@ class EnemyBox {
     this.shotType = shot;
     this.shotImg = shotImg;
     this.numOfShots = 0;
+
+    // position
+    let xMin = this.sprtSize*this.enemysAcrsX/2-this.sprtSize;
+    let xMax = this.sprtSize*this.enemysAcrsX/2+this.sprtSize;
+
+    let yTop = this.sprtSize*this.enemysAcrsY/2+this.sprtSize;
+    this.x = random(xMin, width - xMax);
+    this.y = yTop;
+    this.dir = random(["right", "left"]);
 
     // time between actions
     this.timeDelay = timer*1000;
@@ -124,7 +128,7 @@ class EnemyBox {
   }
 
   leftEdge() {
-    return this.x - this.sprtSize*this.enemysAcrsX/2 - this.sprtSize
+    return this.x - this.sprtSize*this.enemysAcrsX/2 - this.sprtSize;
   }
 
   bottomEdge() {

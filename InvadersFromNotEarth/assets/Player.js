@@ -85,7 +85,7 @@ class Player {
         this.attacking = false;
       }
     }
-    
+
     else {
       let elapsedTime = millis() - this.timer;
       if (elapsedTime > this.timeDelay) {
@@ -103,11 +103,7 @@ class Player {
     }
     return this.lives <= 0;
   }
-
-  // checkLives() {
-  //   return this.lives <= 0;
-  // }
-
+  
   healthBar() {
     let backBar = this.size;
     let frontBar = backBar - (this.maxHealth-this.health)*backBar/this.maxHealth;

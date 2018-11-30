@@ -2,12 +2,17 @@
 // Nov. 24, 2018
 
 class Button  {
-  constructor(x, y) {
-    // assigning varribiles
+  constructor(x, y, words) {
+    // position
     this.x = x;
     this.y = y;
+
+    // size
     this.width = width/2;
     this.height = height/4;
+
+    // other
+    this.words = words;
     this.hit = false;
   }
 
@@ -20,17 +25,13 @@ class Button  {
     push();
     textSize(textSizes*2);
     fill("black");
-    text("Press to start", this.x, this.y);
+    text(this.words, this.x, this.y);
     pop();
   }
 
   checkClick() {
     this.hit = this.buttonHover(this.x, this.y, this.width, this.height);
-
-    if (this.hit && mouseIsPressed) {
-       return 1;
-    }
-    return 0;
+    return this.hit && mouseIsPressed;
   }
 
   buttonHover(x, y, w, h) {
@@ -39,11 +40,7 @@ class Button  {
     let top = y - h/2;
     let bottom = y + h/2;
 
-    if (mouseX >= left && mouseX <= right
-    && mouseY >= top && mouseY <= bottom) {
-      return true;
-    }
-
-    return false;
+    return (mouseX >= left && mouseX <= right
+    && mouseY >= top && mouseY <= bottom);
   }
 }
