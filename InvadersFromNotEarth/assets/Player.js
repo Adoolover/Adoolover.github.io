@@ -5,7 +5,7 @@
 class Player {
   constructor(image, oneTwo, size, maxHealth) {
     this.x = width/2;
-    this.y = height*0.93;
+    this.y = height*0.93 - (oneTwo-1)*10;
 
     this.dx = width*0.006;
 
@@ -17,7 +17,7 @@ class Player {
     this.maxHealth = maxHealth;
     this.health = this.maxHealth;
 
-    this.timeDelay = 500;
+    this.timeDelay = 750;
     this.timer = millis();
     this.attacking = false;
     this.projectiles = [];
@@ -115,9 +115,5 @@ class Player {
     // health bar
     fill(255,0,0);
     rect(this.x, this.y + this.size*0.50, frontBar, this.size/8);
-  }
-
-  collision(x, y) {
-    return dist(this.x, this.y, x, y) < this.sprtSize;
   }
 }

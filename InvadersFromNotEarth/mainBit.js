@@ -219,7 +219,7 @@ function spawnPowerUp(x, y) {
   let dropChance = random(100);
 
   if (dropChance <= 101) {
-    powerUps.push(new PowerUp(x, y, random(allPowerUps), spriteSize.player));
+    powerUps.push(new PowerUp(x, y, new (random(allPowerUps))(), spriteSize.player));
   }
 }
 
@@ -229,9 +229,10 @@ function powerUpFoo() {
     powerUps[i].display();
     powerUps[i].move();
     for (let playerNum = players.length-1; playerNum >= 0; playerNum--) {
-      if (players[playerNum].collision(powerUps[i].x, powerUps[i].y)) {
-        players[playerNum] = powerUps[i].pickUpPower(player[playerNum]);
+      if (dist(players[playerNum].x, players[playerNum].y, powerUps[i].x, powerUps[i].y) < spriteSize.player/2) {
+        players[playerNum] = powerUps[i].pickUpPower(players[playerNum]);
         powerUps.splice(i, 1);
+        break;
       }
     }
   }

@@ -9,10 +9,10 @@ class PowerUp {
 
     // speed
     this.dx = random(-width*0.0005, width*0.0005);
-    this.dy = random(height*0.005, height*0.010);
+    this.dy = random(-height*0.006, -height*0.004);
 
     // acceleration
-    this.ay = 9.8 /100;
+    this.ay = 9.8/100;
 
     // power up
     this.power = power;
