@@ -24,6 +24,7 @@
 // - Cody Flynn
 
 let img = {};
+let allSounds = {};
 let spriteSize = {};
 let textSizes;
 
@@ -49,6 +50,11 @@ let timer;
 let button = {};
 
 function preload() {
+  // sounds
+  soundFormats("mp3", "wav");
+
+  allSounds.background = loadSound("assets/noise/BackgroundNoise.wav");
+
   // sprites
   img.commonEnemySprite = loadImage("assets/img/commons.png");
   img.enemyBullet = loadImage("assets/img/enemyBullets.png");
@@ -69,6 +75,10 @@ function setup() {
   rectMode(CENTER);
   textAlign(CENTER);
   noStroke();
+
+  // sounds
+  allSounds.background.setVolume(0.1);
+  allSounds.background.play();
 
   // start
   startState = 0;
