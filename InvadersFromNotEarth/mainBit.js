@@ -205,8 +205,8 @@ function enemyFoos() {
 
     // no more enemys
     if (enemyBoxs[i].empty()) {
-      enemyBoxs.splice(i, 1);
       spawnPowerUp(enemyBoxs[i].x, enemyBoxs[i].y);
+      enemyBoxs.splice(i, 1);
     }
     else {
       enemyBoxs[i].checkTurn();
