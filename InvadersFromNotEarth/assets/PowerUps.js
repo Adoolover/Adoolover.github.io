@@ -17,10 +17,19 @@ class PowerUp {
     // power up
     this.power = power;
     this.size = size*0.50;
+    this.rotation = 0;
   }
 
   display() {
-    image(this.power.img, this.x, this.y, this.size, this.size);
+    // spinning
+    push();
+    angleMode(DEGREES);
+    translate(this.x, this.y);
+    rotate(this.rotation);
+    image(this.power.img, 0, 0, this.size, this.size);
+    pop();
+
+    this.rotation += 2+this.dy;
   }
 
   move() {
@@ -34,5 +43,9 @@ class PowerUp {
 
   pickUpPower(playerObj) {
     return this.power.pickUp(playerObj);
+  }
+
+  hitEdge() {
+    return this.y > height || this.x > width+this.size || this.x < -this.size;
   }
 }

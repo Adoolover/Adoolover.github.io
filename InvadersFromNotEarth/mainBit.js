@@ -30,7 +30,9 @@ let textSizes;
 
 let enemyBoxs = [];
 let enemyTypes = [];
-const MAX_ENEMY_BOXS = 10;
+let numOfEnemys = 8;
+let maxEnemyBoxs = 4;
+let hardMode = false;
 
 let players = [];
 let playerImgs = [];
@@ -42,9 +44,9 @@ let powerUps = [];
 let startState;
 let state;
 let score;
-let runningMillis;
 
 const TIME_DELAY = 20000;
+let startGameTimer;
 let timer;
 
 let button = {};
@@ -53,7 +55,16 @@ function preload() {
   // sounds
   soundFormats("mp3", "wav");
 
-  allSounds.background = loadSound("assets/noise/BackgroundNoise.wav");
+  allSounds.background = loadSound("assets/noise/background_1.wav");
+
+  allSounds.enemyDeath = loadSound("assets/noise/enemyDeath.wav");
+  allSounds.enemyLaser = loadSound("assets/noise/enemyLaser.wav");
+
+  allSounds.playerDeath = loadSound("assets/noise/playerDeath.mp3");
+  allSounds.playerLaser = loadSound("assets/noise/playerLaser.wav");
+
+  allSounds.powerUpNoise = loadSound("assets/noise/powerUpsNoise.wav");
+  allSounds.gameOver = loadSound("assets/noise/gameOver_1.wav");
 
   // sprites
   img.commonEnemySprite = loadImage("assets/img/commons.png");
@@ -77,14 +88,20 @@ function setup() {
   noStroke();
 
   // sounds
-  allSounds.background.setVolume(0.1);
+  allSounds.background.setVolume(0.4);
   allSounds.background.play();
+  allSounds.background.setLoop(true);
+
+  allSounds.enemyDeath.setVolume(0.15);
+  allSounds.enemyLaser.setVolume(0.1);
+  allSounds.playerDeath.setVolume(0.5);
+  allSounds.playerLaser.setVolume(0.75);
+  allSounds.powerUpNoise.setVolume(0.25);
 
   // start
   startState = 0;
   state = 0;
   score = 0;
-  runningMillis = millis();
 
   // text
   textSizes = (width*0.025 + height*0.025)/2;
@@ -94,7 +111,7 @@ function setup() {
   enemyTypes = [CommonEnemy, CommonEnemy, CommonEnemy];
   enemyBoxs = [];
   spriteSize.enemy = (width*0.03 + height*0.03)/2;
-  enemyBoxs.push(new EnemyBox(CommonEnemy, spriteSize.enemy, Bullet, img.enemyBullet, 1));
+  enemyBoxs.push(new EnemyBox(CommonEnemy, spriteSize.enemy, Bullet, img.enemyBullet, 1, numOfEnemys, hardMode));
   enemyBoxs[enemyBoxs.length-1].spawnEnemys();
 
   // player vars
@@ -107,7 +124,8 @@ function setup() {
   powerUps = [];
 
   // timer
-  timer = runningMillis;
+  startGameTimer = 0;
+  timer = 0;
 
   // buttons
   button.single = new Button(width/2, height*0.30, "SINGLE PLAYER");
@@ -120,17 +138,20 @@ function draw() {
   if (startState === 0) {
     startScreen();
     displayControls();
-    timer = runningMillis;
+    startGameTimer = millis();
+    timer = millis();
     for (let i = 0; i < startState; i++) {
-      players.push(new Player(playerImgs[i], i+1, spriteSize.player, MAX_HEALTH));
+      let xMin = spriteSize.player;
+      let xMax = width - spriteSize.player;
+      players.push(new Player(random(xMin, xMax), playerImgs[i], i+1, spriteSize.player, MAX_HEALTH, 3));
     }
   }
 
   else if (startState === 1 || startState === 2){
     spawnEnemyBoxes();
     enemyFoos();
-    playersFoo();
     displayScore();
+    playersFoo();
     powerUpFoo();
   }
 
@@ -159,19 +180,19 @@ function displayControls() {
   text("PLAYER 1:\n'W' - SHOOT\n'A' - LEFT\n'D' - RIGHT", width*0.10, height*0.40);
 
   // player 2
-  text("PLAYER 2:\nUP - SHOOT\nLEFT - LEFT\nRIGHT - RIGHT\nSPACE - REVIVE\ndoes not work", width*0.90, height*0.40);
+  text("PLAYER 2:\nUP - SHOOT\nLEFT - LEFT\nRIGHT - RIGHT\nSPACE - REVIVE", width*0.90, height*0.40);
 }
 
 function spawnEnemyBoxes() {
-  if (startState !== 0 && enemyBoxs.length <= MAX_ENEMY_BOXS && state === 1) {
-    enemyBoxs.push(new EnemyBox(random(enemyTypes), spriteSize.enemy, Bullet, img.enemyBullet, 1));
+  if (startState !== 0 && enemyBoxs.length <= maxEnemyBoxs && state === 1) {
+    enemyBoxs.push(new EnemyBox(random(enemyTypes), spriteSize.enemy, Bullet, img.enemyBullet, 1, numOfEnemys, hardMode));
     enemyBoxs[enemyBoxs.length-1].spawnEnemys();
     state = 0;
   }
 
   else {
     let elapsedTime = millis() - timer;
-    let compareTime = TIME_DELAY-millis()/100;
+    let compareTime = TIME_DELAY-(millis()-startGameTimer)/50;
     compareTime = constrain(compareTime, 100, Infinity);
     if (elapsedTime > compareTime) {
       timer = millis();
@@ -190,9 +211,26 @@ function enemyFoos() {
           // checking if bullet hits enemmy
           for (let w = enemyBoxs[i].enemys.length-1; w >= 0; w--) {
             if (enemyBoxs[i].hitByBullet(w, players[playerNum].projectiles[j].x, players[playerNum].projectiles[j].y)) {
+              spawnPowerUp(enemyBoxs[i].enemys[w].x, enemyBoxs[i].enemys[w].y);
+              allSounds.enemyDeath.play();
               enemyBoxs[i].enemys.splice(w, 1);
               players[playerNum].projectiles.splice(j, 1);
               score += 5;
+              if (score % 500 === 0) {
+                if (score % 2000 === 0) {
+                  hardMode = !hardMode;
+                }
+
+                else if (score % 1500 === 0) {
+                  numOfEnemys += 2;
+                  numOfEnemys = constrain(numOfEnemys, 6, 20);
+                }
+
+                else {
+                  maxEnemyBoxs += 2;
+                  maxEnemyBoxs = constrain(maxEnemyBoxs, 10, 20);
+                }
+              }
               break;
             }
           }
@@ -214,13 +252,7 @@ function enemyFoos() {
     }
 
     // no more enemys
-    if (enemyBoxs[i].empty()) {
-      spawnPowerUp(enemyBoxs[i].x, enemyBoxs[i].y);
-      enemyBoxs.splice(i, 1);
-    }
-    else {
-      enemyBoxs[i].checkTurn();
-    }
+    enemyBoxs[i].empty() ? enemyBoxs.splice(i, 1) : enemyBoxs[i].checkTurn();
   }
 }
 
@@ -228,8 +260,8 @@ function spawnPowerUp(x, y) {
   // chance to drop a power up
   let dropChance = random(100);
 
-  if (dropChance <= 101) {
-    powerUps.push(new PowerUp(x, y, new (random(allPowerUps))(), spriteSize.player));
+  if (dropChance <= 1) {
+    powerUps.push(new PowerUp(x, y, new (random(allPowerUps)), spriteSize.player));
   }
 }
 
@@ -238,14 +270,20 @@ function powerUpFoo() {
   for (let i = powerUps.length-1; i >= 0; i--) {
     powerUps[i].display();
     powerUps[i].move();
+    if (powerUps[i].hitEdge()) {
+      powerUps.splice(i, 1);
+      break;
+    }
     for (let playerNum = players.length-1; playerNum >= 0; playerNum--) {
       if (dist(players[playerNum].x, players[playerNum].y, powerUps[i].x, powerUps[i].y) < spriteSize.player/2) {
         players[playerNum] = powerUps[i].pickUpPower(players[playerNum]);
         powerUps.splice(i, 1);
+        allSounds.powerUpNoise.play();
         break;
       }
     }
   }
+
 }
 
 function playersFoo() {
@@ -256,8 +294,21 @@ function playersFoo() {
       players[playerNum].attack();
       players[playerNum].healthBar();
 
+      if (players.length < 2) {
+        if (players[playerNum].lives > 1 && keyCode === 32) { // SPACE
+          players[playerNum].lives--;
+
+          players.push(new Player(players[playerNum].x,
+            (players[playerNum].playerNum === 1 ? img.playerTwoSprite : img.playerOneSprite),
+            (players[playerNum].playerNum === 1 ? 2:1),
+            spriteSize.player, MAX_HEALTH, 1));
+          break;
+        }
+      }
+
       if (players[playerNum].checkHealth()) {
         players.splice(playerNum, 1);
+        allSounds.playerDeath.play();
       }
     }
   }
@@ -267,12 +318,19 @@ function playersFoo() {
 }
 
 function displayScore() {
+  push();
   fill(255);
-  text("Score: " + score, width*0.05, height*0.03);
+  textAlign(LEFT, TOP);
+  text("SCORE: " + score, width*0.01, height*0.01);
+  pop();
 }
 
 function gameOver() {
+  allSounds.background.stop();
+  allSounds.gameOver.play();
   startState = -1;
   fill("white");
+  textSize(textSizes*2);
   text("YOU LOSE\nSCORE: " + score, width/2, height/2);
+  noLoop();
 }

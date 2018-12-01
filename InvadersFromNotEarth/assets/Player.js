@@ -3,24 +3,36 @@
 
 // Creating the player and some of its propertys
 class Player {
-  constructor(image, oneTwo, size, maxHealth) {
-    this.x = width/2;
+  constructor(x, image, oneTwo, size, maxHealth, lives) {
+    // position
+    this.x = x;
     this.y = height*0.93 - (oneTwo-1)*10;
 
+    // horizontal speed
     this.dx = width*0.006;
 
+    // sprite
     this.img = image;
     this.size = size;
     this.playerNum = oneTwo;
 
-    this.lives = 3;
+    // health
+    this.lives = lives;
     this.maxHealth = maxHealth;
     this.health = this.maxHealth;
+    this.deathSound = allSounds.playerDeath;
 
-    this.timeDelay = 750;
-    this.timer = millis();
+    // attack
     this.attacking = false;
     this.projectiles = [];
+    this.attackSound = allSounds.playerLaser;
+
+    // item
+    this.item = "";
+
+    // attack delay
+    this.timeDelay = 750;
+    this.timer = millis();
   }
 
   display(y) {
@@ -72,6 +84,7 @@ class Player {
   attack() {
     if (this.attacking) {
       if (keyIsDown(87) && this.playerNum === 1) { // W
+        this.attackSound.play();
         this.projectiles.push(new Bullet(this.x - spriteSize.player*0.35, this.y, spriteSize.player/2, img.playerBullet, "good"));
         this.projectiles.push(new Bullet(this.x + spriteSize.player*0.35, this.y, spriteSize.player/2, img.playerBullet, "good"));
         this.timer = millis();
@@ -79,6 +92,7 @@ class Player {
       }
 
       else if (keyIsDown(38) && this.playerNum === 2) { // UP_ARROW
+        this.attackSound.play();
         this.projectiles.push(new Bullet(this.x - spriteSize.player*0.35, this.y, spriteSize.player/2, img.playerBullet, "good"));
         this.projectiles.push(new Bullet(this.x + spriteSize.player*0.35, this.y, spriteSize.player/2, img.playerBullet, "good"));
         this.timer = millis();
@@ -100,20 +114,29 @@ class Player {
     if (this.health <= 0) {
       this.lives--;
       this.health = this.maxHealth;
+      this.deathSound.play();
     }
     return this.lives <= 0;
   }
 
   healthBar() {
+    let yPos = this.y + this.size*0.50;
     let backBar = this.size;
     let frontBar = backBar - (this.maxHealth-this.health)*backBar/this.maxHealth;
 
     // back bar
     fill(0,0,255);
-    rect(this.x, this.y + this.size*0.50, backBar, this.size/8);
+    rect(this.x, yPos, backBar, this.size/8);
 
     // health bar
     fill(255,0,0);
-    rect(this.x, this.y + this.size*0.50, frontBar, this.size/8);
+    rect(this.x, yPos, frontBar, this.size/8);
+
+    push();
+    fill("white");
+    textSize(this.size*0.15);
+    textAlign(CENTER, CENTER);
+    text(this.health, this.x, yPos);
+    pop();
   }
 }

@@ -2,9 +2,11 @@
 // Nov. 16, 2018
 
 class EnemyBox {
-  constructor(enemyType, sprtSize, shot, shotImg, timer) {
+  constructor(enemyType, sprtSize, shot, shotImg, timer, numOfEnemys, hardMode) {
     // enemys
-    this.enemysAcrsX = int(random(5, 15));
+    let min = numOfEnemys - 3;
+    let max = numOfEnemys + 3;
+    this.enemysAcrsX = int(random(min, max));
     this.enemysAcrsY = int(this.enemysAcrsX*0.50);
     this.enemyType = enemyType;
     this.sprtSize = sprtSize;
@@ -14,7 +16,9 @@ class EnemyBox {
     // bullets
     this.shotType = shot;
     this.shotImg = shotImg;
+    this.hardMode = hardMode;
     this.numOfShots = 0;
+    this.attackSound = allSounds.enemyLaser;
 
     // position
     let xMin = this.sprtSize*this.enemysAcrsX/2-this.sprtSize;
@@ -26,7 +30,7 @@ class EnemyBox {
     this.dir = random(["right", "left"]);
 
     // time between actions
-    this.timeDelay = timer*1000;
+    this.timeDelay = hardMode ? timer*500 : timer*1000;
     this.timer = millis();
   }
 
@@ -83,13 +87,17 @@ class EnemyBox {
     // enemy movement
     for (let i = 0; i < this.enemys.length; i++) {
       // enemy shots
-      if (this.numOfShots < 5) {
+      if ((this.hardMode ? floor(this.numOfShots/2) : this.numOfShots) < 5) {
         if (this.enemys[i].shoot(this.enemys.length)) {
           this.enemyShots.push(new this.shotType(this.enemys[i].x, this.enemys[i].y, this.sprtSize, this.shotImg, "bad"));
           this.numOfShots++;
         }
       }
       this.enemys[i].takeTurn(this.dir, changedDir);
+    }
+
+    if (this.numOfShots > 0) {
+      this.attackSound.play();
     }
     this.numOfShots = 0;
 
