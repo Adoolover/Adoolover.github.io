@@ -12,6 +12,7 @@ class RespawnEnemys {
   }
 
   useItem(enemyArr) {
+    normalDropChance *= 1.5;
     enemyArr.map(enemyBullet => enemyBullet.spawnEnemys());
   }
 }

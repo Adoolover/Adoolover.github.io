@@ -1,16 +1,16 @@
 // Travis Ahern
-// Nov. 16, 2018
+// Dec. 1, 2018
 
-class CommonEnemy {
+class StrongEnemy {
   constructor(x, y, sprtSize, bullet) {
     // position
     this.x = x;
     this.y = y;
 
-    this.hp = 2;
+    this.hp = 4;
 
     // sprite
-    this.img = img.commonEnemySprite;
+    this.img = img.strongEnemySprite;
     this.sprtSize = sprtSize;
   }
 
@@ -25,7 +25,7 @@ class CommonEnemy {
   }
 
   move(dir, changedDir) {
-    let moved = this.sprtSize;
+    let moved = this.sprtSize/2;
     changedDir ? (this.y += moved) : (this.x += (dir === "right" ? moved : -moved));
     return moved;
   }
@@ -33,7 +33,7 @@ class CommonEnemy {
   shoot(numOfEnemysleft) {
     // chance to fire a bullet
     // chance based on number of live enemys in this platoon
-    let shot = random(10*numOfEnemysleft);
+    let shot = random(15*numOfEnemysleft);
 
     return shot < numOfEnemysleft;
   }

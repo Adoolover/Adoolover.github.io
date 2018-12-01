@@ -2,14 +2,14 @@
 // Nov. 16, 2018
 
 class EnemyBox {
-  constructor(enemyType, sprtSize, shot, shotImg, timer, numOfEnemys, hardMode) {
+  constructor(enemyType, sprtSize, shot, shotImg, timer, numOfEnemys, hardMode, boss) {
     // enemys
     let min = numOfEnemys - 3;
     let max = numOfEnemys + 3;
-    this.enemysAcrsX = int(random(min, max));
+    this.enemysAcrsX = boss ? 1 : int(random(min, max));
     this.enemysAcrsY = int(this.enemysAcrsX*0.50);
     this.enemyType = enemyType;
-    this.sprtSize = sprtSize;
+    this.sprtSize = boss ? sprtSize*3 : sprtSize;
     this.enemys = [];
     this.enemyShots = [];
 
@@ -69,6 +69,12 @@ class EnemyBox {
   }
 
   checkTurn() {
+    push();
+    noFill();
+    stroke("white");
+    rect(this.x, this.y, this.sprtSize*this.enemysAcrsX, this.sprtSize*this.enemysAcrsY);
+    pop();
+
     // take turn
     let elapsedTime = millis() - this.timer;
     elapsedTime > this.timeDelay ? this.move() : this.enemys.map(enemys => enemys.display());
@@ -86,6 +92,7 @@ class EnemyBox {
     changedDir = (changedDir !== this.dir);
 
     // enemy movement
+    let amountMoved = 0;
     for (let i = 0; i < this.enemys.length; i++) {
       // enemy shots
       if ((this.hardMode ? floor(this.numOfShots*0.75) : this.numOfShots) < 5) {
@@ -94,7 +101,7 @@ class EnemyBox {
           this.numOfShots++;
         }
       }
-      this.enemys[i].takeTurn(this.dir, changedDir);
+      amountMoved = this.enemys[i].takeTurn(this.dir, changedDir);
     }
 
     if (this.numOfShots > 0) {
@@ -103,7 +110,7 @@ class EnemyBox {
     this.numOfShots = 0;
 
     // move
-    changedDir ? (this.y += this.sprtSize) : (this.x += (this.dir === "right" ? this.sprtSize : -this.sprtSize));
+    changedDir ? (this.y += amountMoved) : (this.x += (this.dir === "right" ? amountMoved : -amountMoved));
   }
 
   deleteBullets() {

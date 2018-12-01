@@ -8,7 +8,7 @@ class PowerUp {
     this.y = y;
 
     // speed
-    this.dx = random(-width*0.0005, width*0.0005);
+    this.dx = random(-width*0.0015, width*0.0015);
     this.dy = random(-height*0.004, -height*0.006);
 
     // acceleration
@@ -16,7 +16,7 @@ class PowerUp {
 
     // power up
     this.power = power;
-    this.size = size*0.75;
+    this.size = size*0.70;
     this.dir = this.dx < 0 ? -1:1;
     this.rotation = random(height*0.05);
   }
@@ -30,7 +30,8 @@ class PowerUp {
     image(this.power.img, 0, 0, this.size, this.size);
     pop();
 
-    this.rotation += (this.ay*2 + this.dy*(this.dy < 0 ? -1:1))*this.dir;
+    let changeRotation = (5 + this.dy*this.ay*5)*this.dir;
+    this.rotation += changeRotation;
   }
 
   move() {

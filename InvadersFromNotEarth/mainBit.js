@@ -16,6 +16,9 @@
 // Travis Ahern
 // Cody Flynn
 //
+// SOUND FROM:
+// freesound.org
+//
 // MADE ON:
 // November 16,
 // of the year 2018
@@ -30,8 +33,8 @@ let textSizes;
 
 let enemyBoxs = [];
 let enemyTypes = [];
-let numOfEnemys = 8;
-let maxEnemyBoxs = 4;
+let numOfEnemys = 5;
+let maxEnemyBoxs = 3;
 let hardMode = false;
 
 let players = [];
@@ -40,6 +43,7 @@ const MAX_HEALTH = 3;
 
 let allPowerUps = [];
 let powerUps = [];
+let normalDropChance;
 let powerUpsDropChance;
 
 let startState;
@@ -70,7 +74,10 @@ function preload() {
   allSounds.gameOver = loadSound("assets/noise/gameOver_1.wav");
 
   // sprites
+  img.bossEnemySprite = loadImage("assets/img/boss.png");
   img.commonEnemySprite = loadImage("assets/img/commons.png");
+  img.fastEnemySprite = loadImage("assets/img/fasts.png");
+  img.strongEnemySprite = loadImage("assets/img/strongs.png");
   img.enemyBullet = loadImage("assets/img/enemyBullets.png");
   img.playerBullet = loadImage("assets/img/playerBullets.png");
   img.playerOneSprite = loadImage("assets/img/playerOne.png");
@@ -118,7 +125,7 @@ function setup() {
   textSize(textSizes);
 
   // enemy vars
-  enemyTypes = [CommonEnemy, CommonEnemy, CommonEnemy];
+  enemyTypes = [CommonEnemy, FastEnemy, CommonEnemy, StrongEnemy, CommonEnemy];
   enemyBoxs = [];
   spriteSize.enemy = (width*0.03 + height*0.03)/2;
   enemyBoxs.push(new EnemyBox(CommonEnemy, spriteSize.enemy, Bullet, img.enemyBullet, 1, numOfEnemys, hardMode));
@@ -132,7 +139,8 @@ function setup() {
   // power ups
   allPowerUps = [ExtraLife, FastAttack, MaxHealth, MoreMaxHealth, PulseDestroyBullets, DestroyEnemys, RespawnEnemys];
   powerUps = [];
-  powerUpsDropChance = 2;
+  normalDropChance = 5;
+  powerUpsDropChance = 25;
 
   // timer
   startGameTimer = 0;
@@ -222,25 +230,40 @@ function enemyFoos() {
           // checking if bullet hits enemmy
           for (let w = enemyBoxs[i].enemys.length-1; w >= 0; w--) {
             if (enemyBoxs[i].hitByBullet(w, players[playerNum].projectiles[j].x, players[playerNum].projectiles[j].y)) {
-              spawnPowerUp(enemyBoxs[i].enemys[w].x, enemyBoxs[i].enemys[w].y);
-              allSounds.enemyDeath.play();
-              enemyBoxs[i].enemys.splice(w, 1);
+              // hit enemy
               players[playerNum].projectiles.splice(j, 1);
-              score += 5;
-              if (score % 250 === 0) {
-                powerUpsDropChance = 100;
-                if (score % 1000 === 0) {
-                  hardMode = !hardMode;
-                }
+              enemyBoxs[i].enemys[w].hp--;
+              if (enemyBoxs[i].enemys[w].hp <= 0) {
+                // killed enemy
+                spawnPowerUp(enemyBoxs[i].enemys[w].x, enemyBoxs[i].enemys[w].y);
+                enemyBoxs[i].enemys.splice(w, 1);
+                score += 5;
+                let modScore = 200
+                if (score % modScore === 0) {
+                  // 100% chance to get a power up every modScore points
+                  powerUpsDropChance = 100;
 
-                else if (score % 750 === 0) {
-                  numOfEnemys += 2;
-                  numOfEnemys = constrain(numOfEnemys, 6, 20);
-                }
+                  if (score % (modScore*10) === 0) {
+                    // spawn boss
+                    enemyBoxs.push(new EnemyBox(BossEnemy, spriteSize.enemy, Bullet, img.enemyBullet, 1, 1, false));
+                  }
 
-                else if (score % 500 === 0) {
-                  maxEnemyBoxs += 2;
-                  maxEnemyBoxs = constrain(maxEnemyBoxs, 10, 20);
+                  if (score % (modScore*4) === 0) {
+                    // hardmode
+                    hardMode = !hardMode;
+                  }
+
+                  else if (score % (modScore*3) === 0) {
+                    // more enemy groupss
+                    maxEnemyBoxs += 2;
+                    maxEnemyBoxs = constrain(maxEnemyBoxs, 1, 15);
+                  }
+
+                  else if (score % (modScore*2) === 0) {
+                    // more enemys
+                    numOfEnemys++;
+                    numOfEnemys = constrain(numOfEnemys, 3, 10);
+                  }
                 }
               }
               break;
@@ -270,11 +293,12 @@ function enemyFoos() {
 }
 
 function spawnPowerUp(x, y) {
+  allSounds.enemyDeath.play();
   // chance to drop a power up
   let dropChance = random(100);
 
   if (dropChance <= powerUpsDropChance) {
-    powerUpsDropChance = 2;
+    powerUpsDropChance = normalDropChance;
     spawnPowerUp2(x, y);
   }
 }
@@ -283,7 +307,7 @@ function spawnPowerUp2(x, y) {
   let randomPowerUp = random(allPowerUps);
   if (randomPowerUp === DestroyEnemys) {
     let dropChance = random(100);
-    dropChance > 50 ? powerUps.push(new PowerUp(x, y, new randomPowerUp, spriteSize.player)) : spawnPowerUp2();
+    dropChance > 50 ? powerUps.push(new PowerUp(x, y, new randomPowerUp, spriteSize.player)) : spawnPowerUp2(x, y);
   }
 
   else {

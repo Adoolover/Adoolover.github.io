@@ -10,7 +10,8 @@ class Bullet {
     this.dy = random(height*0.005, height*0.010);
     this.alingment = goodBad;
 
-    this.dy *= this.alingment === "good" ? -1: 1;
+    this.dx *= this.alingment === "good" ? 0.5:1;
+    this.dy *= this.alingment === "good" ? -1.5:1;
 
     // sprite
     this.img = img;
