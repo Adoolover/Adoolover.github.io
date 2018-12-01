@@ -28,10 +28,11 @@ class Player {
     this.attackSound = allSounds.playerLaser;
 
     // item
-    this.item = "";
+    this.item = -1;
+    this.useItemSound = allSounds.useItemPulse;
 
     // attack delay
-    this.timeDelay = 750;
+    this.timeDelay = 1000;
     this.timer = millis();
   }
 
@@ -105,6 +106,24 @@ class Player {
       if (elapsedTime > this.timeDelay) {
         this.timer = millis();
         this.attacking = true;
+      }
+    }
+  }
+
+  useItem(enemyArr) {
+    if (this.item != -1) {
+      image(this.item.img, this.x - this.size/2, this.y - this.size/2, this.size/2, this.size/2);
+
+      if (keyIsDown(83) && this.playerNum === 1) { // S
+        this.useItemSound.play();
+        this.item.useItem(enemyArr);
+        this.item = -1;
+      }
+
+      else if (keyIsDown(40) && this.playerNum === 2) { // DOWN_ARROW
+        this.useItemSound.play();
+        this.item.useItem(enemyArr);
+        this.item = -1;
       }
     }
   }

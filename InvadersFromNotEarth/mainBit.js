@@ -36,10 +36,11 @@ let hardMode = false;
 
 let players = [];
 let playerImgs = [];
-const MAX_HEALTH = 5;
+const MAX_HEALTH = 3;
 
 let allPowerUps = [];
 let powerUps = [];
+let powerUpsDropChance;
 
 let startState;
 let state;
@@ -57,13 +58,15 @@ function preload() {
 
   allSounds.background = loadSound("assets/noise/background_1.wav");
 
-  allSounds.enemyDeath = loadSound("assets/noise/enemyDeath.wav");
   allSounds.enemyLaser = loadSound("assets/noise/enemyLaser.wav");
+  allSounds.enemyDeath = loadSound("assets/noise/enemyDeath.wav");
 
-  allSounds.playerDeath = loadSound("assets/noise/playerDeath.mp3");
   allSounds.playerLaser = loadSound("assets/noise/playerLaser.wav");
+  allSounds.playerHit = loadSound("assets/noise/playerHit_1.wav");
+  allSounds.playerDeath = loadSound("assets/noise/playerDeath.mp3");
 
   allSounds.powerUpNoise = loadSound("assets/noise/powerUpsNoise.wav");
+  allSounds.useItemPulse = loadSound("assets/noise/useItemPulse.wav");
   allSounds.gameOver = loadSound("assets/noise/gameOver_1.wav");
 
   // sprites
@@ -78,6 +81,9 @@ function preload() {
   img.fastAttack = loadImage("assets/img/fastAttack.png");
   img.maxHealth = loadImage("assets/img/maxHealth.png");
   img.moreMaxHealth = loadImage("assets/img/moreMaxHealth.png");
+  img.destroyBullets = loadImage("assets/img/destroyBullets.png");
+  img.destroyEnemys = loadImage("assets/img/destroyEnemys.png");
+  img.respawnEnemys = loadImage("assets/img/respawnEnemys.png");
 }
 
 function setup() {
@@ -88,15 +94,19 @@ function setup() {
   noStroke();
 
   // sounds
-  allSounds.background.setVolume(0.4);
+  allSounds.background.setVolume(0.3);
   allSounds.background.play();
   allSounds.background.setLoop(true);
 
-  allSounds.enemyDeath.setVolume(0.15);
   allSounds.enemyLaser.setVolume(0.1);
+  allSounds.enemyDeath.setVolume(0.15);
+
+  allSounds.playerLaser.setVolume(1);
+  allSounds.playerHit.setVolume(0.3);
   allSounds.playerDeath.setVolume(0.5);
-  allSounds.playerLaser.setVolume(0.75);
+
   allSounds.powerUpNoise.setVolume(0.25);
+  allSounds.useItemPulse.setVolume(1);
 
   // start
   startState = 0;
@@ -120,8 +130,9 @@ function setup() {
   players = [];
 
   // power ups
-  allPowerUps = [ExtraLife, FastAttack, MaxHealth, MoreMaxHealth];
+  allPowerUps = [ExtraLife, FastAttack, MaxHealth, MoreMaxHealth, PulseDestroyBullets, DestroyEnemys, RespawnEnemys];
   powerUps = [];
+  powerUpsDropChance = 2;
 
   // timer
   startGameTimer = 0;
@@ -177,10 +188,10 @@ function displayControls() {
   fill("white");
 
   // player 1
-  text("PLAYER 1:\n'W' - SHOOT\n'A' - LEFT\n'D' - RIGHT", width*0.10, height*0.40);
+  text("PLAYER 1:\n'W' - SHOOT\n'S' - USE ITEM\n'A' - LEFT\n'D' - RIGHT", width*0.10, height*0.40);
 
   // player 2
-  text("PLAYER 2:\nUP - SHOOT\nLEFT - LEFT\nRIGHT - RIGHT\nSPACE - REVIVE", width*0.90, height*0.40);
+  text("PLAYER 2:\nUP - SHOOT\nDOWN - USE ITEM\nLEFT - LEFT\nRIGHT - RIGHT\nSPACE - REVIVE", width*0.90, height*0.40);
 }
 
 function spawnEnemyBoxes() {
@@ -216,17 +227,18 @@ function enemyFoos() {
               enemyBoxs[i].enemys.splice(w, 1);
               players[playerNum].projectiles.splice(j, 1);
               score += 5;
-              if (score % 500 === 0) {
-                if (score % 2000 === 0) {
+              if (score % 250 === 0) {
+                powerUpsDropChance = 100;
+                if (score % 1000 === 0) {
                   hardMode = !hardMode;
                 }
 
-                else if (score % 1500 === 0) {
+                else if (score % 750 === 0) {
                   numOfEnemys += 2;
                   numOfEnemys = constrain(numOfEnemys, 6, 20);
                 }
 
-                else {
+                else if (score % 500 === 0) {
                   maxEnemyBoxs += 2;
                   maxEnemyBoxs = constrain(maxEnemyBoxs, 10, 20);
                 }
@@ -242,6 +254,7 @@ function enemyFoos() {
     enemyBoxs[i].moveAllShots();
     for (let playerNum = players.length-1; playerNum >= 0; playerNum--) {
       if (enemyBoxs[i].collisionShots(players[playerNum].x, players[playerNum].y)) {
+        allSounds.playerHit.play();
         players[playerNum].health--;
       }
       else if (enemyBoxs[i].enemyHitBottom()) {
@@ -260,8 +273,21 @@ function spawnPowerUp(x, y) {
   // chance to drop a power up
   let dropChance = random(100);
 
-  if (dropChance <= 1) {
-    powerUps.push(new PowerUp(x, y, new (random(allPowerUps)), spriteSize.player));
+  if (dropChance <= powerUpsDropChance) {
+    powerUpsDropChance = 2;
+    spawnPowerUp2(x, y);
+  }
+}
+
+function spawnPowerUp2(x, y) {
+  let randomPowerUp = random(allPowerUps);
+  if (randomPowerUp === DestroyEnemys) {
+    let dropChance = random(100);
+    dropChance > 50 ? powerUps.push(new PowerUp(x, y, new randomPowerUp, spriteSize.player)) : spawnPowerUp2();
+  }
+
+  else {
+    powerUps.push(new PowerUp(x, y, new randomPowerUp, spriteSize.player));
   }
 }
 
@@ -292,6 +318,7 @@ function playersFoo() {
       players[playerNum].display(playerNum);
       players[playerNum].movement();
       players[playerNum].attack();
+      players[playerNum].useItem(enemyBoxs);
       players[playerNum].healthBar();
 
       if (players.length < 2) {

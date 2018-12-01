@@ -35,6 +35,7 @@ class EnemyBox {
   }
 
   spawnEnemys() {
+    this.enemys = [];
     for (let i = -this.enemysAcrsX/2; i < this.enemysAcrsX/2; i++) {
       for (let j = -this.enemysAcrsY/2; j < this.enemysAcrsY/2; j++) {
 
@@ -87,7 +88,7 @@ class EnemyBox {
     // enemy movement
     for (let i = 0; i < this.enemys.length; i++) {
       // enemy shots
-      if ((this.hardMode ? floor(this.numOfShots/2) : this.numOfShots) < 5) {
+      if ((this.hardMode ? floor(this.numOfShots*0.75) : this.numOfShots) < 5) {
         if (this.enemys[i].shoot(this.enemys.length)) {
           this.enemyShots.push(new this.shotType(this.enemys[i].x, this.enemys[i].y, this.sprtSize, this.shotImg, "bad"));
           this.numOfShots++;
@@ -103,6 +104,14 @@ class EnemyBox {
 
     // move
     changedDir ? (this.y += this.sprtSize) : (this.x += (this.dir === "right" ? this.sprtSize : -this.sprtSize));
+  }
+
+  deleteBullets() {
+    this.enemyShots = [];
+  }
+
+  deleteEnemys() {
+    this.enemys = [];
   }
 
   hitByBullet(enemyPos, bulletX, bulletY) {

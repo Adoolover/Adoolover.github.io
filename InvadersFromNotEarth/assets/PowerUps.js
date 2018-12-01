@@ -9,15 +9,16 @@ class PowerUp {
 
     // speed
     this.dx = random(-width*0.0005, width*0.0005);
-    this.dy = random(-height*0.006, -height*0.004);
+    this.dy = random(-height*0.004, -height*0.006);
 
     // acceleration
-    this.ay = 9.8/100;
+    this.ay = height*0.01/100;
 
     // power up
     this.power = power;
-    this.size = size*0.50;
-    this.rotation = 0;
+    this.size = size*0.75;
+    this.dir = this.dx < 0 ? -1:1;
+    this.rotation = random(height*0.05);
   }
 
   display() {
@@ -29,13 +30,15 @@ class PowerUp {
     image(this.power.img, 0, 0, this.size, this.size);
     pop();
 
-    this.rotation += 2+this.dy;
+    this.rotation += (this.ay*2 + this.dy*(this.dy < 0 ? -1:1))*this.dir;
   }
 
   move() {
     // move
     this.x += this.dx;
     this.y += this.dy;
+
+    this.x = constrain(this.x, this.size, width-this.size);
 
     // falling
     this.dy += this.ay;
@@ -46,6 +49,6 @@ class PowerUp {
   }
 
   hitEdge() {
-    return this.y > height || this.x > width+this.size || this.x < -this.size;
+    return this.y > height;
   }
 }

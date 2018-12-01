@@ -7,9 +7,11 @@ class PulseDestroyBullets {
   }
 
   pickUp(playerObj) {
-    if (playerObj.item = "") {
-      playerObj.item = "destroyBullets";
-    }
+    playerObj.item = new PulseDestroyBullets();
     return playerObj;
+  }
+
+  useItem(enemyArr) {
+    enemyArr.map(enemyBullet => enemyBullet.deleteBullets());
   }
 }
