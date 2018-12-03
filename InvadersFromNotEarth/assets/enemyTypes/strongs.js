@@ -7,11 +7,13 @@ class StrongEnemy {
     this.x = x;
     this.y = y;
 
-    this.hp = 4;
+    this.hp = 3;
+    this.score = 3;
 
     // sprite
     this.img = img.strongEnemySprite;
     this.sprtSize = sprtSize;
+    this.movement = this.sprtSize/2;
   }
 
   display() {
@@ -25,9 +27,8 @@ class StrongEnemy {
   }
 
   move(dir, changedDir) {
-    let moved = this.sprtSize/2;
-    changedDir ? (this.y += moved) : (this.x += (dir === "right" ? moved : -moved));
-    return moved;
+    changedDir ? (this.y += this.movement) : (this.x += (dir === "right" ? this.movement : -this.movement));
+    return this.movement;
   }
 
   shoot(numOfEnemysleft) {

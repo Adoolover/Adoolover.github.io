@@ -28,6 +28,7 @@
 
 let img = {};
 let allSounds = {};
+let stars = {};
 let spriteSize = {};
 let textSizes;
 
@@ -46,6 +47,7 @@ let powerUps = [];
 let normalDropChance;
 let powerUpsDropChance;
 
+let looping = false;
 let startState;
 let state;
 let score;
@@ -72,6 +74,11 @@ function preload() {
   allSounds.powerUpNoise = loadSound("assets/noise/powerUpsNoise.wav");
   allSounds.useItemPulse = loadSound("assets/noise/useItemPulse.wav");
   allSounds.gameOver = loadSound("assets/noise/gameOver_1.wav");
+
+  // backgrounds
+  stars.star_0 = loadImage("assets/img/backgrounds/back.png");
+  stars.star_1 = loadImage("assets/img/backgrounds/backgroundSpace_01.png");
+  stars.star_2 = loadImage("assets/img/backgrounds/StarCluster1.png");
 
   // sprites
   img.bossEnemySprite = loadImage("assets/img/boss.png");
@@ -115,6 +122,12 @@ function setup() {
   allSounds.powerUpNoise.setVolume(0.25);
   allSounds.useItemPulse.setVolume(1);
 
+  // backgrounds
+  stars.objs = [];
+  for (let i = 0; i < 1; i++) {
+    stars.objs.push(new SpaceBackground(stars.star_0, i));
+  }
+
   // start
   startState = 0;
   state = 0;
@@ -125,7 +138,7 @@ function setup() {
   textSize(textSizes);
 
   // enemy vars
-  enemyTypes = [CommonEnemy, FastEnemy, CommonEnemy, StrongEnemy, CommonEnemy];
+  enemyTypes = [CommonEnemy, FastEnemy, CommonEnemy, StrongEnemy, CommonEnemy, FastEnemy, CommonEnemy];
   enemyBoxs = [];
   spriteSize.enemy = (width*0.03 + height*0.03)/2;
   enemyBoxs.push(new EnemyBox(CommonEnemy, spriteSize.enemy, Bullet, img.enemyBullet, 1, numOfEnemys, hardMode));
@@ -139,7 +152,7 @@ function setup() {
   // power ups
   allPowerUps = [ExtraLife, FastAttack, MaxHealth, MoreMaxHealth, PulseDestroyBullets, DestroyEnemys, RespawnEnemys];
   powerUps = [];
-  normalDropChance = 5;
+  normalDropChance = 2.5;
   powerUpsDropChance = 25;
 
   // timer
@@ -151,10 +164,18 @@ function setup() {
   button.coop = new Button(width/2, height*0.70, "CO-OP");
 }
 
-function draw() {
+function backgroundDisplay() {
   background(0);
 
+  for (let i = 0; i < stars.objs.length; i++) {
+    stars.objs[i].display();
+    stars.objs[i].scroll(score);
+  }
+}
+
+function draw() {
   if (startState === 0) {
+    background(0);
     startScreen();
     displayControls();
     startGameTimer = millis();
@@ -167,6 +188,7 @@ function draw() {
   }
 
   else if (startState === 1 || startState === 2){
+    backgroundDisplay();
     spawnEnemyBoxes();
     enemyFoos();
     displayScore();
@@ -196,7 +218,7 @@ function displayControls() {
   fill("white");
 
   // player 1
-  text("PLAYER 1:\n'W' - SHOOT\n'S' - USE ITEM\n'A' - LEFT\n'D' - RIGHT", width*0.10, height*0.40);
+  text("PLAYER 1:\n'W' - SHOOT\n'S' - USE ITEM\n'A' - LEFT\n'D' - RIGHT\nLMB - PAUSE", width*0.10, height*0.40);
 
   // player 2
   text("PLAYER 2:\nUP - SHOOT\nDOWN - USE ITEM\nLEFT - LEFT\nRIGHT - RIGHT\nSPACE - REVIVE", width*0.90, height*0.40);
@@ -235,36 +257,39 @@ function enemyFoos() {
               enemyBoxs[i].enemys[w].hp--;
               if (enemyBoxs[i].enemys[w].hp <= 0) {
                 // killed enemy
-                spawnPowerUp(enemyBoxs[i].enemys[w].x, enemyBoxs[i].enemys[w].y);
-                enemyBoxs[i].enemys.splice(w, 1);
-                score += 5;
-                let modScore = 200
-                if (score % modScore === 0) {
-                  // 100% chance to get a power up every modScore points
-                  powerUpsDropChance = 100;
+                for (let a = 0; a < enemyBoxs[i].enemys[w].score; a++) {
+                  score += 5;
+                  let modScore = 200;
+                  if (score % modScore === 0) {
+                    // 100% chance to get a power up every modScore points
+                    powerUpsDropChance = 100;
 
-                  if (score % (modScore*10) === 0) {
-                    // spawn boss
-                    enemyBoxs.push(new EnemyBox(BossEnemy, spriteSize.enemy, Bullet, img.enemyBullet, 1, 1, false));
-                  }
+                    if (score % (modScore*7) === 0) {
+                      // spawn boss
+                      enemyBoxs.push(new EnemyBox(BossEnemy, spriteSize.enemy, Bullet, img.enemyBullet, 1, 1, hardMode, true));
+                      enemyBoxs[enemyBoxs.length-1].spawnEnemys();
+                    }
 
-                  if (score % (modScore*4) === 0) {
-                    // hardmode
-                    hardMode = !hardMode;
-                  }
+                    if (score % (modScore*4) === 0) {
+                      // hardmode
+                      hardMode = !hardMode;
+                    }
 
-                  else if (score % (modScore*3) === 0) {
-                    // more enemy groupss
-                    maxEnemyBoxs += 2;
-                    maxEnemyBoxs = constrain(maxEnemyBoxs, 1, 15);
-                  }
+                    else if (score % (modScore*3) === 0) {
+                      // more enemy groupss
+                      maxEnemyBoxs += 2;
+                      maxEnemyBoxs = constrain(maxEnemyBoxs, 1, 15);
+                    }
 
-                  else if (score % (modScore*2) === 0) {
-                    // more enemys
-                    numOfEnemys++;
-                    numOfEnemys = constrain(numOfEnemys, 3, 10);
+                    else if (score % (modScore*2) === 0) {
+                      // more enemys
+                      numOfEnemys++;
+                      numOfEnemys = constrain(numOfEnemys, 3, 10);
+                    }
                   }
+                  spawnPowerUp(enemyBoxs[i].enemys[w].x, enemyBoxs[i].enemys[w].y);
                 }
+                enemyBoxs[i].enemys.splice(w, 1);
               }
               break;
             }
@@ -384,4 +409,10 @@ function gameOver() {
   textSize(textSizes*2);
   text("YOU LOSE\nSCORE: " + score, width/2, height/2);
   noLoop();
+}
+
+function mousePressed() {
+  if (startState !== -1 && startState !== 0) {
+    (looping = !looping) ? noLoop():loop();
+  }
 }

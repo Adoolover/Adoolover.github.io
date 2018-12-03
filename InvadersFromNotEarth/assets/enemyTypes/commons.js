@@ -7,11 +7,13 @@ class CommonEnemy {
     this.x = x;
     this.y = y;
 
-    this.hp = 2;
+    this.hp = 1;
+    this.score = 1;
 
     // sprite
     this.img = img.commonEnemySprite;
     this.sprtSize = sprtSize;
+    this.movement = this.sprtSize;
   }
 
   display() {
@@ -25,9 +27,8 @@ class CommonEnemy {
   }
 
   move(dir, changedDir) {
-    let moved = this.sprtSize;
-    changedDir ? (this.y += moved) : (this.x += (dir === "right" ? moved : -moved));
-    return moved;
+    changedDir ? (this.y += this.movement) : (this.x += (dir === "right" ? this.movement : -this.movement));
+    return this.movement;
   }
 
   shoot(numOfEnemysleft) {

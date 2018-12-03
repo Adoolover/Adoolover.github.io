@@ -8,10 +8,12 @@ class FastEnemy {
     this.y = y;
 
     this.hp = 1;
+    this.score = 2;
 
     // sprite
     this.img = img.fastEnemySprite;
     this.sprtSize = sprtSize;
+    this.movement = this.sprtSize*3;
   }
 
   display() {
@@ -25,7 +27,7 @@ class FastEnemy {
   }
 
   move(dir, changedDir) {
-    let moved = changedDir ? this.sprtSize : this.sprtSize*3;
+    let moved = changedDir ? this.movement/2 : this.movement;
     changedDir ? (this.y += moved) : (this.x += (dir === "right" ? moved : -moved));
     return moved;
   }

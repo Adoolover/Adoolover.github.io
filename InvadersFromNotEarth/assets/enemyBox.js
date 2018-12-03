@@ -7,9 +7,9 @@ class EnemyBox {
     let min = numOfEnemys - 3;
     let max = numOfEnemys + 3;
     this.enemysAcrsX = boss ? 1 : int(random(min, max));
-    this.enemysAcrsY = int(this.enemysAcrsX*0.50);
+    this.enemysAcrsY = boss ? 1 : int(this.enemysAcrsX*0.50);
     this.enemyType = enemyType;
-    this.sprtSize = boss ? sprtSize*3 : sprtSize;
+    this.sprtSize = boss ? sprtSize*4 : sprtSize;
     this.enemys = [];
     this.enemyShots = [];
 
@@ -28,6 +28,7 @@ class EnemyBox {
     this.x = random(xMin, width - xMax);
     this.y = yTop;
     this.dir = random(["right", "left"]);
+    this.movement = this.sprtSize;
 
     // time between actions
     this.timeDelay = hardMode ? timer*500 : timer*1000;
@@ -45,6 +46,7 @@ class EnemyBox {
         this.enemys.push(new this.enemyType(x, y, this.sprtSize, Bullet));
       }
     }
+    this.movement = this.enemys[0].movement;
   }
 
   moveAllShots() {
@@ -69,11 +71,11 @@ class EnemyBox {
   }
 
   checkTurn() {
-    push();
-    noFill();
-    stroke("white");
-    rect(this.x, this.y, this.sprtSize*this.enemysAcrsX, this.sprtSize*this.enemysAcrsY);
-    pop();
+    // push();
+    // noFill();
+    // stroke("white");
+    // rect(this.x, this.y, this.sprtSize*this.enemysAcrsX, this.sprtSize*this.enemysAcrsY);
+    // pop();
 
     // take turn
     let elapsedTime = millis() - this.timer;
@@ -95,13 +97,17 @@ class EnemyBox {
     let amountMoved = 0;
     for (let i = 0; i < this.enemys.length; i++) {
       // enemy shots
-      if ((this.hardMode ? floor(this.numOfShots*0.75) : this.numOfShots) < 5) {
+      amountMoved = this.enemys[i].takeTurn(this.dir, changedDir);
+      if ((this.hardMode ? floor(this.numOfShots*0.9) : this.numOfShots) < 5) {
         if (this.enemys[i].shoot(this.enemys.length)) {
-          this.enemyShots.push(new this.shotType(this.enemys[i].x, this.enemys[i].y, this.sprtSize, this.shotImg, "bad"));
+
+          this.enemyShots.push(new this.shotType(this.enemys[i].x, this.enemys[i].y,
+            (this.enemyType === BossEnemy ? this.sprtSize/2 : this.sprtSize), this.shotImg, "bad")
+          );
+
           this.numOfShots++;
         }
       }
-      amountMoved = this.enemys[i].takeTurn(this.dir, changedDir);
     }
 
     if (this.numOfShots > 0) {
@@ -143,8 +149,8 @@ class EnemyBox {
   boxEdge(dir) {
     // hitting edge of screen
     return (dir === "right" ?
-    this.x + this.sprtSize * this.enemysAcrsX/2 + this.sprtSize:
-    this.x - this.sprtSize * this.enemysAcrsX/2 - this.sprtSize);
+    this.x + this.sprtSize * this.enemysAcrsX/2 + this.movement:
+    this.x - this.sprtSize * this.enemysAcrsX/2 - this.movement);
   }
 
   rightEdge() {
