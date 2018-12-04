@@ -49,4 +49,28 @@ function setEnemyTypes() {
     hp: 3,
     scoreGained: 3
   };
+
+  // Super Strong
+  enemyTypes.superStrong = {
+    sprite: img.strongEnemySprite,
+    size: spriteSize.enemy*2,
+    bulletSize: spriteSize.enemy*1.5,
+    dxMultiplier: 1.5,
+    dyMultiplier: 1,
+    attackMultiplier: 7,
+    hp: 5,
+    scoreGained: 7
+  };
+
+  // Slow
+  enemyTypes.slow = {
+    sprite: img.strongEnemySprite,
+    size: spriteSize.enemy*0.25,
+    bulletSize: spriteSize.enemy*0.5,
+    dxMultiplier: 2.5,
+    dyMultiplier: 0.001,
+    attackMultiplier: 3.5,
+    hp: 1,
+    scoreGained: 5
+  };
 }

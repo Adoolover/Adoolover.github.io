@@ -141,7 +141,8 @@ function setup() {
   // enemy vars
   spriteSize.enemy = (width*0.03 + height*0.03)/2;
   setEnemyTypes();
-  allEnemyTypes = [enemyTypes.common, enemyTypes.fast, enemyTypes.common, enemyTypes.strong, enemyTypes.common, enemyTypes.fast, enemyTypes.common];
+  allEnemyTypes = [enemyTypes.common, enemyTypes.fast, enemyTypes.strong, enemyTypes.superStrong, enemyTypes.slow];
+  // allEnemyTypes = [enemyTypes.common, enemyTypes.fast, enemyTypes.common, enemyTypes.strong, enemyTypes.common, enemyTypes.fast, enemyTypes.common];
   enemyBoxs = [];
   enemyBoxs.push(new EnemyBox(enemyTypes.common, spriteSize.enemy, Bullet, img.enemyBullet, 1, numOfEnemys, hardMode));
   enemyBoxs[enemyBoxs.length-1].spawnEnemys();
