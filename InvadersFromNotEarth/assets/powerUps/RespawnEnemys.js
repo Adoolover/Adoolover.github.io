@@ -12,7 +12,8 @@ class RespawnEnemys {
   }
 
   useItem(enemyArr) {
-    normalDropChance *= 1.25;
+    normalDropChance += 0.5;
+    normalDropChance = constrain(normalDropChance, 0, 51);
     hardMode = true;
     enemyArr.map(enemyBullet => enemyBullet.spawnEnemys());
   }

@@ -113,15 +113,15 @@ function setup() {
   allSounds.background.play();
   allSounds.background.setLoop(true);
 
-  allSounds.enemyLaser.setVolume(0.1);
-  allSounds.enemyDeath.setVolume(0.15);
+  allSounds.enemyLaser.setVolume(0.05);
+  allSounds.enemyDeath.setVolume(0.1);
 
-  allSounds.playerLaser.setVolume(1);
+  allSounds.playerLaser.setVolume(1.5);
   allSounds.playerHit.setVolume(0.3);
   allSounds.playerDeath.setVolume(0.5);
 
-  allSounds.powerUpNoise.setVolume(0.25);
-  allSounds.useItemPulse.setVolume(1);
+  allSounds.powerUpNoise.setVolume(0.2);
+  allSounds.useItemPulse.setVolume(0.75);
 
   // backgrounds
   stars.objs = [];
