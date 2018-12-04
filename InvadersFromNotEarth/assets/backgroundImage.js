@@ -28,7 +28,7 @@ class SpaceBackground {
     if (this.y > -this.yStart + this.height) {
       this.y = this.yStart + this.height;
     }
-    this.dy = height*theScore/1e6;
-    this.dy = constrain(this.dy, height/1e6, height*0.1);
+    this.dy = height*theScore/5e5;
+    this.dy = constrain(this.dy, height/5e5, height*0.1);
   }
 }

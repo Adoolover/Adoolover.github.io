@@ -9,7 +9,7 @@ class EnemyBox {
     this.enemysAcrsX = boss ? 1 : int(random(min, max));
     this.enemysAcrsY = boss ? 1 : int(this.enemysAcrsX*0.50);
     this.enemyType = enemyType;
-    this.sprtSize = boss ? sprtSize*4 : sprtSize;
+    this.sprtSize = enemyType.size;
     this.enemys = [];
     this.enemyShots = [];
 
@@ -43,7 +43,7 @@ class EnemyBox {
         // fill this box with enemy units
         let x = this.x + this.sprtSize*i + this.sprtSize/2;
         let y = this.y + this.sprtSize*j + this.sprtSize/2;
-        this.enemys.push(new this.enemyType(x, y, this.sprtSize, Bullet));
+        this.enemys.push(new Enemy(x, y, this.enemyType));
       }
     }
     this.movement = this.enemys[0].movement;
@@ -88,9 +88,9 @@ class EnemyBox {
 
     // change directions?
     let changedDir = this.dir;
-    this.dir === "right" ?
-      (this.dir = (this.boxEdge("right") < width ? "right" : "left")):
-      (this.dir = (this.boxEdge("left") < 0 ? "right" : "left"));
+    this.dir = (this.dir === "right" ?
+      (this.rightEdge() < width ? "right" : "left"):
+      (this.leftEdge() < 0 ? "right" : "left"));
     changedDir = (changedDir !== this.dir);
 
     // enemy movement
@@ -98,12 +98,16 @@ class EnemyBox {
     for (let i = 0; i < this.enemys.length; i++) {
       // enemy shots
       amountMoved = this.enemys[i].takeTurn(this.dir, changedDir);
-      if ((this.hardMode ? floor(this.numOfShots*0.9) : this.numOfShots) < 5) {
+
+      if (this.numOfShots < 5) {
+      // if ((this.hardMode ? floor(this.numOfShots*0.9) : this.numOfShots) < 5) {
+
         if (this.enemys[i].shoot(this.enemys.length)) {
 
-          this.enemyShots.push(new this.shotType(this.enemys[i].x, this.enemys[i].y,
-            (this.enemyType === BossEnemy ? this.sprtSize/2 : this.sprtSize), this.shotImg, "bad")
-          );
+          this.enemyShots.push(new this.shotType(this.enemys[i].x, this.enemys[i].y, this.enemyType.bulletSize, this.shotImg, "bad"));
+          // this.enemyShots.push(new this.shotType(this.enemys[i].x, this.enemys[i].y,
+          //   (this.enemyType === BossEnemy ? this.sprtSize/2 : this.sprtSize), this.shotImg, "bad")
+          // );
 
           this.numOfShots++;
         }
@@ -146,19 +150,12 @@ class EnemyBox {
     return false;
   }
 
-  boxEdge(dir) {
-    // hitting edge of screen
-    return (dir === "right" ?
-    this.x + this.sprtSize * this.enemysAcrsX/2 + this.movement:
-    this.x - this.sprtSize * this.enemysAcrsX/2 - this.movement);
-  }
-
   rightEdge() {
-    return this.x + this.sprtSize*this.enemysAcrsX/2 + this.sprtSize;
+    return this.x + this.sprtSize*this.enemysAcrsX/2 + this.sprtSize + this.sprtSize*this.enemyType.dxMultiplier;
   }
 
   leftEdge() {
-    return this.x - this.sprtSize*this.enemysAcrsX/2 - this.sprtSize;
+    return this.x - this.sprtSize*this.enemysAcrsX/2 - this.sprtSize - this.sprtSize*this.enemyType.dxMultiplier;
   }
 
   bottomEdge() {

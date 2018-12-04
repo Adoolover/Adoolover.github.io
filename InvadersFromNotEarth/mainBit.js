@@ -33,7 +33,8 @@ let spriteSize = {};
 let textSizes;
 
 let enemyBoxs = [];
-let enemyTypes = [];
+let enemyTypes = {};
+let allEnemyTypes = [];
 let numOfEnemys = 5;
 let maxEnemyBoxs = 3;
 let hardMode = false;
@@ -138,10 +139,11 @@ function setup() {
   textSize(textSizes);
 
   // enemy vars
-  enemyTypes = [CommonEnemy, FastEnemy, CommonEnemy, StrongEnemy, CommonEnemy, FastEnemy, CommonEnemy];
-  enemyBoxs = [];
   spriteSize.enemy = (width*0.03 + height*0.03)/2;
-  enemyBoxs.push(new EnemyBox(CommonEnemy, spriteSize.enemy, Bullet, img.enemyBullet, 1, numOfEnemys, hardMode));
+  setEnemyTypes();
+  allEnemyTypes = [enemyTypes.common, enemyTypes.fast, enemyTypes.common, enemyTypes.strong, enemyTypes.common, enemyTypes.fast, enemyTypes.common];
+  enemyBoxs = [];
+  enemyBoxs.push(new EnemyBox(enemyTypes.common, spriteSize.enemy, Bullet, img.enemyBullet, 1, numOfEnemys, hardMode));
   enemyBoxs[enemyBoxs.length-1].spawnEnemys();
 
   // player vars
@@ -226,7 +228,7 @@ function displayControls() {
 
 function spawnEnemyBoxes() {
   if (startState !== 0 && enemyBoxs.length <= maxEnemyBoxs && state === 1) {
-    enemyBoxs.push(new EnemyBox(random(enemyTypes), spriteSize.enemy, Bullet, img.enemyBullet, 1, numOfEnemys, hardMode));
+    enemyBoxs.push(new EnemyBox(random(allEnemyTypes), spriteSize.enemy, Bullet, img.enemyBullet, 1, numOfEnemys, hardMode));
     enemyBoxs[enemyBoxs.length-1].spawnEnemys();
     state = 0;
   }
@@ -266,7 +268,7 @@ function enemyFoos() {
 
                     if (score % (modScore*7) === 0) {
                       // spawn boss
-                      enemyBoxs.push(new EnemyBox(BossEnemy, spriteSize.enemy, Bullet, img.enemyBullet, 1, 1, hardMode, true));
+                      enemyBoxs.push(new EnemyBox(enemyTypes.boss, spriteSize.enemy, Bullet, img.enemyBullet, 1, 1, hardMode, true));
                       enemyBoxs[enemyBoxs.length-1].spawnEnemys();
                     }
 
@@ -306,14 +308,13 @@ function enemyFoos() {
         players[playerNum].health--;
       }
       else if (enemyBoxs[i].enemyHitBottom()) {
-        enemyBoxs = [];
-        players[playerNum].lives--;
+        gameOver();
         break;
       }
     }
 
     // no more enemys
-    enemyBoxs[i].empty() ? enemyBoxs.splice(i, 1) : enemyBoxs[i].checkTurn();
+    (enemyBoxs[i].empty() && enemyBoxs[i].enemyShots.length === 0) ? enemyBoxs.splice(i, 1) : enemyBoxs[i].checkTurn();
   }
 }
 
