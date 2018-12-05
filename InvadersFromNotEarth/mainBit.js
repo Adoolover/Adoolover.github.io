@@ -87,6 +87,7 @@ function preload() {
   img.slowEnemySprite = loadImage("assets/img/enemySprites/slow.png");
   img.strongEnemySprite = loadImage("assets/img/enemySprites/strongs.png");
   img.superStrongEnemySprite = loadImage("assets/img/enemySprites/superStrong.png");
+  img.crazyAttackEnemySprite = loadImage("assets/img/enemySprites/crazyAttack.png");
 
   // players
   img.playerOneSprite = loadImage("assets/img/playerOne2.png");
@@ -146,7 +147,7 @@ function setup() {
   // enemy vars
   spriteSize.enemy = (width*0.03 + height*0.03)/2;
   setEnemyTypes();
-  allEnemyTypes = [enemyTypes.common, enemyTypes.fast, enemyTypes.strong, enemyTypes.superStrong, enemyTypes.slow];
+  allEnemyTypes = [enemyTypes.common, enemyTypes.fast, enemyTypes.strong, enemyTypes.superStrong, enemyTypes.slow, enemyTypes.crazyAttack];
   enemyBoxs = [];
   enemyBoxs.push(new EnemyBox(enemyTypes.common, spriteSize.enemy, Bullet, img.enemyBullet, numOfEnemys, hardMode));
   enemyBoxs[enemyBoxs.length-1].spawnEnemys();

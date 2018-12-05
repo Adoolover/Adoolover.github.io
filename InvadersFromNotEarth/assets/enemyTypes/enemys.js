@@ -91,4 +91,19 @@ function setEnemyTypes() {
     max: 15,
     timer: 3500
   };
+
+  // Crazy Attacking
+  enemyTypes.crazyAttack = {
+    sprite: img.crazyAttackEnemySprite,
+    size: spriteSize.enemy*1.75,
+    bulletSize: spriteSize.enemy*0.75,
+    dxMultiplier: 0.1,
+    dyMultiplier: 0.001,
+    attackMultiplier: 9,
+    hp: 2,
+    scoreGained: 3,
+    min: 2,
+    max: 5,
+    timer: 250
+  };
 }
