@@ -8,6 +8,7 @@ class ExtraLife {
 
   pickUp(playerObj) {
     playerObj.lives++;
+    playerObj.lives = constrain(playerObj.lives, -1, 10);
     return playerObj;
   }
 }

@@ -9,6 +9,7 @@ class MoreMaxHealth {
   pickUp(playerObj) {
     playerObj.maxHealth++;
     playerObj.health = playerObj.maxHealth;
+    playerObj.maxHealth += constrain(playerObj.maxHealth, 2, 50);
     return playerObj;
   }
 }

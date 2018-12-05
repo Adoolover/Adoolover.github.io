@@ -53,7 +53,7 @@ let startState;
 let state;
 let score;
 
-const TIME_DELAY = 20000;
+const TIME_DELAY = 15000;
 let startGameTimer;
 let timer;
 

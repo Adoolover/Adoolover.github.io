@@ -7,7 +7,7 @@ class FastAttack {
   }
 
   pickUp(playerObj) {
-    playerObj.timeDelay *= 0.90;
+    playerObj.timeDelay *= 0.95;
     playerObj.timeDelay = constrain(playerObj.timeDelay, 75, Infinity);
     return playerObj;
   }

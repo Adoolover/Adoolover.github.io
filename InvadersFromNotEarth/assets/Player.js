@@ -131,7 +131,11 @@ class Player {
   // checkcing lives
   checkHealth() {
     if (this.health <= 0) {
+      normalDropChance -= 0.2;
       this.lives--;
+      this.timeDelay /= 0.95;
+      this.maxHealth -= 2;
+      this.maxHealth = constrain(this.maxHealth, 2, Infinity);
       this.health = this.maxHealth;
       this.deathSound.play();
     }
