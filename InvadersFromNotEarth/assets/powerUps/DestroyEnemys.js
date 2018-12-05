@@ -12,7 +12,6 @@ class DestroyEnemys {
   }
 
   useItem(enemyArr) {
-    // enemyArr = [];
     enemyArr.map(enemyBox => enemyBox.deleteEnemys());
   }
 }

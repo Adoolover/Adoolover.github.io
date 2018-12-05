@@ -78,27 +78,32 @@ function preload() {
 
   // backgrounds
   stars.star_0 = loadImage("assets/img/backgrounds/back.png");
-  stars.star_1 = loadImage("assets/img/backgrounds/backgroundSpace_01.png");
-  stars.star_2 = loadImage("assets/img/backgrounds/StarCluster1.png");
 
   // sprites
-  img.bossEnemySprite = loadImage("assets/img/boss.png");
-  img.commonEnemySprite = loadImage("assets/img/commons.png");
-  img.fastEnemySprite = loadImage("assets/img/fasts.png");
-  img.strongEnemySprite = loadImage("assets/img/strongs.png");
+  // enemys
+  img.bossEnemySprite = loadImage("assets/img/enemySprites/boss.png");
+  img.commonEnemySprite = loadImage("assets/img/enemySprites/commons.png");
+  img.fastEnemySprite = loadImage("assets/img/enemySprites/fasts.png");
+  img.slowEnemySprite = loadImage("assets/img/enemySprites/slow.png");
+  img.strongEnemySprite = loadImage("assets/img/enemySprites/strongs.png");
+  img.superStrongEnemySprite = loadImage("assets/img/enemySprites/superStrong.png");
+
+  // players
+  img.playerOneSprite = loadImage("assets/img/playerOne2.png");
+  img.playerTwoSprite = loadImage("assets/img/playerTwo2.png");
+
+  // bullets
   img.enemyBullet = loadImage("assets/img/enemyBullets.png");
   img.playerBullet = loadImage("assets/img/playerBullets.png");
-  img.playerOneSprite = loadImage("assets/img/playerOne.png");
-  img.playerTwoSprite = loadImage("assets/img/playerTwo.png");
 
   // power ups
-  img.extraLife = loadImage("assets/img/playerOne.png");
-  img.fastAttack = loadImage("assets/img/fastAttack.png");
-  img.maxHealth = loadImage("assets/img/maxHealth.png");
-  img.moreMaxHealth = loadImage("assets/img/moreMaxHealth.png");
-  img.destroyBullets = loadImage("assets/img/destroyBullets.png");
-  img.destroyEnemys = loadImage("assets/img/destroyEnemys.png");
-  img.respawnEnemys = loadImage("assets/img/respawnEnemys.png");
+  img.extraLife = loadImage("assets/img/powerUps/extraLife.png");
+  img.fastAttack = loadImage("assets/img/powerUps/fastAttack.png");
+  img.maxHealth = loadImage("assets/img/powerUps/maxHealth.png");
+  img.moreMaxHealth = loadImage("assets/img/powerUps/moreMaxHealth.png");
+  img.destroyBullets = loadImage("assets/img/powerUps/destroyBullets.png");
+  img.destroyEnemys = loadImage("assets/img/powerUps/destroyEnemys.png");
+  img.respawnEnemys = loadImage("assets/img/powerUps/respawnEnemys.png");
 }
 
 function setup() {
@@ -142,9 +147,8 @@ function setup() {
   spriteSize.enemy = (width*0.03 + height*0.03)/2;
   setEnemyTypes();
   allEnemyTypes = [enemyTypes.common, enemyTypes.fast, enemyTypes.strong, enemyTypes.superStrong, enemyTypes.slow];
-  // allEnemyTypes = [enemyTypes.common, enemyTypes.fast, enemyTypes.common, enemyTypes.strong, enemyTypes.common, enemyTypes.fast, enemyTypes.common];
   enemyBoxs = [];
-  enemyBoxs.push(new EnemyBox(enemyTypes.common, spriteSize.enemy, Bullet, img.enemyBullet, 1, numOfEnemys, hardMode));
+  enemyBoxs.push(new EnemyBox(enemyTypes.common, spriteSize.enemy, Bullet, img.enemyBullet, numOfEnemys, hardMode));
   enemyBoxs[enemyBoxs.length-1].spawnEnemys();
 
   // player vars
@@ -229,7 +233,7 @@ function displayControls() {
 
 function spawnEnemyBoxes() {
   if (startState !== 0 && enemyBoxs.length <= maxEnemyBoxs && state === 1) {
-    enemyBoxs.push(new EnemyBox(random(allEnemyTypes), spriteSize.enemy, Bullet, img.enemyBullet, 1, numOfEnemys, hardMode));
+    enemyBoxs.push(new EnemyBox(random(allEnemyTypes), spriteSize.enemy, Bullet, img.enemyBullet, numOfEnemys, hardMode));
     enemyBoxs[enemyBoxs.length-1].spawnEnemys();
     state = 0;
   }
@@ -269,7 +273,7 @@ function enemyFoos() {
 
                     if (score % (modScore*7) === 0) {
                       // spawn boss
-                      enemyBoxs.push(new EnemyBox(enemyTypes.boss, spriteSize.enemy, Bullet, img.enemyBullet, 1, 1, hardMode, true));
+                      enemyBoxs.push(new EnemyBox(enemyTypes.boss, spriteSize.enemy, Bullet, img.enemyBullet, 1, hardMode, true));
                       enemyBoxs[enemyBoxs.length-1].spawnEnemys();
                     }
 

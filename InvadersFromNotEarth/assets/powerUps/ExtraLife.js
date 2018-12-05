@@ -3,7 +3,7 @@
 
 class ExtraLife {
   constructor() {
-    this.img = img.playerOneSprite;
+    this.img = img.extraLife;
   }
 
   pickUp(playerObj) {

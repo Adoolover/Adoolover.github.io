@@ -11,7 +11,10 @@ function setEnemyTypes() {
     dyMultiplier: 0.1,
     attackMultiplier: 2,
     hp: 20,
-    scoreGained: 10
+    scoreGained: 6,
+    min: 1,
+    max: 1,
+    timer: 1250
   };
 
   // Common
@@ -23,7 +26,10 @@ function setEnemyTypes() {
     dyMultiplier: 1,
     attackMultiplier: 10,
     hp: 1,
-    scoreGained: 1
+    scoreGained: 1,
+    min: 1,
+    max: 25,
+    timer: 1000
   };
 
   // Fast
@@ -33,9 +39,12 @@ function setEnemyTypes() {
     bulletSize: spriteSize.enemy,
     dxMultiplier: 3,
     dyMultiplier: 1,
-    attackMultiplier: 5,
+    attackMultiplier: 7,
     hp: 1,
-    scoreGained: 2
+    scoreGained: 2,
+    min: 3,
+    max: 15,
+    timer: 750
   };
 
   // Strong
@@ -45,32 +54,41 @@ function setEnemyTypes() {
     bulletSize: spriteSize.enemy*1.2,
     dxMultiplier: 0.5,
     dyMultiplier: 0.5,
-    attackMultiplier: 7.5,
+    attackMultiplier: 10,
     hp: 3,
-    scoreGained: 3
+    scoreGained: 3,
+    min: 2,
+    max: 12,
+    timer: 1250
   };
 
   // Super Strong
   enemyTypes.superStrong = {
-    sprite: img.strongEnemySprite,
+    sprite: img.superStrongEnemySprite,
     size: spriteSize.enemy*2,
     bulletSize: spriteSize.enemy*1.5,
     dxMultiplier: 1.5,
-    dyMultiplier: 1,
-    attackMultiplier: 7,
+    dyMultiplier: 0.3,
+    attackMultiplier: 9,
     hp: 5,
-    scoreGained: 7
+    scoreGained: 4,
+    min: 2,
+    max: 5,
+    timer: 1500
   };
 
   // Slow
   enemyTypes.slow = {
-    sprite: img.strongEnemySprite,
-    size: spriteSize.enemy*0.25,
+    sprite: img.slowEnemySprite,
+    size: spriteSize.enemy*0.5,
     bulletSize: spriteSize.enemy*0.5,
-    dxMultiplier: 2.5,
+    dxMultiplier: 4,
     dyMultiplier: 0.001,
-    attackMultiplier: 3.5,
+    attackMultiplier: 5,
     hp: 1,
-    scoreGained: 5
+    scoreGained: 2,
+    min: 5,
+    max: 15,
+    timer: 3500
   };
 }

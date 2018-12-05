@@ -2,13 +2,14 @@
 // Nov. 16, 2018
 
 class EnemyBox {
-  constructor(enemyType, sprtSize, shot, shotImg, timer, numOfEnemys, hardMode, boss) {
+  constructor(enemyType, sprtSize, shot, shotImg, numOfEnemys, hardMode, boss) {
     // enemys
     let min = numOfEnemys - 3;
     let max = numOfEnemys + 3;
-    this.enemysAcrsX = boss ? 1 : int(random(min, max));
-    this.enemysAcrsY = boss ? 1 : int(this.enemysAcrsX*0.50);
     this.enemyType = enemyType;
+    this.enemysAcrsX = boss ? 1 : int(random(min, max));
+    this.enemysAcrsX = constrain(this.enemysAcrsX, this.enemyType.min, this.enemyType.max);
+    this.enemysAcrsY = boss ? 1 : int(this.enemysAcrsX*0.50);
     this.sprtSize = enemyType.size;
     this.enemys = [];
     this.enemyShots = [];
@@ -31,7 +32,7 @@ class EnemyBox {
     this.movement = this.sprtSize;
 
     // time between actions
-    this.timeDelay = hardMode ? timer*500 : timer*1000;
+    this.timeDelay = hardMode ? this.enemyType.timer*0.75 : this.enemyType.timer;
     this.timer = millis();
   }
 
@@ -71,12 +72,6 @@ class EnemyBox {
   }
 
   checkTurn() {
-    // push();
-    // noFill();
-    // stroke("white");
-    // rect(this.x, this.y, this.sprtSize*this.enemysAcrsX, this.sprtSize*this.enemysAcrsY);
-    // pop();
-
     // take turn
     let elapsedTime = millis() - this.timer;
     elapsedTime > this.timeDelay ? this.move() : this.enemys.map(enemys => enemys.display());
@@ -100,15 +95,8 @@ class EnemyBox {
       amountMoved = this.enemys[i].takeTurn(this.dir, changedDir);
 
       if (this.numOfShots < 5) {
-      // if ((this.hardMode ? floor(this.numOfShots*0.9) : this.numOfShots) < 5) {
-
         if (this.enemys[i].shoot(this.enemys.length)) {
-
           this.enemyShots.push(new this.shotType(this.enemys[i].x, this.enemys[i].y, this.enemyType.bulletSize, this.shotImg, "bad"));
-          // this.enemyShots.push(new this.shotType(this.enemys[i].x, this.enemys[i].y,
-          //   (this.enemyType === BossEnemy ? this.sprtSize/2 : this.sprtSize), this.shotImg, "bad")
-          // );
-
           this.numOfShots++;
         }
       }
