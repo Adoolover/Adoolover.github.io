@@ -1,12 +1,12 @@
 # Proposal
 
-I want to build Top Down racing game
+I want to build a Top Down racing game
 
 ## Need to have list
-  - 2d grid with different elements
+  - 2d grid with different elements such as grass or track
   - player car with controls
-  - displaying the speed of the car
-  - AI racers to race the player
+  - displaying the speed of the player car
+  - AI racer to race the player
 
 ## Nice to have list
   - multiple levels
