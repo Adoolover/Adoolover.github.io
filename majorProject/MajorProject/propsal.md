@@ -6,10 +6,11 @@ I want to build a Top Down racing game
   - 2d grid with different elements such as grass or track
   - player car with controls
   - displaying the speed of the player car
-  - AI racer to race the player
+  - lap system or points systems
 
 ## Nice to have list
   - multiple levels
-  - multiple AI racers
+  - AI racers
   - slow down when off the track
   - sound and good graphics(nice looking graphics)
+  - time trials
