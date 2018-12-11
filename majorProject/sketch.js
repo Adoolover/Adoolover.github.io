@@ -8,30 +8,60 @@ let grid;
 let cols;
 let rows;
 let cellsize;
+
+function preload(){
+  grid = loadStrings("assets/trackOne.txt");
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   cellsize = (width + height)*0.0075;
-  rows = height/100*cellsize;
-  cols = width/100*cellsize;
-  grid = creating2DGrid();
+  rows = 44;//height/100*cellsize;
+  cols = 90; //width/100*cellsize;
+  noStroke();
+  cleanUpTheGrid(grid);
+  displayGrid(grid);
+
+
 }
 
 function draw() {
-  for (let i = 0; i < rows; i++){
-    for (let j = 0; j < cols; j++){
-      rect(i*cellsize, j*cellsize, cellsize, cellsize);
-    }
-  }
   noLoop();
 }
 
-function creating2DGrid() {
-  let arr = [];
-  for (let y = 0; y < rows; y++) {
-    arr.push([]);
-    for (let x = 0; x < cols; x++) {
-      arr[y].push(0);
+function cleanUpTheGrid(someGrid) {
+  for (let i = 0; i < grid.length; i++) {
+    someGrid[i] = someGrid[i].split("");
+  }
+}
+
+function displayGrid(thisGrid){
+  for (let i = 0; i < cols; i++){
+    for (let j = 0; j < rows; j++){
+      if (thisGrid[j][i] === "w"){
+        fill("brown");
+        rect(i*cellsize, j*cellsize, cellsize+1, cellsize+1);
+      }
+      else if (thisGrid[j][i] === "g"){
+        fill(0,255,0);
+        rect(i*cellsize, j*cellsize, cellsize+1, cellsize+1);
+      }
+      else if (thisGrid[j][i] === "t"){
+        fill(125);
+        rect(i*cellsize, j*cellsize, cellsize+1, cellsize+1);
+      }
+
     }
   }
-  return arr;
 }
+
+// function creating2DGrid() {
+//   let arr = [];
+//   for (let y = 0; y < rows; y++) {
+//     arr.push([]);
+//     for (let x = 0; x < cols; x++) {
+//       arr[y].push(0);
+//     }
+//   }
+//   return arr;
+// }
