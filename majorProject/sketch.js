@@ -4,30 +4,80 @@
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
+
+class RaceCar {
+  constructor() {
+    this.x = 400;
+    this.y = 400;
+    this.dx = 2;
+    this.dy = 2;
+    this.size = 20;
+    this.maxSpeed;
+    this.rotation = 0;
+  }
+
+  displayCar(){
+    fill(0);
+
+    rotate(this.rotation);
+    rect(this.x,this.y, this.size, this.size);
+
+  }
+
+  carMovement(){
+    // W
+    if (keyIsDown(87)){
+      this.x += this.dx;
+    }
+    // S
+    if (keyIsDown(83)){
+      this.x -= this.dx;
+    }
+    // D
+    if (keyIsDown(68)){
+      this.y += this.dy;
+    }
+    // A
+    if (keyIsDown(65)){
+      this.y -= this.dy;
+    }
+  }
+}
+
 let grid;
 let cols;
 let rows;
 let cellsize;
+let playerCar;
+let track1;
 
 function preload(){
   grid = loadStrings("assets/trackOne.txt");
+  track1 = loadImage("assets/trackOne.PNG");
+
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  angleMode(DEGREES);
   cellsize = (width + height)*0.0075;
   rows = 44;//height/100*cellsize;
   cols = 90; //width/100*cellsize;
+  playerCar = new RaceCar;
   noStroke();
   cleanUpTheGrid(grid);
-  displayGrid(grid);
+
 
 
 }
 
 function draw() {
-  noLoop();
+//  displayGrid(grid);
+  image(track1, 0,0);
+  playerCar.displayCar();
+  playerCar.carMovement();
 }
+
 
 function cleanUpTheGrid(someGrid) {
   for (let i = 0; i < grid.length; i++) {
