@@ -19,8 +19,13 @@ class RaceCar {
   displayCar(){
     fill(0);
 
+    push();
+    translate(this.x,this.y);
     rotate(this.rotation);
-    rect(this.x,this.y, this.size, this.size);
+    rect(0,0, this.size, this.size);
+    this.x = cos(this.rotation*this.dx);
+    // this.y = sin(this.rotation*this.dy);
+    pop();
 
   }
 
@@ -35,11 +40,13 @@ class RaceCar {
     }
     // D
     if (keyIsDown(68)){
-      this.y += this.dy;
+      // this.y += this.dy;
+      this.rotation -= 1;
     }
     // A
     if (keyIsDown(65)){
-      this.y -= this.dy;
+      // this.y -= this.dy;
+      this.rotation += 1;
     }
   }
 }
@@ -60,6 +67,7 @@ function preload(){
 function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
+  rectMode(CENTER);
   cellsize = (width + height)*0.0075;
   rows = 44;//height/100*cellsize;
   cols = 90; //width/100*cellsize;
