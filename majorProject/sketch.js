@@ -9,44 +9,57 @@ class RaceCar {
   constructor() {
     this.x = 400;
     this.y = 400;
-    this.dx = 2;
-    this.dy = 2;
+    this.dx = 0;
+    this.dy = 0;
     this.size = 20;
-    this.maxSpeed;
-    this.rotation = 0;
+    this.speed = 5;
+    this.angle = 20;
+    this.turnSpeed = 3;
   }
 
   displayCar(){
-    fill(0);
-
     push();
     translate(this.x,this.y);
-    rotate(this.rotation);
+    angleMode(DEGREES);
+    rotate(this.angle);
+    fill(0);
     rect(0,0, this.size, this.size);
-    this.x = cos(this.rotation*this.dx);
-    // this.y = sin(this.rotation*this.dy);
     pop();
 
   }
 
   carMovement(){
+    this.dx = cos(this.angle) * this.speed;
+    this.dy = sin(this.angle) * this.speed;
+
+    this.x += this.dx;
+    this.y += this.dy;
+  }
+
+  handleKeyPress() {
     // W
-    if (keyIsDown(87)){
-      this.x += this.dx;
+    if (key === 87 || key === 38){
+      this.speed += 1;
+      if (this.speed > 10) {
+        this.speed = 10;
+      }
     }
     // S
-    if (keyIsDown(83)){
-      this.x -= this.dx;
+    if (key === 83 || key === 40){
+      this.speed -= 1;
+      if (this.speed < 0) {
+        this.speed = 0;
+      }
     }
     // D
-    if (keyIsDown(68)){
+    if (keyIsDown(68) || keyIsDown(39)){
       // this.y += this.dy;
-      this.rotation -= 1;
+      this.angle += this.turnSpeed;
     }
     // A
-    if (keyIsDown(65)){
+    if (keyIsDown(65) || keyIsDown(37)){
       // this.y -= this.dy;
-      this.rotation += 1;
+      this.angle -= this.turnSpeed;
     }
   }
 }
@@ -66,7 +79,6 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  angleMode(DEGREES);
   rectMode(CENTER);
   cellsize = (width + height)*0.0075;
   rows = 44;//height/100*cellsize;
@@ -77,13 +89,20 @@ function setup() {
 
 
 
+
 }
 
 function draw() {
-//  displayGrid(grid);
-  image(track1, 0,0);
-  playerCar.displayCar();
+  displayGrid(grid);
+
+  if (keyIsPressed) {
+    playerCar.handleKeyPress();
+  }
+
   playerCar.carMovement();
+  playerCar.displayCar();
+
+  displayLaps();
 }
 
 
@@ -93,7 +112,7 @@ function cleanUpTheGrid(someGrid) {
   }
 }
 
-function displayGrid(thisGrid){
+function displayGrid(thisGrid) {
   for (let i = 0; i < cols; i++){
     for (let j = 0; j < rows; j++){
       if (thisGrid[j][i] === "w"){
@@ -108,18 +127,16 @@ function displayGrid(thisGrid){
         fill(125);
         rect(i*cellsize, j*cellsize, cellsize+1, cellsize+1);
       }
+      else if (thisGrid[j][i] === "c" || thisGrid[j][i] === "f" ){
+        fill("yellow");
+        rect(i*cellsize, j*cellsize, cellsize+1, cellsize+1);
+      }
 
     }
   }
 }
 
-// function creating2DGrid() {
-//   let arr = [];
-//   for (let y = 0; y < rows; y++) {
-//     arr.push([]);
-//     for (let x = 0; x < cols; x++) {
-//       arr[y].push(0);
-//     }
-//   }
-//   return arr;
-// }
+function displayLaps() {
+  fill(0);
+  text("laps", width*0.95, height*0.05);
+}
