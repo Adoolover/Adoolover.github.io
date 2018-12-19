@@ -7,13 +7,13 @@
 
 class RaceCar {
   constructor() {
-    this.x = 400;
-    this.y = 400;
+    this.x = 725;
+    this.y = 675;
     this.dx = 0;
     this.dy = 0;
     this.size = 20;
-    this.speed = 5;
-    this.angle = 20;
+    this.speed = 0;
+    this.angle = 0;
     this.turnSpeed = 3;
   }
 
@@ -28,7 +28,32 @@ class RaceCar {
 
   }
 
-  carMovement(){
+  checkElement(aGrid) {
+    let x = floor(this.x/cellsize);
+    let y = floor(this.y/cellsize);
+
+
+
+    if (aGrid[y+1][x] === "w") {
+      this.y += this.speed;
+      this.speed = 0;
+    }
+    if (aGrid[y-1][x] === "w") {
+      this.y -= this.speed;
+      this.speed = 0;
+    }
+    if (aGrid[y][x+1] === "w") {
+      this.x += this.speed;
+      this.speed = 0;
+    }
+    if (aGrid[y][x-1] === "w") {
+      this.x -= this.speed;
+      this.speed = 0;
+    }
+
+  }
+
+  carMovement() {
     this.dx = cos(this.angle) * this.speed;
     this.dy = sin(this.angle) * this.speed;
 
@@ -38,26 +63,26 @@ class RaceCar {
 
   handleKeyPress() {
     // W
-    if (key === 87 || key === 38){
+    if (keyIsDown(87)){
       this.speed += 1;
-      if (this.speed > 10) {
-        this.speed = 10;
+      if (this.speed > 8) {
+        this.speed = 8;
       }
     }
     // S
-    if (key === 83 || key === 40){
+    if (keyIsDown(83)){
       this.speed -= 1;
       if (this.speed < 0) {
         this.speed = 0;
       }
     }
     // D
-    if (keyIsDown(68) || keyIsDown(39)){
+    if (keyIsDown(68)){
       // this.y += this.dy;
       this.angle += this.turnSpeed;
     }
     // A
-    if (keyIsDown(65) || keyIsDown(37)){
+    if (keyIsDown(65)){
       // this.y -= this.dy;
       this.angle -= this.turnSpeed;
     }
@@ -81,7 +106,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   cellsize = (width + height)*0.0075;
-  rows = 44;//height/100*cellsize;
+  rows = 45;//height/100*cellsize;
   cols = 90; //width/100*cellsize;
   playerCar = new RaceCar;
   noStroke();
@@ -95,11 +120,10 @@ function setup() {
 function draw() {
   displayGrid(grid);
 
-  if (keyIsPressed) {
-    playerCar.handleKeyPress();
-  }
 
+  playerCar.handleKeyPress();
   playerCar.carMovement();
+  playerCar.checkElement(grid);
   playerCar.displayCar();
 
   displayLaps();
