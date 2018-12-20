@@ -35,19 +35,19 @@ class RaceCar {
 
 
     if (aGrid[y+1][x] === "w") {
-      this.y += this.speed;
-      this.speed = 0;
-    }
-    if (aGrid[y-1][x] === "w") {
       this.y -= this.speed;
       this.speed = 0;
     }
+    if (aGrid[y-1][x] === "w") {
+      this.y += this.speed;
+      this.speed = 0;
+    }
     if (aGrid[y][x+1] === "w") {
-      this.x += this.speed;
+      this.x -= this.speed;
       this.speed = 0;
     }
     if (aGrid[y][x-1] === "w") {
-      this.x -= this.speed;
+      this.x += this.speed;
       this.speed = 0;
     }
 
@@ -72,8 +72,8 @@ class RaceCar {
     // S
     if (keyIsDown(83)){
       this.speed -= 1;
-      if (this.speed < 0) {
-        this.speed = 0;
+      if (this.speed < -2) {
+        this.speed = -2;
       }
     }
     // D
@@ -85,6 +85,9 @@ class RaceCar {
     if (keyIsDown(65)){
       // this.y -= this.dy;
       this.angle -= this.turnSpeed;
+    }
+    if (keyIsPressed === false){
+      this.speed = 0;
     }
   }
 }
