@@ -146,6 +146,10 @@ function displayGrid(thisGrid) {
         fill("brown");
         rect(i*cellsize, j*cellsize, cellsize+1, cellsize+1);
       }
+      if (thisGrid[j][i] === "W"){
+        fill("brown");
+        rect(i*cellsize, j*cellsize, cellsize+1, cellsize+1);
+      }
       else if (thisGrid[j][i] === "g"){
         fill(0,255,0);
         rect(i*cellsize, j*cellsize, cellsize+1, cellsize+1);
