@@ -5,3 +5,9 @@
 
 ## 19th Dec 2018
 - basic movement system without checking the elements.
+
+## 22nd Dec 2018
+- checking for walls and colliding
+
+## 8th Jan 2019
+- displaying speed and acceleration

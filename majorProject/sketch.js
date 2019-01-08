@@ -13,7 +13,7 @@ class RaceCar {
     this.dy = 0;
     this.size = 20;
     this.speed = 0;
-    this.angle = 0;
+    this.angle = 0.01;
     this.turnSpeed = 3;
   }
 
@@ -29,24 +29,44 @@ class RaceCar {
   }
 
   checkElement(aGrid) {
-    let x = floor(this.x/cellsize);
-    let y = floor(this.y/cellsize);
+    let cX = ceil(this.x/cellsize);
+    let cY = ceil(this.y/cellsize);
 
+    let fX = floor(this.x/cellsize);
+    let fY = floor(this.y/cellsize);
 
-
-    if (aGrid[y+1][x] === "w") {
+    // checking ceil
+    if (aGrid[cY+1][cX] === "w") {
       this.y -= this.speed;
       this.speed = 0;
     }
-    if (aGrid[y-1][x] === "w") {
+    if (aGrid[cY-1][cX] === "w") {
       this.y += this.speed;
       this.speed = 0;
     }
-    if (aGrid[y][x+1] === "w") {
+    if (aGrid[cY][cX+1] === "w") {
       this.x -= this.speed;
       this.speed = 0;
     }
-    if (aGrid[y][x-1] === "w") {
+    if (aGrid[cY][cX-1] === "w") {
+      this.x += this.speed;
+      this.speed = 0;
+    }
+    
+    //checking floor
+    if (aGrid[fY+1][fX] === "w") {
+      this.y -= this.speed;
+      this.speed = 0;
+    }
+    if (aGrid[fY-1][fX] === "w") {
+      this.y += this.speed;
+      this.speed = 0;
+    }
+    if (aGrid[fY][fX+1] === "w") {
+      this.x -= this.speed;
+      this.speed = 0;
+    }
+    if (aGrid[fY][fX-1] === "w") {
       this.x += this.speed;
       this.speed = 0;
     }
@@ -64,14 +84,14 @@ class RaceCar {
   handleKeyPress() {
     // W
     if (keyIsDown(87)){
-      this.speed += 1;
+      this.speed += 0.1;
       if (this.speed > 8) {
         this.speed = 8;
       }
     }
     // S
     if (keyIsDown(83)){
-      this.speed -= 1;
+      this.speed -= 0.1;
       if (this.speed < -2) {
         this.speed = -2;
       }
@@ -87,8 +107,13 @@ class RaceCar {
       this.angle -= this.turnSpeed;
     }
     if (keyIsPressed === false){
-      this.speed = 0;
+      this.speed -= 0.1;
+      this.speed = constrain(this.speed,0,8);
     }
+  }
+
+  displaySpeed() {
+    text(int(this.speed*15) + "Km/h", width-100, height-50);
   }
 }
 
@@ -128,6 +153,7 @@ function draw() {
   playerCar.carMovement();
   playerCar.checkElement(grid);
   playerCar.displayCar();
+  playerCar.displaySpeed();
 
   displayLaps();
 }
