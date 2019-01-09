@@ -15,6 +15,8 @@ class RaceCar {
     this.speed = 0;
     this.angle = 0.01;
     this.turnSpeed = 3;
+    this.lap = 1;
+    this.check = 0;
   }
 
   displayCar(){
@@ -32,11 +34,8 @@ class RaceCar {
     let cX = ceil(this.x/cellsize);
     let cY = ceil(this.y/cellsize);
 
-    let fX = floor(this.x/cellsize);
-    let fY = floor(this.y/cellsize);
-
-    // checking ceil
-    if (aGrid[cY+1][cX] === "w") {
+    // checking wall
+    if (aGrid[cY][cX] === "w") {
       this.y -= this.speed;
       this.speed = 0;
     }
@@ -44,7 +43,7 @@ class RaceCar {
       this.y += this.speed;
       this.speed = 0;
     }
-    if (aGrid[cY][cX+1] === "w") {
+    if (aGrid[cY][cX] === "w") {
       this.x -= this.speed;
       this.speed = 0;
     }
@@ -52,25 +51,51 @@ class RaceCar {
       this.x += this.speed;
       this.speed = 0;
     }
-    
-    //checking floor
-    if (aGrid[fY+1][fX] === "w") {
-      this.y -= this.speed;
-      this.speed = 0;
+
+    // checking if on grass
+    if (aGrid[cY][cX] === "g") {
+      if (this.speed >= 5){
+        this.speed-=0.20;
+      }
+      else if (this.speed <= 5){
+        this.speed -= 0.05;
+      }
     }
-    if (aGrid[fY-1][fX] === "w") {
-      this.y += this.speed;
-      this.speed = 0;
+    else if (aGrid[cY-1][cX] === "g") {
+      if (this.speed >= 5){
+        this.speed-=0.20;
+      }
+      else if (this.speed <= 5){
+        this.speed -= 0.05;
+      }
     }
-    if (aGrid[fY][fX+1] === "w") {
-      this.x -= this.speed;
-      this.speed = 0;
+    else if (aGrid[cY][cX] === "g") {
+      if (this.speed >= 5){
+        this.speed-=0.20;
+      }
+      else if (this.speed <= 5){
+        this.speed -= 0.05;
+      }
     }
-    if (aGrid[fY][fX-1] === "w") {
-      this.x += this.speed;
-      this.speed = 0;
+    else if (aGrid[cY][cX-1] === "g") {
+      if (this.speed >= 5){
+        this.speed-=0.20;
+      }
+      else if (this.speed <= 5){
+        this.speed -= 0.05;
+      }
     }
 
+    // check checkpoint and start
+    // checkpoint
+    if (aGrid[cY][cX] === "c" && this.check % 2 === 0) {
+      this.check++;
+    }
+    // start
+    if (aGrid[cY][cX] === "f" && this.check % 2 === 1) {
+      this.lap++;
+      this.check++;
+    }
   }
 
   carMovement() {
@@ -98,12 +123,10 @@ class RaceCar {
     }
     // D
     if (keyIsDown(68)){
-      // this.y += this.dy;
       this.angle += this.turnSpeed;
     }
     // A
     if (keyIsDown(65)){
-      // this.y -= this.dy;
       this.angle -= this.turnSpeed;
     }
     if (keyIsPressed === false){
@@ -127,7 +150,6 @@ let track1;
 function preload(){
   grid = loadStrings("assets/trackOne.txt");
   track1 = loadImage("assets/trackOne.PNG");
-
 }
 
 function setup() {
@@ -139,15 +161,10 @@ function setup() {
   playerCar = new RaceCar;
   noStroke();
   cleanUpTheGrid(grid);
-
-
-
-
 }
 
 function draw() {
   displayGrid(grid);
-
 
   playerCar.handleKeyPress();
   playerCar.carMovement();
@@ -157,7 +174,6 @@ function draw() {
 
   displayLaps();
 }
-
 
 function cleanUpTheGrid(someGrid) {
   for (let i = 0; i < grid.length; i++) {
@@ -195,5 +211,5 @@ function displayGrid(thisGrid) {
 
 function displayLaps() {
   fill(0);
-  text("laps", width*0.95, height*0.05);
+  text("lap "+ playerCar.lap, width*0.95, height*0.05);
 }

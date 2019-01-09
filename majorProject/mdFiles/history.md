@@ -11,3 +11,6 @@
 
 ## 8th Jan 2019
 - displaying speed and acceleration
+
+## 9th Jan 2019
+- working lap without win and better walls/movement
