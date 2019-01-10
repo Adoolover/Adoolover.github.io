@@ -17,6 +17,9 @@ class RaceCar {
     this.turnSpeed = 3;
     this.lap = 1;
     this.check = 0;
+    this.time;
+    this.timeStart = false;
+    this.finish = false;
   }
 
   displayCar(){
@@ -107,29 +110,36 @@ class RaceCar {
   }
 
   handleKeyPress() {
-    // W
-    if (keyIsDown(87)){
-      this.speed += 0.1;
-      if (this.speed > 8) {
-        this.speed = 8;
+    if (this.finish === false){
+      // W
+      if (keyIsDown(87)){
+        this.speed += 0.1;
+        if (this.speed > 8) {
+          this.speed = 8;
+        }
+        this.timeStart = true;
+      }
+      // S
+      if (keyIsDown(83)){
+        this.speed -= 0.1;
+        if (this.speed < -2) {
+          this.speed = -2;
+        }
+      }
+      // D
+      if (keyIsDown(68)){
+        this.angle += this.turnSpeed;
+      }
+      // A
+      if (keyIsDown(65)){
+        this.angle -= this.turnSpeed;
+      }
+      if (keyIsPressed === false){
+        this.speed -= 0.1;
+        this.speed = constrain(this.speed,0,8);
       }
     }
-    // S
-    if (keyIsDown(83)){
-      this.speed -= 0.1;
-      if (this.speed < -2) {
-        this.speed = -2;
-      }
-    }
-    // D
-    if (keyIsDown(68)){
-      this.angle += this.turnSpeed;
-    }
-    // A
-    if (keyIsDown(65)){
-      this.angle -= this.turnSpeed;
-    }
-    if (keyIsPressed === false){
+    else {
       this.speed -= 0.1;
       this.speed = constrain(this.speed,0,8);
     }
@@ -138,6 +148,19 @@ class RaceCar {
   displaySpeed() {
     text(int(this.speed*15) + "Km/h", width-100, height-50);
   }
+
+  checkWin(){
+    if (this.timeStart) {
+      this.time = millis();
+    }
+    text("time " + (this.time/1000).toFixed(2), 50, 50);
+    if (this.lap === 6){
+      text("Your time was "+ int(this.time/1000) ,width/2,height/2);
+      this.timeStart = false;
+      this.finish = true;
+    }
+  }
+
 }
 
 let grid;
@@ -171,6 +194,7 @@ function draw() {
   playerCar.checkElement(grid);
   playerCar.displayCar();
   playerCar.displaySpeed();
+  playerCar.checkWin();
 
   displayLaps();
 }
