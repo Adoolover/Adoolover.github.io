@@ -1,4 +1,4 @@
-// Top down raceing, game Major Project
+// Top down raceing game, Major Project
 // Cody Flynn
 // Fri Dec 7th
 //
