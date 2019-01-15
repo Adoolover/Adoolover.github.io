@@ -153,9 +153,9 @@ class RaceCar {
     if (this.timeStart) {
       this.time = millis();
     }
-    text("time " + (this.time/1000).toFixed(2), 50, 50);
+    text("time " + (this.time/1000).toFixed(2) + "s", 50, 50);
     if (this.lap === 6){
-      text("Your time was "+ int(this.time/1000) ,width/2,height/2);
+      text("Your time was "+(this.time/1000).toFixed(2) + "s" ,width/2,height/2);
       this.timeStart = false;
       this.finish = true;
     }
@@ -163,12 +163,58 @@ class RaceCar {
 
 }
 
+class Button  {
+  constructor(x, y, words) {
+    // position
+    this.x = x;
+    this.y = y;
+
+    // size
+    this.width = width/2;
+    this.height = height/4;
+
+    // other
+    this.words = words;
+    this.hit = false;
+  }
+
+  drawButton() {
+    let col = this.hit ? "grey" : "white";
+    fill(col);
+
+    rect(this.x, this.y, this.width, this.height);
+
+    push();
+    textSize(50);
+    fill("black");
+    text(this.words, this.x, this.y);
+    pop();
+  }
+
+  checkClick() {
+    this.hit = this.buttonHover(this.x, this.y, this.width, this.height);
+    return this.hit && mouseIsPressed;
+  }
+
+  buttonHover(x, y, w, h) {
+    let left = x - w/2;
+    let right = x + w/2;
+    let top = y - h/2;
+    let bottom = y + h/2;
+
+    return mouseX >= left && mouseX <= right
+    && mouseY >= top && mouseY <= bottom;
+  }
+}
+
+let state = 0;
 let grid;
 let cols;
 let rows;
 let cellsize;
 let playerCar;
 let track1;
+let button;
 
 function preload(){
   grid = loadStrings("assets/trackOne.txt");
@@ -178,25 +224,35 @@ function preload(){
 function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
+  textAlign(CENTER,CENTER);
   cellsize = (width + height)*0.0075;
   rows = 45;//height/100*cellsize;
   cols = 90; //width/100*cellsize;
   playerCar = new RaceCar;
+  button = new Button(width/2, height/2, "Play");
   noStroke();
   cleanUpTheGrid(grid);
 }
 
 function draw() {
-  displayGrid(grid);
+  if (state === 0){
+    background("black");
+    button.drawButton();
+    if (button.checkClick() === true){
+      state = 1;
+    }
+  }
+  if (state === 1){
+    displayGrid(grid);
+    playerCar.handleKeyPress();
+    playerCar.carMovement();
+    playerCar.checkElement(grid);
+    playerCar.displayCar();
+    playerCar.displaySpeed();
+    playerCar.checkWin();
 
-  playerCar.handleKeyPress();
-  playerCar.carMovement();
-  playerCar.checkElement(grid);
-  playerCar.displayCar();
-  playerCar.displaySpeed();
-  playerCar.checkWin();
-
-  displayLaps();
+    displayLaps();
+  }
 }
 
 function cleanUpTheGrid(someGrid) {
